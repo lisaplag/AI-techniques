@@ -6,7 +6,7 @@ public class Perceptron {
 
 	public static void main(String[] args) {
 		// initialize variables for training set
-		int[][] input = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
+		double[][] input = {{0, 0}, {0, 1}, {1, 0}, {1, 1}};
 		int[] desired = {0, 1, 1, 1};
 		int epochs = 10;
 		double alpha = 0.1;
@@ -14,7 +14,7 @@ public class Perceptron {
 		train(input, desired, epochs, alpha, threshold);
 	}
 
-	public static void train(int[][] input, int[] output, int epochs, double alpha, double threshold) {
+	public static void train(double[][] input, int[] output, int epochs, double alpha, double threshold) {
 		long seed = 0; //seed for possible use in Random
 		Random random = new Random();
 		int rows = input.length;
