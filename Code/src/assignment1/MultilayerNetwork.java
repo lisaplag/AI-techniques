@@ -15,8 +15,8 @@ public class MultilayerNetwork {
 		// double[][] input = ReadData.readInput("FileName!");
 		// double[] outputDesired = ReadData.readOutput("FileName!");
 		
-		double[][] input = {{1.0, 1.0}, {0, 1.0},  {1.0, 0},  {0, 0}};
-		double[][] outputDesired = {{0}, {1}, {1}, {0}};
+		double[][] input = {{1.0, 1.0}, {0.0, 1.0},  {1.0, 0.0},  {0.0, 0.0}};
+		double[][] outputDesired = {{0.0}, {1.0}, {1.0}, {0.0}};
 		int nExamples = input.length;
 		int nFeatures = input[0].length;
 		
@@ -46,7 +46,7 @@ public class MultilayerNetwork {
 		double alpha = 0.1;
 		double epsilon = 0.001;
 		
-		while (iterations < 896) {
+		while (sumSquaredErrors > epsilon) {
 			for (int n = 0; n < nExamples; n++) {
 				//Step 2: activation
 				double[] outputHidden = new double[hiddenNeurons];
@@ -98,15 +98,17 @@ public class MultilayerNetwork {
 				
 				iterations++;
 			}
+			
 			epochs++;
 		}
 			
-		System.out.println(Arrays.deepToString(weightHidden));
-		System.out.println(Arrays.deepToString(weightOutput));
-		System.out.println(Arrays.toString(thetaHidden));
-		System.out.println(Arrays.toString(thetaOutput));
-		System.out.println(iterations);
-		System.out.println(sumSquaredErrors);
+		System.out.println("Weights of hidden layer: " + Arrays.deepToString(weightHidden));
+		System.out.println("Weights of output layer: " + Arrays.deepToString(weightOutput));
+		System.out.println("Thresholds of hidden layer: " + Arrays.toString(thetaHidden));
+		System.out.println("Thresholds of output layer: " + Arrays.toString(thetaOutput));
+		System.out.println("Iterations: " + iterations);
+		System.out.println("Epochs: " + epochs);
+		System.out.println("Error: " + sumSquaredErrors);
 	}
-
 }
+

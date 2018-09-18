@@ -5,10 +5,11 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Main {
+public class ReadData {
 
     public static ArrayList<String> feat = new ArrayList<>();
-    public static void main(String[] args) {
+    
+    public static double[][] readInput(String fileName) {
         File features = new File(System.getProperty("user.dir")+"/src/assignment1/features.txt");
         File targets = new File(System.getProperty("user.dir")+"/src/assignment1/targets.txt");
         try {
@@ -24,5 +25,7 @@ public class Main {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        double[][] input = feat.toArray(new double[feat.size()][10]);
+        return(input);
     }
 }
