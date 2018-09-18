@@ -3,7 +3,6 @@ package assignment1;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -16,20 +15,13 @@ public class Main {
         try {
             Scanner scf = new Scanner(features);
             Scanner sct = new Scanner(targets);
-            int k = 0;
             while (scf.hasNext()) {
-                    String tempString = scf.nextLine();
-                    String[] parts = tempString.split(",");
-                feat.addAll(Arrays.asList(parts));
-
+                    feat.add(scf.nextLine()+","+sct.nextLine());
             }
             scf.close();
-            System.out.println(feat.get(2));
-            while (sct.hasNext()) {
-                classes.add(Integer.valueOf(sct.nextLine()));
-            }
             sct.close();
-            System.out.println(classes.get(2));
+            System.out.println(feat.get(0));
+            System.out.println(feat.get(1));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
