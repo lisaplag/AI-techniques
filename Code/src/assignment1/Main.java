@@ -8,7 +8,6 @@ import java.util.Scanner;
 public class Main {
 
     public static ArrayList<String> feat = new ArrayList<>();
-    public static ArrayList<Integer> classes = new ArrayList<>();
     public static void main(String[] args) {
         File features = new File(System.getProperty("user.dir")+"/Code/src/assignment1/features.txt");
         File targets = new File(System.getProperty("user.dir")+"/Code/src/assignment1/targets.txt");
