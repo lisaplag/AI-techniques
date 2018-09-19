@@ -4,50 +4,39 @@ import java.util.Random;
 import java.util.Arrays;
 import assignment1.ReadData;
 
-public class MultilayerNetwork {
+public class MultilayerNetworkTest {
 	
 	public static void main(String[] args) {
 		
-		long seed = 0; //seed for possible use in Random
-		Random random = new Random(seed);
+		// setting up neural network
+		//long seed = 0; //seed for possible use in Random
+		//Random random = new Random(seed);
 		
-		//Loading data and splitting it into training, validation and test set		
-		double[][] input = ReadData.readInput();
-		double[][] outputDesired = ReadData.readTargets();
+		// double[][] input = ReadData.readInput();
+		// double[] outputDesired = ReadData.readTargets();
+		
+		double[][] input = {{1.0, 1.0}, {0.0, 1.0},  {1.0, 0.0},  {0.0, 0.0}};
+		double[][] outputDesired = {{0.0}, {1.0}, {1.0}, {0.0}};
 		int nExamples = input.length;
-		int nFeatures = input[0].length;
+		//int nFeatures = input[0].length;
 		
-    	int[] indices = ReadData.randomIndices(nExamples);
-    	double[][][] newInputs = ReadData.splitSample(indices, input);
-    	double[][][] newTargets = ReadData.splitSample(indices, outputDesired);
+		int inputNeurons = 2; //index i
+		int hiddenNeurons = 2; //index j
+		int outputNeurons = 1; //index k
 		
-    	
-    	//Step 0: setting up neural network
-		int inputNeurons = nFeatures; //index i
-		int hiddenNeurons = nFeatures + 1; //index j
-		int outputNeurons = outputDesired[0].length; //index k
+		//double[][] weightHidden = new double[inputNeurons][hiddenNeurons];
+		//double[][] weightOutput = new double[hiddenNeurons][outputNeurons];
+		//double[] thetaHidden = new double[hiddenNeurons];
+		//double[] thetaOutput = new double[outputNeurons];
 		
-		double[][] weightHidden = new double[inputNeurons][hiddenNeurons];
-		double[][] weightOutput = new double[hiddenNeurons][outputNeurons];
-		double[] thetaHidden = new double[hiddenNeurons];
-		double[] thetaOutput = new double[outputNeurons];
+		//test book example on p.182
+		double[][] weightHidden = {{0.5, 0.9}, {0.4, 1.0}};
+		double[][] weightOutput = {{-1.2}, {1.1}};
+		double[] thetaHidden = {0.8, -0.1};
+	    double[] thetaOutput = {0.3};		
 		
 		
 		//Step 1: randomly initialize weights and thresholds [-0.5, 0.5]
-		//hidden layer
-		for (int i = 0; i < inputNeurons; i++) {
-			for (int j = 0; j < hiddenNeurons; j++) {
-				weightHidden[i][j] = random.nextDouble() - 0.5;	
-				thetaHidden[j] = random.nextDouble() - 0.5;
-			}
-		}
-		//output layer
-		for (int j = 0; j < hiddenNeurons; j++) {
-			for (int k = 0; k < outputNeurons; k++) {
-				weightOutput[j][k] = random.nextDouble() - 0.5;	
-				thetaOutput[k] = random.nextDouble() - 0.5;
-			}
-		}
 		
 		
 		//Step 4: Iteration
@@ -56,7 +45,6 @@ public class MultilayerNetwork {
 		int epochs = 0;
 		double alpha = 0.1;
 		double epsilon = 0.001;
-		double[] predictions = new double[outputNeurons];
 		
 		while (sumSquaredErrors > epsilon) {
 			for (int n = 0; n < nExamples; n++) {
@@ -107,13 +95,13 @@ public class MultilayerNetwork {
 						weightHidden[i][j] += alpha * input[n][i] * errorGradientHidden;
 					}
 				}
-				predictions = outputFinal;
+				
 				iterations++;
 			}
 			
 			epochs++;
 		}
-		//printing results	
+			
 		System.out.println("Weights of hidden layer: " + Arrays.deepToString(weightHidden));
 		System.out.println("Weights of output layer: " + Arrays.deepToString(weightOutput));
 		System.out.println("Thresholds of hidden layer: " + Arrays.toString(thetaHidden));
@@ -121,7 +109,6 @@ public class MultilayerNetwork {
 		System.out.println("Iterations: " + iterations);
 		System.out.println("Epochs: " + epochs);
 		System.out.println("Error: " + sumSquaredErrors);
-		System.out.println("Number in training sample: " + nExamples);
 	}
 }
 
