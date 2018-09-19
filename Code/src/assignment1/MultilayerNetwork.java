@@ -12,8 +12,8 @@ public class MultilayerNetwork {
 		long seed = 0; //seed for possible use in Random
 		Random random = new Random(seed);
 		
-		// double[][] input = ReadData.readInput("FileName!");
-		// double[] outputDesired = ReadData.readOutput("FileName!");
+		// double[][] input = ReadData.readInput();
+		// double[] outputDesired = ReadData.readTargets();
 		
 		double[][] input = {{1.0, 1.0}, {0.0, 1.0},  {1.0, 0.0},  {0.0, 0.0}};
 		double[][] outputDesired = {{0.0}, {1.0}, {1.0}, {0.0}};

@@ -8,24 +8,42 @@ import java.util.Scanner;
 public class ReadData {
 
     public static ArrayList<String> feat = new ArrayList<>();
-    
-    public static double[][] readInput(String fileName) {
-        File features = new File(System.getProperty("user.dir")+"/src/assignment1/features.txt");
-        File targets = new File(System.getProperty("user.dir")+"/src/assignment1/targets.txt");
-        try {
-            Scanner scf = new Scanner(features);
-            Scanner sct = new Scanner(targets);
-            while (scf.hasNext()) {
-                    feat.add(scf.nextLine()+","+sct.nextLine());
+    public static ArrayList<String> targets = new ArrayList<>();
+
+    public static double[][] readInput() {
+        File features = new File(System.getProperty("user.dir")+"/Code/src/assignment1/features.txt");
+        read(features, feat);
+        int size = feat.size();
+        double[][] input = new double[size][10];
+        for (int i = 0; i < size; i++) {
+            String[] parts = feat.get(i).split(",");
+            for (int j = 0; j < 10; j++) {
+                input[i][j] = Double.valueOf(parts[j]);
             }
-            scf.close();
-            sct.close();
-            System.out.println(feat.get(0));
-            System.out.println(feat.get(1));
+        }
+        return(input);
+    }
+
+    public static double[] readTargets() {
+        File targetFile = new File(System.getProperty("user.dir")+"/Code/src/assignment1/targets.txt");
+        read(targetFile, targets);
+        int size = targets.size();
+        double[] res = new double[size];
+        for (int i = 0; i < size; i++) {
+             res[i] = Integer.valueOf(targets.get(i));
+        }
+        return res;
+    }
+
+    public static void read(File file, ArrayList<String> goal) {
+        try {
+            Scanner sc = new Scanner(file);
+            while (sc.hasNext()) {
+                goal.add(sc.nextLine());
+            }
+            sc.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        double[][] input = feat.toArray(new double[feat.size()][10]);
-        return(input);
     }
 }
