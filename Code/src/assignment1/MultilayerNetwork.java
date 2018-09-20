@@ -14,7 +14,7 @@ public class MultilayerNetwork {
 	public static void main(String[] args) {
 		
 		long seed = 0; //seed for possible use in Random
-		Random random = new Random(seed);
+		Random random = new Random();
 		
 		//Loading data and splitting it into training, validation and test set		
 		double[][] inputs = ReadData.readInput();
@@ -161,7 +161,7 @@ public class MultilayerNetwork {
 	}
 
 	public static void predict() {
-		PredictionNetwork p = new PredictionNetwork(weightHidden, weightOutput, thetaHidden, thetaOutput);
+		PredictionNetwork p = new PredictionNetwork(ReadData.readUnknown(), weightHidden, weightOutput, thetaHidden, thetaOutput);
 		p.predict();
 	}
 }

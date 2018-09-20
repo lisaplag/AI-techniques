@@ -6,17 +6,20 @@ public class PredictionNetwork {
     double[][] weightOutput;
     double[] thetaHidden;
     double[] thetaOutput;
+    double[][] inputs;
 
-    public PredictionNetwork(double[][] wHidden, double[][]wOutput, double[] thHidden, double[] thOutput) {
+    public PredictionNetwork(double[][] input, double[][] wHidden, double[][]wOutput, double[] thHidden, double[] thOutput) {
+        inputs = input;
         weightHidden = wHidden;
         weightOutput = wOutput;
         thetaHidden = thHidden;
         thetaOutput = thOutput;
     }
 
-    public void predict() {
+    public int[] predict() {
+        int[] results = new int[inputs.length];
         //Loading data
-        double[][] inputs = ReadData.readUnknown();
+
         int nExamples = inputs.length;
         int nFeatures = inputs[0].length;
 
@@ -64,16 +67,17 @@ public class PredictionNetwork {
                 }
                 predictions = outputFinal;
             }
-            // Print the anser of class 1-7 for the sample
+            // Print the answer of class 1-7 for the sample
             for (int i = 0; i < predictions.length; i++) {
                 if (predictions[i] == 1) {
-                    System.out.println(i+1);
+                    results[n] = i+1;
                     break;
                 }
             }
         }
 
         System.out.println("Number of unknown samples: " + nExamples);
+        return results;
 
     }
 }
