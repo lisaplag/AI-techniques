@@ -19,11 +19,11 @@ public class MLNRunner {
             network.train();
 
             //Validate the network
-            double error = network.validate();
+          //  double error = network.validate();
         }
 
         //Test the network
-        network.test()
+        network.test();
 
 
         //Run the network on the testing set.

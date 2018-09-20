@@ -35,8 +35,8 @@ public class MultilayerNetwork {
         Random random = new Random(seed);
 
         //Loading data and splitting it into training, validation and test set
-        int nExamples = input.length;
-        int nFeatures = input[0].length;
+        nExamples = input.length;
+        nFeatures = input[0].length;
 
         int[] indices = ReadData.randomIndices(nExamples);
         double[][][] newInputs = ReadData.splitSample(indices, input);
@@ -44,9 +44,9 @@ public class MultilayerNetwork {
 
 
         //Step 0: setting up neural network
-        int inputNeurons = nFeatures; //index i
-        int hiddenNeurons = nFeatures + 1; //index j
-        int outputNeurons = outputDesired[0].length; //index k
+        inputNeurons = nFeatures; //index i
+        hiddenNeurons = nFeatures + 1; //index j
+        outputNeurons = outputDesired[0].length; //index k
 
         weightHidden = new double[inputNeurons][hiddenNeurons];
         weightOutput = new double[hiddenNeurons][outputNeurons];
