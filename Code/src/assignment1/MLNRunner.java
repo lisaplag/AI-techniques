@@ -22,8 +22,8 @@ public class MLNRunner {
             error = network.validate();
         }
 
-        //Run the network on the testing set.
-        //network.test();
+        //Test the network
+        network.test();
 
         //Final prediction (for the unknown file)
         int[] results = network.predict();

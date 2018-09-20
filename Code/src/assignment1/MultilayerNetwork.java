@@ -16,10 +16,10 @@ public class MultilayerNetwork {
     double[][] outputDesired;
 
 
-    private double[][] weightHidden;
-    private double[] thetaHidden;
-    private double[][] weightOutput;
-    private double[] thetaOutput;
+    private static double[][] weightHidden;
+    private static double[] thetaHidden;
+    private static double[][] weightOutput;
+    private static double[] thetaOutput;
     private double sumSquaredErrors;
     private int iterations;
 
@@ -44,15 +44,14 @@ public class MultilayerNetwork {
 
 
         //Step 0: setting up neural network
-        int inputNeurons = nFeatures; //index i
-        int hiddenNeurons = nFeatures + 1; //index j
-        int outputNeurons = outputDesired[0].length; //index k
+        inputNeurons = nFeatures; //index i
+        hiddenNeurons = nFeatures + 1; //index j
+        outputNeurons = outputDesired[0].length; //index k
 
         weightHidden = new double[inputNeurons][hiddenNeurons];
         weightOutput = new double[hiddenNeurons][outputNeurons];
         thetaHidden = new double[hiddenNeurons];
         thetaOutput = new double[outputNeurons];
-
 
         //Step 1: randomly initialize weights and thresholds [-0.5, 0.5]
         //hidden layer
@@ -157,11 +156,24 @@ public class MultilayerNetwork {
 		System.out.println("Thresholds of output layer: " + Arrays.toString(thetaOutput));
 		System.out.println("Iterations: " + iterations);
 		System.out.println("Error: " + sumSquaredErrors);
+		predict();
 	}
 
 	public double validate(){
         double error = Integer.MAX_VALUE;
         return error;
     }
+
+	public double test() {
+		//get test set in a double[][]
+		//run the train code on test set (without while loop)
+		//return mean square error
+		return 1.0;
+	}
+	public static void predict() {
+		PredictionNetwork p = new PredictionNetwork(ReadData.readUnknown(), weightHidden, weightOutput, thetaHidden, thetaOutput);
+		p.predict();
+	}
+
 }
 
