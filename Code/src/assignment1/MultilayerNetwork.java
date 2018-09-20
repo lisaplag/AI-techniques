@@ -171,7 +171,7 @@ public class MultilayerNetwork {
             iterations++;
         }
         epochs++;
-        MSE = sumSquaredErrors / nExamples;
+        MSE = sumSquaredErrors / nTrainingExamples;
         
 		System.out.println("Weights of hidden layer: " + Arrays.deepToString(weightHidden));
 		System.out.println("Weights of output layer: " + Arrays.deepToString(weightOutput));
