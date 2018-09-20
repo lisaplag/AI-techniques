@@ -22,7 +22,9 @@ public class MultilayerNetwork {
     	double[][][] newTargets = ReadData.splitSample(indices, targets);
     	
     	double[][] input = newInputs[0];
-    	double[][] outputDesired = newTargets[0];    	
+    	double[][] outputDesired = newTargets[0];    
+    	
+    	int nTrainingExamples = input.length;
     	
 		
     	
@@ -62,7 +64,7 @@ public class MultilayerNetwork {
 		double[] predictions = new double[outputNeurons];
 		
 		while (sumSquaredErrors > epsilon) {
-			for (int n = 0; n < nExamples; n++) {
+			for (int n = 0; n < nTrainingExamples; n++) {
 				//Step 2) activation
 				double[] outputHidden = new double[hiddenNeurons];
 				double[] outputFinal = new double[outputNeurons];
@@ -76,7 +78,7 @@ public class MultilayerNetwork {
                          // multiply the input by the associated weight and add to the sum.
 						sum += input[n][i] * weightHidden[i][j];
 					}
-					//Store the output of the hidden neutron
+					//Store the output of the hidden neuron
 					outputHidden[j] = 1 / (1 + Math.exp(thetaHidden[j] - sum));
 				}
 				//2b) outputs of output layer
@@ -149,7 +151,7 @@ public class MultilayerNetwork {
 		System.out.println("Iterations: " + iterations);
 		System.out.println("Epochs: " + epochs);
 		System.out.println("Error: " + sumSquaredErrors);
-		System.out.println("Number in training sample: " + nExamples);
+		System.out.println("Number in training sample: " + nTrainingExamples);
 	}
 }
 
