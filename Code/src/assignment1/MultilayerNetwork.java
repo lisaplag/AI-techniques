@@ -158,7 +158,6 @@ public class MultilayerNetwork {
 		System.out.println("Thresholds of output layer: " + Arrays.toString(thetaOutput));
 		System.out.println("Iterations: " + iterations);
 		System.out.println("Error: " + sumSquaredErrors);
-		System.out.println("Number in training sample: " + nTrainingExamples);
 	}
 }
 
