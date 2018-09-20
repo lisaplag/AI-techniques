@@ -5,7 +5,7 @@ public class MLNRunner {
     public static void main(String[] args){
         //Configure the network
         double alpha = 0.1;
-        double epsilon = 0.001;
+        double epsilon = 0.000001;
         double[][] input = ReadData.readInput();
         double[][] outputDesired = ReadData.readTargets();
 
@@ -33,7 +33,7 @@ public class MLNRunner {
         //Test the network
         double finalError = network.test();
         System.out.println("Final TestSet error: " + finalError);
-        System.out.println("Iterations: " + iterations);
+        System.out.println("Used iterations: " + iterations);
 
         //Final prediction (for the unknown file)
         //int[] results = network.predict();

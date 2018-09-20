@@ -36,7 +36,7 @@ public class MultilayerNetwork {
     public MultilayerNetwork(double alpha, double[][] input, double[][] outputDesired) {
         this.alpha = alpha;
         long seed = 0; //seed for possible use in Random
-        Random random = new Random(seed);
+        Random random = new Random();
 
         //Splitting data into training, validation and test set
         int nExamples = input.length;
@@ -53,9 +53,9 @@ public class MultilayerNetwork {
         testTargets = splitTargets[2];
 
         //Step 0: setting up neural network
-        int inputNeurons = nFeatures; //index i
-        int hiddenNeurons = outputDesired[0].length + 1; //index j
-        int outputNeurons = outputDesired[0].length; //index k
+        inputNeurons = nFeatures; //index i
+        hiddenNeurons = outputDesired[0].length + 1; //index j
+        outputNeurons = outputDesired[0].length; //index k
 
         weightHidden = new double[inputNeurons][hiddenNeurons];
         weightOutput = new double[hiddenNeurons][outputNeurons];
@@ -128,6 +128,7 @@ public class MultilayerNetwork {
             for (int k = 0; k < outputNeurons; k++) {
                 //calculate the error
                 double error = trainingTargets[n][k] - outputFinal[k];
+
                 //calculate the error gradient
                 errorGradient[k] = outputFinal[k] * (1 - outputFinal[k]) * error;
                 //Add the square of the error to the sumSquaredErrors
