@@ -12,14 +12,18 @@ public class MultilayerNetwork {
 		Random random = new Random(seed);
 		
 		//Loading data and splitting it into training, validation and test set		
-		double[][] input = ReadData.readInput();
-		double[][] outputDesired = ReadData.readTargets();
-		int nExamples = input.length;
-		int nFeatures = input[0].length;
+		double[][] inputs = ReadData.readInput();
+		double[][] targets = ReadData.readTargets();
+		int nExamples = inputs.length;
+		int nFeatures = inputs[0].length;
 		
     	int[] indices = ReadData.randomIndices(nExamples);
-    	double[][][] newInputs = ReadData.splitSample(indices, input);
-    	double[][][] newTargets = ReadData.splitSample(indices, outputDesired);
+    	double[][][] newInputs = ReadData.splitSample(indices, inputs);
+    	double[][][] newTargets = ReadData.splitSample(indices, targets);
+    	
+    	double[][] input = newInputs[0];
+    	double[][] outputDesired = newTargets[0];    	
+    	
 		
     	
     	//Step 0: setting up neural network
