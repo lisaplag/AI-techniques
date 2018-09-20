@@ -11,9 +11,10 @@ public class ReadData {
 
     public static ArrayList<String> feat = new ArrayList<>();
     public static ArrayList<String> targets = new ArrayList<>();
+    public static ArrayList<String> unknown = new ArrayList<>();
 
     public static double[][] readInput() {
-        File features = new File(System.getProperty("user.dir")+"/src/assignment1/features.txt");
+        File features = new File(System.getProperty("user.dir")+"/Code/src/assignment1/features.txt");
         read(features, feat);
         int size = feat.size();
         double[][] input = new double[size][10];
@@ -27,7 +28,7 @@ public class ReadData {
     }
 
     public static double[][] readTargets() {
-        File targetFile = new File(System.getProperty("user.dir")+"/src/assignment1/targets.txt");
+        File targetFile = new File(System.getProperty("user.dir")+"/Code/src/assignment1/targets.txt");
         read(targetFile, targets);
         int size = targets.size();
         double category;
@@ -38,6 +39,20 @@ public class ReadData {
         }
         
         return(targ);
+    }
+
+    public static double[][] readUnknown() {
+        File features = new File(System.getProperty("user.dir")+"/Code/src/assignment1/unknown.txt");
+        read(features, unknown);
+        int size = unknown.size();
+        double[][] input = new double[size][10];
+        for (int i = 0; i < size; i++) {
+            String[] parts = unknown.get(i).split(",");
+            for (int j = 0; j < 10; j++) {
+                input[i][j] = Double.valueOf(parts[j]);
+            }
+        }
+        return(input);
     }
 
     public static void read(File file, ArrayList<String> goal) {

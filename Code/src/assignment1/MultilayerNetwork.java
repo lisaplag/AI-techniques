@@ -5,7 +5,12 @@ import java.util.Arrays;
 import assignment1.ReadData;
 
 public class MultilayerNetwork {
-	
+
+	static double[][] weightHidden;
+	static double[][] weightOutput;
+	static double[] thetaHidden;
+	static double[] thetaOutput;
+
 	public static void main(String[] args) {
 		
 		long seed = 0; //seed for possible use in Random
@@ -33,10 +38,10 @@ public class MultilayerNetwork {
 		int hiddenNeurons = nFeatures + 1; //index j
 		int outputNeurons = outputDesired[0].length; //index k
 		
-		double[][] weightHidden = new double[inputNeurons][hiddenNeurons];
-		double[][] weightOutput = new double[hiddenNeurons][outputNeurons];
-		double[] thetaHidden = new double[hiddenNeurons];
-		double[] thetaOutput = new double[outputNeurons];
+		weightHidden = new double[inputNeurons][hiddenNeurons];
+		weightOutput = new double[hiddenNeurons][outputNeurons];
+		thetaHidden = new double[hiddenNeurons];
+		thetaOutput = new double[outputNeurons];
 		
 		
 		//Step 1: randomly initialize weights and thresholds [-0.5, 0.5]
@@ -152,6 +157,12 @@ public class MultilayerNetwork {
 		System.out.println("Epochs: " + epochs);
 		System.out.println("Error: " + sumSquaredErrors);
 		System.out.println("Number in training sample: " + nTrainingExamples);
+		predict();
+	}
+
+	public static void predict() {
+		PredictionNetwork p = new PredictionNetwork(weightHidden, weightOutput, thetaHidden, thetaOutput);
+		p.predict();
 	}
 }
 
