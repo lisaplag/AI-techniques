@@ -164,5 +164,13 @@ public class MultilayerNetwork {
 		PredictionNetwork p = new PredictionNetwork(ReadData.readUnknown(), weightHidden, weightOutput, thetaHidden, thetaOutput);
 		p.predict();
 	}
+
+	public double test() {
+		//get test set in a double[][]
+		//run the train code on test set (without while loop)
+		//return mean square error
+		return 1.0;
+
+	}
 }
 
