@@ -93,9 +93,13 @@ public class ReadData {
     	int nFeatures = sample[0].length;
     	
     	for (int n = 0; n < nSamples; n++) {
-    		if (indices[n] == 0) trainingSample.add(sample[n]);
-    		else if (indices[n] == 1) validationSample.add(sample[n]);
-    		else testingSample.add(sample[n]);
+    		if (indices[n] == 0) {
+    		    trainingSample.add(sample[n]);
+            } else if (indices[n] == 1) {
+    		    validationSample.add(sample[n]);
+            } else {
+                testingSample.add(sample[n]);
+    		}
     	}
     	
     	double[][] training = trainingSample.toArray(new double[trainingSample.size()][nFeatures]);
