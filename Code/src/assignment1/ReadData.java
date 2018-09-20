@@ -13,7 +13,7 @@ public class ReadData {
     public static ArrayList<String> targets = new ArrayList<>();
 
     public static double[][] readInput() {
-        File features = new File(System.getProperty("user.dir")+"/src/assignment1/features.txt");
+        File features = new File(System.getProperty("user.dir")+"/Code/src/assignment1/features.txt");
         read(features, feat);
         int size = feat.size();
         double[][] input = new double[size][10];
@@ -27,7 +27,7 @@ public class ReadData {
     }
 
     public static double[][] readTargets() {
-        File targetFile = new File(System.getProperty("user.dir")+"/src/assignment1/targets.txt");
+        File targetFile = new File(System.getProperty("user.dir")+"/Code/src/assignment1/targets.txt");
         read(targetFile, targets);
         int size = targets.size();
         double category;
@@ -78,9 +78,13 @@ public class ReadData {
     	int nFeatures = sample[0].length;
     	
     	for (int n = 0; n < nSamples; n++) {
-    		if (indices[n] == 0) trainingSample.add(sample[n]);
-    		else if (indices[n] == 1) validationSample.add(sample[n]);
-    		else testingSample.add(sample[n]);
+    		if (indices[n] == 0) {
+    		    trainingSample.add(sample[n]);
+            } else if (indices[n] == 1) {
+    		    validationSample.add(sample[n]);
+            } else {
+                testingSample.add(sample[n]);
+    		}
     	}
     	
     	double[][] training = trainingSample.toArray(new double[trainingSample.size()][nFeatures]);
