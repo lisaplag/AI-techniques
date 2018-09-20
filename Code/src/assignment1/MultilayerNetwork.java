@@ -180,15 +180,18 @@ public class MultilayerNetwork {
 		System.out.println("Iterations: " + iterations);
 		System.out.println("Error: " + sumSquaredErrors);
 	}
-	
-	
-	public void validate() {
-		
-	}
-	
+
+
+	public double validate(){
+        double error = Integer.MAX_VALUE;
+        return error;
+    }
 	
 	public void test() {
 		
 	}
+
+
+
 }
 

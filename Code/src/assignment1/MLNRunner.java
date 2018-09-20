@@ -19,14 +19,17 @@ public class MLNRunner {
             network.train();
 
             //Validate the network
-            double error = network.validate();
+            error = network.validate();
         }
 
-        //Test the network
-        network.test()
-
-
         //Run the network on the testing set.
+        //network.test();
+
+        //Final prediction (for the unknown file)
+        int[] results = network.predict();
+
+
+
     }
 
 }
