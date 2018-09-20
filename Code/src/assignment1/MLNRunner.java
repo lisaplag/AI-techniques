@@ -9,24 +9,36 @@ public class MLNRunner {
         double[][] input = ReadData.readInput();
         double[][] outputDesired = ReadData.readTargets();
 
-        MultilayerNetwork network = new MultilayerNetwork(alpha, epsilon, input, outputDesired);
+        MultilayerNetwork network = new MultilayerNetwork(alpha, input, outputDesired);
 
         //Repeat this process until the sumSquaredErrors is smaller or equal than epsilon.
         //printing results
-        double error= Integer.MAX_VALUE;
-        while (error < epsilon) {
+        int iterations = 0;
+        double validateError = Double.MAX_VALUE;
+        while (validateError > epsilon) {
             //Train the network
-            network.train();
+            double trainError = network.train();
 
             //Validate the network
-            error = network.validate();
+            validateError = network.validate();
+
+            //print info
+            System.out.println("Iteration: " + iterations);
+            System.out.println("TrainError: " + trainError);
+            System.out.println("ValidateError: " + validateError);
+            System.out.println("--------------------------------------------------------------------------");
+            iterations++;
         }
 
         //Test the network
-        network.test();
+        double finalError = network.test();
+        System.out.println("Final TestSet error: " + finalError);
+        System.out.println("Iterations: " + iterations);
 
         //Final prediction (for the unknown file)
-        int[] results = network.predict();
+        //int[] results = network.predict();
+        //System.out.println("Results: " + results);
+
 
 
 
