@@ -258,7 +258,7 @@ public class MultilayerNetwork {
         }
         double denom = incorrect + correct;
         double rate = correct / denom;
-        System.out.println("Prediction succes rate over set: " + rate);
+        System.out.println("Prediction succes rate over "+ in + " set: " + rate);
 
     }
 

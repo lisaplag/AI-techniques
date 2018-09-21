@@ -9,7 +9,7 @@ public class MLNRunner {
         //Configure the network
         double alpha = 0.02;
         double epsilon = 0.017;
-        int hiddenLayerSize = 1;
+        int hiddenLayerSize = 9;
 
         double[][] input = ReadData.readInput();
         double[][] outputDesired = ReadData.readTargets();
@@ -46,18 +46,7 @@ public class MLNRunner {
 
         //Final prediction (for the unknown file)
         int[] results = network.predict(ReadData.readUnknown());
-
-        try {
-            PrintWriter pw = new PrintWriter(System.getProperty("user.dir")+"/Code/src/assignment1/classes.txt");
-            for (int i = 0; i < results.length; i++) {
-                pw.write((results[i] + 1) + ",");
-            }
-            pw.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-
+        ReadData.writeResults(results);
     }
 
 }

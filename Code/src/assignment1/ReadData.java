@@ -2,6 +2,7 @@ package assignment1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -113,6 +114,17 @@ public class ReadData {
     	
     	return(newInput);
     }
-    
-    
+
+
+    public static void writeResults(int[] results) {
+        try {
+            PrintWriter pw = new PrintWriter(System.getProperty("user.dir")+"/Code/src/assignment1/classes.txt");
+            for (int i = 0; i < results.length; i++) {
+                pw.write((results[i] + 1) + ",");
+            }
+            pw.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }
