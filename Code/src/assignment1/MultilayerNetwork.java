@@ -231,8 +231,8 @@ public class MultilayerNetwork {
 		return runWithoutChangingWeights(testInput, testTargets);
 	}
 
-	public int[] predict() {
-		PredictionNetwork p = new PredictionNetwork(ReadData.readUnknown(), weightHidden, weightOutput, thetaHidden, thetaOutput);
+	public int[] predict(double[][] input) {
+		PredictionNetwork p = new PredictionNetwork(input, weightHidden, weightOutput, thetaHidden, thetaOutput);
 		return p.predict();
 	}
 }
