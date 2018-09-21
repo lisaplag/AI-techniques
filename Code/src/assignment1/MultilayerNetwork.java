@@ -236,7 +236,7 @@ public class MultilayerNetwork {
 		return p.predict();
 	}
 
-	public void testSetPrediction() {
+	public double testSetPrediction() {
         int[] p = predict(testInput);
         int correct = 0;
         int incorrect = 0;
@@ -249,8 +249,7 @@ public class MultilayerNetwork {
         }
         double denom = incorrect + correct;
         double rate = correct / denom;
-        System.out.println("Prediction succes rate over test set: " + rate);
-
+        return rate;
     }
 }
 
