@@ -4,8 +4,8 @@ public class MLNRunner {
 
     public static void main(String[] args){
         //Configure the network
-        double alpha = 0.1;
-        double epsilon = 0.0171;
+        double alpha = 0.02;
+        double epsilon = 0.017;
         double[][] input = ReadData.readInput();
         double[][] outputDesired = ReadData.readTargets();
 
@@ -16,7 +16,7 @@ public class MLNRunner {
         int iterations = 0;
         double validateError = Double.MAX_VALUE;
         
-        while (validateError > epsilon) {
+        while ((validateError > epsilon) && (iterations < 1000)) {
             //Train the network
             double trainError = network.train();
 

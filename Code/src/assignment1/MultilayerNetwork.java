@@ -34,7 +34,7 @@ public class MultilayerNetwork {
     public MultilayerNetwork(double alpha, double[][] input, double[][] outputDesired) {
         this.alpha = alpha;
         long seed = 0; //seed for possible use in Random
-        Random random = new Random(seed);
+        Random random = new Random();
 
         //Splitting data into training, validation and test set
         int nExamples = input.length;
@@ -52,7 +52,7 @@ public class MultilayerNetwork {
 
         //Step 0: setting up neural network
         inputNeurons = nFeatures; //index i
-        hiddenNeurons = outputDesired[0].length + 2; //index j
+        hiddenNeurons = 9; //index j
         outputNeurons = outputDesired[0].length; //index k
 
         weightHidden = new double[inputNeurons][hiddenNeurons];
@@ -64,15 +64,15 @@ public class MultilayerNetwork {
         //hidden layer
         for (int i = 0; i < inputNeurons; i++) {
             for (int j = 0; j < hiddenNeurons; j++) {
-                weightHidden[i][j] = random.nextDouble()*3 - 1.5;
-                thetaHidden[j] = random.nextDouble()*3 - 1.5;
+                weightHidden[i][j] = random.nextDouble() - 0.5;
+                thetaHidden[j] = random.nextDouble() - 0.5;
             }
         }
         //output layer
         for (int j = 0; j < hiddenNeurons; j++) {
             for (int k = 0; k < outputNeurons; k++) {
-                weightOutput[j][k] = random.nextDouble()*3 - 1.5;
-                thetaOutput[k] = random.nextDouble()*3 - 1.5;
+                weightOutput[j][k] = random.nextDouble() - 0.5;
+                thetaOutput[k] = random.nextDouble() - 0.5;
             }
         }
 
