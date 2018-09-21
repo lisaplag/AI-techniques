@@ -37,7 +37,8 @@ public class MLNRunner {
         double finalError = network.test();
         System.out.println("Final TestSet error: " + finalError);
         System.out.println("Used iterations: " + iterations);
-        network.testSetPrediction();
+        network.testPrediction("test");
+        network.testPrediction("validation");
 
         //Final prediction (for the unknown file)
         int[] results = network.predict(ReadData.readUnknown());
