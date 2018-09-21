@@ -1,11 +1,7 @@
 package assignment1;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-import java.util.Arrays;
-import assignment1.ReadData;
+
 
 public class MultilayerNetwork {
 
@@ -237,7 +233,7 @@ public class MultilayerNetwork {
 	}
 
 	public void testPrediction(String in) {
-        int[]p;
+        int[] p;
         int correct = 0;
         int incorrect = 0;
         if ( in.equals("test")) {
@@ -263,6 +259,28 @@ public class MultilayerNetwork {
         double rate = correct / denom;
         System.out.println("Prediction succes rate over set: " + rate);
 
+    }
+
+    public double[][] confusionMatrix() {
+        double[][] res = new double[7][7];
+        for (int k = 0; k < 7; k++) {
+            for (int j = 0; j < 7; j++) {
+                res[k][j] = 0.0;
+            }
+        }
+        int[] p;
+        int count = 0;
+        p = predict(testInput);
+        for (int i = 0; i < testTargets.length; i++) {
+            if ( testTargets[i][p[i]] == 1.0) {
+                res[i][p[i]]++;
+                count++;
+            } else {
+                count++;
+            }
+        }
+        System.out.println(count);
+        return res;
     }
 }
 
