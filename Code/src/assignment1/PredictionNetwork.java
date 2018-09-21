@@ -26,8 +26,8 @@ public class PredictionNetwork {
 
         //Step 0: setting up neural network
         int inputNeurons = nFeatures;
-        int hiddenNeurons = nFeatures + 1;
         int outputNeurons = 7;
+        int hiddenNeurons = outputNeurons + 1;
 
         double[] predictions = new double[outputNeurons];
 
@@ -51,6 +51,7 @@ public class PredictionNetwork {
             //2b) outputs of output layer
 
             //for each output neuron
+            double max = 0.0;
             for (int k = 0; k < outputNeurons; k++) {
                 double sum = 0;// initialize sum to 0
                 //for each input this neuron has (equals number of hidden neurons)
@@ -60,15 +61,16 @@ public class PredictionNetwork {
                 }
                 //Store the output of the output neutrons
                 outputFinal[k] = 1 / (1 + Math.exp(thetaOutput[k] - sum));
-                if (outputFinal[k] > 0.5) {
+
+                if (outputFinal[k] > max) {
+                    max = outputFinal[k];
                     outputFinal[k] = 1;
-                } else {
-                    outputFinal[k] = 0;
                 }
+
                 predictions = outputFinal;
             }
             // Print the answer of class 1-7 for the sample
-            for (int i = 0; i < predictions.length; i++) {
+            for (int i = predictions.length - 1; i >= 0; i--) {
                 if (predictions[i] == 1) {
                     results[n] = i+1;
                     break;
