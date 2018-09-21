@@ -5,7 +5,7 @@ public class MLNRunner {
     public static void main(String[] args){
         //Configure the network
         double alpha = 0.1;
-        double epsilon = 0.000001;
+        double epsilon = 0.0171;
         double[][] input = ReadData.readInput();
         double[][] outputDesired = ReadData.readTargets();
 
@@ -15,6 +15,7 @@ public class MLNRunner {
         //printing results
         int iterations = 0;
         double validateError = Double.MAX_VALUE;
+        
         while (validateError > epsilon) {
             //Train the network
             double trainError = network.train();
@@ -23,10 +24,10 @@ public class MLNRunner {
             validateError = network.validate();
 
             //print info
-            System.out.println("Iteration: " + iterations);
-            System.out.println("TrainError: " + trainError);
-            System.out.println("ValidateError: " + validateError);
-            System.out.println("--------------------------------------------------------------------------");
+            //System.out.println("Iteration: " + iterations);
+            //System.out.println("TrainError: " + trainError);
+            System.out.println(trainError + " " + validateError);
+            //System.out.println("--------------------------------------------------------------------------");
             iterations++;
         }
 
@@ -36,10 +37,10 @@ public class MLNRunner {
         System.out.println("Used iterations: " + iterations);
 
         //Final prediction (for the unknown file)
-        int[] results = network.predict(ReadData.readUnknown());
-        for (int i = 0; i <results.length ; i++) {
-            System.out.println("Sample " + (i + 1) + ": " + results[i]);
-        }
+        //int[] results = network.predict(ReadData.readUnknown());
+        //for (int i = 0; i <results.length ; i++) {
+            //System.out.println("Sample " + (i + 1) + ": " + results[i]);
+        //}
 
 
 
