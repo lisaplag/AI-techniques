@@ -1,5 +1,8 @@
 package assignment1;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
 public class MLNRunner {
 
     public static void main(String[] args){
@@ -35,16 +38,28 @@ public class MLNRunner {
         double finalError = network.test();
         System.out.println("Final TestSet error: " + finalError);
         System.out.println("Used iterations: " + iterations);
-
-        double succesRate = network.testSetPrediction();
-        System.out.println("Prediction succes rate over test set: " + succesRate*100 + "%");
+        network.testPrediction("test");
+        network.testPrediction("validation");
 
         //Final prediction (for the unknown file)
         int[] results = network.predict(ReadData.readUnknown());
+
         
         for (int i = 0; i <results.length ; i++) {
             System.out.println("Sample " + (i + 1) + ": " + (results[i]+1));
         }
+
+
+        try {
+            PrintWriter pw = new PrintWriter(System.getProperty("user.dir")+"/Code/src/assignment1/classes.txt");
+            for (int i = 0; i < results.length; i++) {
+                pw.write((results[i] + 1) + ",");
+            }
+            pw.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
 
     }
 

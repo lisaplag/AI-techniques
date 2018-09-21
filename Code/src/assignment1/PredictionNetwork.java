@@ -27,7 +27,7 @@ public class PredictionNetwork {
         //Step 0: setting up neural network
         int inputNeurons = nFeatures;
         int outputNeurons = 7;
-        int hiddenNeurons = outputNeurons + 1;
+        int hiddenNeurons = 14;
 
         double[] predictions = new double[outputNeurons];
 
