@@ -72,13 +72,11 @@ public class PredictionNetwork {
             // Print the answer of class 1-7 for the sample
             for (int i = predictions.length - 1; i >= 0; i--) {
                 if (predictions[i] == 1) {
-                    results[n] = i+1;
+                    results[n] = i;
                     break;
                 }
             }
         }
-
-        System.out.println("Number of unknown samples: " + nExamples);
         return results;
 
     }
