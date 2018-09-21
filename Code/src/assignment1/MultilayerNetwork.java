@@ -54,7 +54,7 @@ public class MultilayerNetwork {
 
         //Step 0: setting up neural network
         inputNeurons = nFeatures; //index i
-        hiddenNeurons = outputDesired[0].length + 1; //index j
+        hiddenNeurons = 14; //index j
         outputNeurons = outputDesired[0].length; //index k
 
         weightHidden = new double[inputNeurons][hiddenNeurons];
@@ -236,20 +236,33 @@ public class MultilayerNetwork {
 		return p.predict();
 	}
 
-	public double testSetPrediction() {
-        int[] p = predict(testInput);
+	public void testPrediction(String in) {
+        int[]p;
         int correct = 0;
         int incorrect = 0;
-        for (int i = 0; i < testTargets.length; i++) {
-            if ( testTargets[i][p[i]] == 1.0) {
-                correct++;
-            } else {
-                incorrect ++;
+        if ( in.equals("test")) {
+            p = predict(testInput);
+            for (int i = 0; i < testTargets.length; i++) {
+                if ( testTargets[i][p[i]] == 1.0) {
+                    correct++;
+                } else {
+                    incorrect ++;
+                }
+            }
+        } else {
+            p = predict(validationInput);
+            for (int i = 0; i < validationTargets.length; i++) {
+                if ( validationTargets[i][p[i]] == 1.0) {
+                    correct++;
+                } else {
+                    incorrect ++;
+                }
             }
         }
         double denom = incorrect + correct;
         double rate = correct / denom;
-        return rate;
+        System.out.println("Prediction succes rate over set: " + rate);
+
     }
 }
 

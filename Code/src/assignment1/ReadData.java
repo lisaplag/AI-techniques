@@ -70,7 +70,7 @@ public class ReadData {
     //returns array containing indices of examples that are classified as training, validation and test set
     public static int[] randomIndices(int nExamples) { //nExamples = 7854
 		long seed = 0; //seed for possible use in Random
-		Random random = new Random(seed);
+		Random random = new Random();
 		
 		int[] sample = new int[nExamples];
 		
