@@ -23,7 +23,6 @@ public class MultilayerNetwork {
     private static double[] thetaHidden;
     private static double[][] weightOutput;
     private static double[] thetaOutput;
-    private int epochs;
 
     //static data that is directly derived from above data
     private int inputNeurons;
@@ -31,7 +30,7 @@ public class MultilayerNetwork {
     private int outputNeurons;
     private int nFeatures;
 
-    public MultilayerNetwork(double alpha, double[][] input, double[][] outputDesired) {
+    public MultilayerNetwork(int hiddenLayerSize, double alpha, double[][] input, double[][] outputDesired) {
         this.alpha = alpha;
         long seed = 0; //seed for possible use in Random
         Random random = new Random();
@@ -52,7 +51,7 @@ public class MultilayerNetwork {
 
         //Step 0: setting up neural network
         inputNeurons = nFeatures; //index i
-        hiddenNeurons = 9; //index j
+        hiddenNeurons = hiddenLayerSize; //index j
         outputNeurons = outputDesired[0].length; //index k
 
         weightHidden = new double[inputNeurons][hiddenNeurons];
@@ -75,10 +74,6 @@ public class MultilayerNetwork {
                 thetaOutput[k] = random.nextDouble() - 0.5;
             }
         }
-
-       // sumSquaredErrors = Double.MAX_VALUE;
-        //MSE = Double.MAX_VALUE;
-        epochs = 0;
     }
 
 	public double train() {
@@ -163,7 +158,6 @@ public class MultilayerNetwork {
             MSE += sumSquaredErrors / outputNeurons;
         }
         
-        epochs++;
         MSE = MSE / nTrainingExamples;
         return MSE;
 	}
@@ -222,7 +216,6 @@ public class MultilayerNetwork {
             MSE += sumSquaredErrors / outputNeurons;
         }
         
-        epochs++;
         MSE = MSE / nTrainingExamples;
         return MSE;
     }
@@ -236,7 +229,7 @@ public class MultilayerNetwork {
 	}
 
 	public int[] predict(double[][] input) {
-		PredictionNetwork p = new PredictionNetwork(input, weightHidden, weightOutput, thetaHidden, thetaOutput);
+		PredictionNetwork p = new PredictionNetwork(hiddenNeurons, input, weightHidden, weightOutput, thetaHidden, thetaOutput);
 		return p.predict();
 	}
 
