@@ -235,5 +235,22 @@ public class MultilayerNetwork {
 		PredictionNetwork p = new PredictionNetwork(input, weightHidden, weightOutput, thetaHidden, thetaOutput);
 		return p.predict();
 	}
+
+	public void testSetPrediction() {
+        int[] p = predict(testInput);
+        int correct = 0;
+        int incorrect = 0;
+        for (int i = 0; i < testTargets.length; i++) {
+            if ( testTargets[i][p[i]] == 1.0) {
+                correct++;
+            } else {
+                incorrect ++;
+            }
+        }
+        double denom = incorrect + correct;
+        double rate = correct / denom;
+        System.out.println("Prediction succes rate over test set: " + rate);
+
+    }
 }
 
