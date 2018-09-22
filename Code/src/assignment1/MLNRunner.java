@@ -40,6 +40,16 @@ public class MLNRunner {
         network.testPrediction("test");
         network.testPrediction("validation");
 
+        //Show confusion matrix
+        int[][] matrix = network.confusionMatrix();
+        System.out.println("vertical axis: targets \nhorizontal axis: actual\n    1 2 3 4 5 6 7");
+        for (int i = 0; i < 7; i++) {
+            System.out.print((i+1) + "| ");
+            for (int j = 0; j < 7; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println("\n");
+        }
         //Final prediction (for the unknown file)
         int[] results = network.predict(ReadData.readUnknown());
         try {
@@ -51,10 +61,6 @@ public class MLNRunner {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-
-
-
     }
 
 }

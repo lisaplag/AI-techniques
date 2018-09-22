@@ -257,29 +257,28 @@ public class MultilayerNetwork {
         }
         double denom = incorrect + correct;
         double rate = correct / denom;
-        System.out.println("Prediction succes rate over set: " + rate);
+        System.out.println("Prediction succes rate over " + in + " set: " + rate);
 
     }
 
-    public double[][] confusionMatrix() {
-        double[][] res = new double[7][7];
+    public int[][] confusionMatrix() {
+        int[][] res = new int[7][7];
         for (int k = 0; k < 7; k++) {
             for (int j = 0; j < 7; j++) {
-                res[k][j] = 0.0;
+                res[k][j] = 0;
             }
         }
         int[] p;
         int count = 0;
         p = predict(testInput);
         for (int i = 0; i < testTargets.length; i++) {
-            if ( testTargets[i][p[i]] == 1.0) {
-                res[i][p[i]]++;
-                count++;
-            } else {
-                count++;
+            for (int j = 0; j < 7; j++) {
+                if (testTargets[i][j] == 1.0) {
+                        res[j][p[i]]++;
+                        count++;
+                }
             }
         }
-        System.out.println(count);
         return res;
     }
 }
