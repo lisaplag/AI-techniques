@@ -7,8 +7,6 @@ public class MultilayerNetwork {
 
     //configure data
     private double alpha;
-    private double[][] input;
-    private double[][] outputDesired;
 
     private double[][] trainingInput;
     private double[][] trainingTargets;
@@ -21,7 +19,6 @@ public class MultilayerNetwork {
     private static double[] thetaHidden;
     private static double[][] weightOutput;
     private static double[] thetaOutput;
-    private int epochs;
 
     //static data that is directly derived from above data
     private int inputNeurons;
@@ -29,7 +26,7 @@ public class MultilayerNetwork {
     private int outputNeurons;
     private int nFeatures;
 
-    public MultilayerNetwork(double alpha, double[][] input, double[][] outputDesired) {
+    public MultilayerNetwork(int hiddenLayerSize, double alpha, double[][] input, double[][] outputDesired) {
         this.alpha = alpha;
         long seed = 0; //seed for possible use in Random
         Random random = new Random();
@@ -50,7 +47,7 @@ public class MultilayerNetwork {
 
         //Step 0: setting up neural network
         inputNeurons = nFeatures; //index i
-        hiddenNeurons = 14; //index j
+        hiddenNeurons = hiddenLayerSize; //index j
         outputNeurons = outputDesired[0].length; //index k
 
         weightHidden = new double[inputNeurons][hiddenNeurons];
@@ -73,18 +70,15 @@ public class MultilayerNetwork {
                 thetaOutput[k] = random.nextDouble() - 0.5;
             }
         }
-
-       // sumSquaredErrors = Double.MAX_VALUE;
-        //MSE = Double.MAX_VALUE;
-        epochs = 0;
     }
 
 	public double train() {
-        double sumSquaredErrors = 0;
-        double MSE = 0;
 		int nTrainingExamples = trainingInput.length;
+        double MSE = 0;
 
         for (int n = 0; n < nTrainingExamples; n++) {
+        	double sumSquaredErrors = 0; // initialize sum of squared errors
+        	
             //Step 2) activation
             double[] outputHidden = new double[hiddenNeurons];
             double[] outputFinal = new double[outputNeurons];
@@ -116,7 +110,6 @@ public class MultilayerNetwork {
             }
 
             //Step 3) Weight training
-            sumSquaredErrors = 0; //Initialize sum of the squared errors to 0
             double[] errorGradient = new double[outputNeurons]; //
             //3a) Calculate the error gradient for the output neurons
 
@@ -157,17 +150,21 @@ public class MultilayerNetwork {
                     weightHidden[i][j] += alpha * trainingInput[n][i] * errorGradientHidden;
                 }
             }
+            
+            MSE += sumSquaredErrors / outputNeurons;
         }
-        epochs++;
-        MSE = sumSquaredErrors / nTrainingExamples;
+        
+        MSE = MSE / nTrainingExamples;
         return MSE;
 	}
 
 	public double runWithoutChangingWeights(double[][] input, double[][] inputTargets){
         int nTrainingExamples = input.length;
-        double sumSquaredErrors = 0;
         double MSE = 0;
+        
         for (int n = 0; n < nTrainingExamples; n++) {
+        	double sumSquaredErrors = 0; // initializing sum of squared errors
+        	
             //Step 2) activation
             double[] outputHidden = new double[hiddenNeurons];
             double[] outputFinal = new double[outputNeurons];
@@ -199,7 +196,6 @@ public class MultilayerNetwork {
             }
 
             //Step 3) Weight training
-            sumSquaredErrors = 0; //Initialize sum of the squared errors to 0
             double[] errorGradient = new double[outputNeurons]; //
             //3a) Calculate the error gradient for the output neurons
 
@@ -212,10 +208,11 @@ public class MultilayerNetwork {
                 //Add the square of the error to the sumSquaredErrors
                 sumSquaredErrors += error * error;
             }
+            
+            MSE += sumSquaredErrors / outputNeurons;
         }
-        epochs++;
-        MSE = sumSquaredErrors / nTrainingExamples;
-
+        
+        MSE = MSE / nTrainingExamples;
         return MSE;
     }
 
@@ -228,7 +225,7 @@ public class MultilayerNetwork {
 	}
 
 	public int[] predict(double[][] input) {
-		PredictionNetwork p = new PredictionNetwork(input, weightHidden, weightOutput, thetaHidden, thetaOutput);
+		PredictionNetwork p = new PredictionNetwork(hiddenNeurons, input, weightHidden, weightOutput, thetaHidden, thetaOutput);
 		return p.predict();
 	}
 
@@ -258,7 +255,6 @@ public class MultilayerNetwork {
         double denom = incorrect + correct;
         double rate = correct / denom;
         System.out.println("Prediction succes rate over " + in + " set: " + rate);
-
     }
 
     public int[][] confusionMatrix() {
@@ -281,5 +277,6 @@ public class MultilayerNetwork {
         }
         return res;
     }
+
 }
 

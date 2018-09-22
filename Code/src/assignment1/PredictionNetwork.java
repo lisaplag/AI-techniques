@@ -7,13 +7,15 @@ public class PredictionNetwork {
     double[] thetaHidden;
     double[] thetaOutput;
     double[][] inputs;
+    int hiddenNeurons;
 
-    public PredictionNetwork(double[][] input, double[][] wHidden, double[][]wOutput, double[] thHidden, double[] thOutput) {
+    public PredictionNetwork(int hiddenLayerSize, double[][] input, double[][] wHidden, double[][]wOutput, double[] thHidden, double[] thOutput) {
         inputs = input;
         weightHidden = wHidden;
         weightOutput = wOutput;
         thetaHidden = thHidden;
         thetaOutput = thOutput;
+        hiddenNeurons = hiddenLayerSize;
     }
 
     public int[] predict() {
@@ -27,7 +29,6 @@ public class PredictionNetwork {
         //Step 0: setting up neural network
         int inputNeurons = nFeatures;
         int outputNeurons = 7;
-        int hiddenNeurons = 14;
 
         double[] predictions = new double[outputNeurons];
 

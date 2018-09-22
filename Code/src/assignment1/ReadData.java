@@ -2,6 +2,7 @@ package assignment1;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -113,19 +114,17 @@ public class ReadData {
     	
     	return(newInput);
     }
-    
-    
-    
-    //just for testing the split sample method
-    public static void main(String args[]) {
-    	int[] indices = randomIndices( 7854 );
-    	double[][] inputs = readInput();
-    	double[][] targets = readTargets();
-    	double[][][] newInputs = splitSample(indices, inputs);
-    	double[][][] newTargets = splitSample(indices, targets);
-    	
-    	System.out.println("Testing Sample Input: " + Arrays.deepToString(newInputs[2]));
-    	System.out.println("Testing Sample Size Input: " + newInputs[2].length);
-    	System.out.println("Testing Sample Size Targets: " + newTargets[2].length);
+
+
+    public static void writeResults(int[] results) {
+        try {
+            PrintWriter pw = new PrintWriter(System.getProperty("user.dir")+"/Code/src/assignment1/classes.txt");
+            for (int i = 0; i < results.length; i++) {
+                pw.write((results[i] + 1) + ",");
+            }
+            pw.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
