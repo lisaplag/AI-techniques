@@ -229,6 +229,7 @@ public class MultilayerNetwork {
 		return p.predict();
 	}
 
+	// Count the amount of correct and incorrect predictions over test or validation set, and calculate success rate.
 	public void testPrediction(String in) {
         int[] p;
         int correct = 0;
@@ -258,20 +259,20 @@ public class MultilayerNetwork {
     }
 
     public int[][] confusionMatrix() {
+        // Make empty matrix as 2d array.
         int[][] res = new int[7][7];
         for (int k = 0; k < 7; k++) {
             for (int j = 0; j < 7; j++) {
                 res[k][j] = 0;
             }
         }
+        // Increment the correct place in the matrix for every sample in the test set.
         int[] p;
-        int count = 0;
         p = predict(testInput);
         for (int i = 0; i < testTargets.length; i++) {
             for (int j = 0; j < 7; j++) {
                 if (testTargets[i][j] == 1.0) {
                         res[j][p[i]]++;
-                        count++;
                 }
             }
         }
