@@ -120,7 +120,10 @@ public class ReadData {
         try {
             PrintWriter pw = new PrintWriter(System.getProperty("user.dir")+"/Code/src/assignment1/classes.txt");
             for (int i = 0; i < results.length; i++) {
-                pw.write((results[i] + 1) + ",");
+                pw.write((results[i] + 1) + "");
+                if (i != results.length - 1) {
+                    pw.write(',');
+                }
             }
             pw.close();
         } catch (FileNotFoundException e) {
