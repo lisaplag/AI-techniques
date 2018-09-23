@@ -31,7 +31,7 @@ public class MultilayerNetwork {
         long seed = 0; //seed for possible use in Random
         Random random = new Random();
 
-        //Splitting data into training, validation and test set
+        //Randomly splitting data into training, validation and test set
         int nExamples = input.length;
         nFeatures = input[0].length;
 
@@ -71,7 +71,8 @@ public class MultilayerNetwork {
             }
         }
     }
-
+    
+    // method for training the network using the training set
 	public double train() {
 		int nTrainingExamples = trainingInput.length;
         double MSE = 0;
@@ -157,7 +158,8 @@ public class MultilayerNetwork {
         MSE = MSE / nTrainingExamples;
         return MSE;
 	}
-
+	
+	// method for evaluating the network given the weights from training
 	public double runWithoutChangingWeights(double[][] input, double[][] inputTargets){
         int nTrainingExamples = input.length;
         double MSE = 0;

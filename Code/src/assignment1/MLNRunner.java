@@ -28,19 +28,18 @@ public class MLNRunner {
             //Validate the network
             validateError = network.validate();
 
-            //print info
+            //print info of the current epoch
             System.out.println("Epoch: " + epochs);
             System.out.println("TrainError: " + trainError);
             System.out.println("ValidateError: " + validateError);
-            //System.out.println(trainError + " " + validateError);
             System.out.println("--------------------------------------------------------------------------");
             epochs++;
         }
 
-        //Test the network
+        //Test the network using the test set
         double finalError = network.test();
         System.out.println("Final TestSet error: " + finalError);
-        System.out.println("Used iterations: " + epochs);
+        System.out.println("Total number of epochs: " + epochs);
         network.testPrediction("test");
         network.testPrediction("validation");
 
