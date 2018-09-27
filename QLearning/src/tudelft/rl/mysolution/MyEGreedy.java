@@ -2,11 +2,7 @@ package tudelft.rl.mysolution;
 
 import java.util.ArrayList;
 
-import tudelft.rl.Action;
-import tudelft.rl.Agent;
-import tudelft.rl.EGreedy;
-import tudelft.rl.Maze;
-import tudelft.rl.QLearning;
+import tudelft.rl.*;
 
 import java.util.ArrayList;
 import java.util.Random;
