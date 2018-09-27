@@ -16,7 +16,6 @@ public class MyEGreedy extends EGreedy {
 	@Override
 	public Action getRandomAction(Agent r, Maze m) {
 		ArrayList<Action> actions = m.getValidActions(r);
-		//TODO to select an action at random in State s
 		Random random = new Random();
 		int choice = (int) Math.ceil(random.nextDouble()*actions.size());
 		return actions.get(choice - 1);

@@ -28,14 +28,25 @@ public class RunMe {
 		boolean stop=false;
 		
 		//keep learning until you decide to stop
-		int iCount =0;
-		while (!stop && iCount < 25) {
-
+		int stepCount = 0;
+		while (!stop) {
 			//TODO implement the action selection and learning cycle
-			robot.doAction(selection.getRandomAction(robot, maze), maze);
-			System.out.println(robot.x + "," + robot.y + "  " + maze.getState(robot.x, robot.y));
-			iCount++;
-			//TODO figure out a stopping criterion			
+			Action a = selection.getEGreedyAction(robot, maze, learn, 0.5);
+			State s = robot.getState(maze);
+			robot.doAction(a, maze);
+			learn.updateQ(s, a, 0.3, robot.getState(maze), maze.getValidActions(robot), 0.1, 0.5);
+			System.out.println(robot.x + "," + robot.y + "  " + maze.getState(robot.x, robot.y).type);
+			if(maze.getR(robot.getState(maze)) == 10) {
+				robot.x = 0;
+				robot.y = 0;
+				stop = true;
+				System.out.println("Found the exit in " + stepCount + " steps!");
+			}
+			stepCount++;
+			//TODO figure out a stopping criterion
+			if(stepCount >= 30000) {
+				stop = true;
+			}
 		}
 
 	}
