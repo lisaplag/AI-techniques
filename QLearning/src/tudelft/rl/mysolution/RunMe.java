@@ -10,7 +10,8 @@ public class RunMe {
 		
 		//load the maze
 		//TODO replace this with the location to your maze on your file system
-		Maze maze = new Maze(new File("C:\\data\\development\\github\\QLearning\\data\\toy_maze.txt"));
+		Maze maze = new Maze(new File(System.getProperty("user.dir")+"/data/toy_maze.txt"));
+
 		
 		//Set the reward at the bottom right to 10
 		maze.setR(maze.getState(9, 9), 10);
@@ -27,9 +28,11 @@ public class RunMe {
 		boolean stop=false;
 		
 		//keep learning until you decide to stop
-		while (!stop) {
+		int iCount =0;
+		while (!stop && iCount < 25) {
+			new MyEGreedy().getRandomAction(new Agent(0,0), maze);
 			//TODO implement the action selection and learning cycle
-			
+			iCount++;
 			//TODO figure out a stopping criterion			
 		}
 

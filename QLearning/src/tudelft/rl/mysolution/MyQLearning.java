@@ -9,7 +9,7 @@ import tudelft.rl.State;
 public class MyQLearning extends QLearning {
 
 	@Override
-	public void updateQ(State s, Action a, double r, State s_next, ArrayList<Action> possibleActions, double alfa, double gamma) {
+	public void updateQ(State s, Action a, double r, State s_next, ArrayList<Action> possibleActions, double alpha, double gamma) {
 		// TODO Auto-generated method stub
 		
 	}

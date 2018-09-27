@@ -6,12 +6,18 @@ import tudelft.rl.EGreedy;
 import tudelft.rl.Maze;
 import tudelft.rl.QLearning;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class MyEGreedy extends EGreedy {
 
 	@Override
 	public Action getRandomAction(Agent r, Maze m) {
+		ArrayList<Action> actions = m.getValidActions(r);
 		//TODO to select an action at random in State s
-		return null;
+		Random random = new Random();
+		int choice = (int) Math.ceil(random.nextDouble()*actions.size());
+		return actions.get(choice);
 	}
 
 	@Override
