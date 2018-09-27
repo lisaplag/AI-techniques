@@ -26,9 +26,9 @@ public class MyEGreedy extends EGreedy {
 	public Action getBestAction(Agent r, Maze m, QLearning q) {
 		
 		//get information
-		State s = m.getState(r.x, r.y);
+		State s = r.getState(m);
 		ArrayList<javax.swing.Action> validActions = m.getValidActions(r);
-		double[] actionValues = getActionValues(s, validActions);
+		double[] actionValues = q.getActionValues(s, validActions);
 		
 		//initialize best action to first valid action
 		Action bestAction = validActions.get(0);
