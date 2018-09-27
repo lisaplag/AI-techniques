@@ -26,7 +26,7 @@ public class MyEGreedy extends EGreedy {
 		
 		//get information
 		State s = r.getState(m);
-		ArrayList<javax.swing.Action> validActions = m.getValidActions(r);
+		ArrayList<Action> validActions = m.getValidActions(r);
 		double[] actionValues = q.getActionValues(s, validActions);
 		
 		//initialize best action to first valid action
