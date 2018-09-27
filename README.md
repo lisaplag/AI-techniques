@@ -5,4 +5,4 @@ Members:
 - Daan Hofman - 4688988
 - Nadine Berenst - 4438965
 
-Link to report of Assignment 1: https://v2.overleaf.com/8692963899byhqjtwrqcsj 
+Link to reports: https://v2.overleaf.com/8692963899byhqjtwrqcsj 
