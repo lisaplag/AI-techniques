@@ -30,8 +30,10 @@ public class RunMe {
 		//keep learning until you decide to stop
 		int iCount =0;
 		while (!stop && iCount < 25) {
-			new MyEGreedy().getRandomAction(new Agent(0,0), maze);
+
 			//TODO implement the action selection and learning cycle
+			robot.doAction(selection.getRandomAction(robot, maze), maze);
+			System.out.println(robot.x + "," + robot.y + "  " + maze.getState(robot.x, robot.y));
 			iCount++;
 			//TODO figure out a stopping criterion			
 		}

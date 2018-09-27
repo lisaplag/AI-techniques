@@ -17,7 +17,7 @@ public class MyEGreedy extends EGreedy {
 		//TODO to select an action at random in State s
 		Random random = new Random();
 		int choice = (int) Math.ceil(random.nextDouble()*actions.size());
-		return actions.get(choice);
+		return actions.get(choice - 1);
 	}
 
 	@Override
