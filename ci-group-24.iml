@@ -7,6 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/CompIntelligence/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Code/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Code/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/QLearning/src" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

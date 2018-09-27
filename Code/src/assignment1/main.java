@@ -3,7 +3,7 @@ package assignment1;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-public class MLNRunner {
+public class main {
 
     public static void main(String[] args){
         //Configure the network
