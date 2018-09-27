@@ -23,7 +23,16 @@ public class MyEGreedy extends EGreedy {
 	@Override
 	public Action getEGreedyAction(Agent r, Maze m, QLearning q, double epsilon) {
 		//TODO to select between random or best action selection based on epsilon.
-		return null;
+		double rand = Math.random();
+        Action action;
+
+        //Select the random action with probability epsilon.
+        if (rand <= epsilon) {
+            action = getRandomAction(r,m);
+        } else {
+		    action = getBestAction(r,m,q);
+        }
+        return action;
 	}
 
 }
