@@ -7,6 +7,12 @@ import java.util.Random;
 
 public class MyEGreedy extends EGreedy {
 
+    /**
+     * A method that returns a random valid action.
+     * @param r the agent that is taking the action
+     * @param m the maze the agent is in
+     * @return a random valid action
+     */
 	@Override
 	public Action getRandomAction(Agent r, Maze m) {
 		ArrayList<Action> actions = m.getValidActions(r);
@@ -15,6 +21,13 @@ public class MyEGreedy extends EGreedy {
 		return actions.get(choice - 1);
 	}
 
+    /**
+     * A method that returns the best action.
+     * @param r the agent that is taking the action
+     * @param m the maze the agent is in
+     * @param q the learning object the agent uses
+     * @return the best action
+     */
 	@Override
 	public Action getBestAction(Agent r, Maze m, QLearning q) {
 		
@@ -40,9 +53,18 @@ public class MyEGreedy extends EGreedy {
 		return bestAction;
 	}
 
+	/**
+	 * A method that returns an action, based on the greedy algorithm.
+     * It uses a random action with probability epsilon,
+     * otherwise it uses the best action.
+	 * @param r the agent that is taking the action
+	 * @param m the maze the agent is in
+	 * @param q the learning object the agent uses
+	 * @param epsilon the chance a random action is picked
+	 * @return the selected action
+	 */
 	@Override
 	public Action getEGreedyAction(Agent r, Maze m, QLearning q, double epsilon) {
-		//TODO to select between random or best action selection based on epsilon.
 		double rand = Math.random();
         Action action;
 
