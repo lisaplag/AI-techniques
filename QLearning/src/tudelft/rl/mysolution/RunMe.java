@@ -31,10 +31,10 @@ public class RunMe {
 		int stepCount = 0;
 		while (!stop) {
 			//TODO implement the action selection and learning cycle
-			Action a = selection.getEGreedyAction(robot, maze, learn, 0.8);
+			Action a = selection.getEGreedyAction(robot, maze, learn, 0.1);
 			State s = robot.getState(maze);
 			robot.doAction(a, maze);
-			learn.updateQ(s, a, 1, robot.getState(maze), maze.getValidActions(robot), 0.1, 0.8);
+			learn.updateQ(s, a, maze.getR(s), robot.getState(maze), maze.getValidActions(robot), 0.7, 0.9);
 			System.out.println(robot.x + "," + robot.y + "  " + maze.getState(robot.x, robot.y).type);
 
 			stepCount++;
