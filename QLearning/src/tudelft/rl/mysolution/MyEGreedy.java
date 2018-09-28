@@ -23,8 +23,8 @@ public class MyEGreedy extends EGreedy {
 		ArrayList<Action> validActions = m.getValidActions(r);
 		double[] actionValues = q.getActionValues(s, validActions);
 		
-		//initialize best action to first valid action
-		Action bestAction = validActions.get(0);
+		//initialize best action to a random action
+		Action bestAction = getRandomAction(r, m);
 		double bestActionValue = actionValues[0];
 		
 		//loop through possible actions in State s

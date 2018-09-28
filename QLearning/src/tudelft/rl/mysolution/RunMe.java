@@ -1,6 +1,7 @@
 package tudelft.rl.mysolution;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import tudelft.rl.*;
 
@@ -29,25 +30,26 @@ public class RunMe {
 		
 		//keep learning until you decide to stop
 		int stepCount = 0;
+		int count = 0;
 		while (!stop) {
 			//TODO implement the action selection and learning cycle
 			Action a = selection.getEGreedyAction(robot, maze, learn, 0.1);
 			State s = robot.getState(maze);
 			robot.doAction(a, maze);
-			learn.updateQ(s, a, maze.getR(s), robot.getState(maze), maze.getValidActions(robot), 0.7, 0.9);
-			System.out.println(robot.x + "," + robot.y + "  " + maze.getState(robot.x, robot.y).type);
-
+			ArrayList<Action> choices = maze.getValidActions(robot);
+			learn.updateQ(s, a, maze.getR(robot.getState(maze)), robot.getState(maze), choices, 0.7, 0.9);
+			//System.out.println(robot.x + "," + robot.y + "  " + learn.getQ(s, a));
 			stepCount++;
 			//TODO figure out a stopping criterion
 			if(maze.getR(robot.getState(maze)) == 10) {
-				robot.x = 0;
-				robot.y = 0;
-				stop = true;
-				System.out.println("Found the exit in " + stepCount + " steps!");
+				robot.reset();
+			//	stop=true;
+				count++;
 			}
 			if(stepCount >= 30000) {
 				System.out.println("Didn't find the exit :(");
 				stop = true;
+				System.out.println(Math.round(stepCount/count));
 			}
 		}
 
