@@ -12,7 +12,7 @@ public class MyQLearning extends QLearning {
 	public void updateQ(State s, Action a, double r, State s_next, ArrayList<Action> possibleActions, double alpha, double gamma) {
 		// TODO Auto-generated method stub
 //		Action best = new Action("down");
-//		double max = -9999999.9;
+//		double max = Double.MIN_VALUE;
 //		for ( Action act : possibleActions) {
 //			if ( getQ(s_next, act) > max) {
 //				best = act;

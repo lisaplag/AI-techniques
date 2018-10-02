@@ -11,7 +11,7 @@ public class RunMe {
 		
 		//load the maze
 		//TODO replace this with the location to your maze on your file system
-		Maze maze = new Maze(new File(System.getProperty("user.dir")+"/data/toy_maze.txt"));
+		Maze maze = new Maze(new File(System.getProperty("user.dir")+"/data/easy_maze.txt"));
 
 		
 		//Set the reward at the bottom right to 10
@@ -38,20 +38,17 @@ public class RunMe {
 			robot.doAction(a, maze);
 			ArrayList<Action> choices = maze.getValidActions(robot);
 			learn.updateQ(s, a, maze.getR(robot.getState(maze)), robot.getState(maze), choices, 0.7, 0.9);
-			//System.out.println(robot.x + "," + robot.y + "  " + learn.getQ(s, a));
 			stepCount++;
 			//TODO figure out a stopping criterion
 			if(maze.getR(robot.getState(maze)) == 10) {
 				robot.reset();
-			//	stop=true;
 				count++;
 			}
-			if(stepCount >= 30000) {
-				System.out.println("Didn't find the exit :(");
+			if(count >= 15) {
 				stop = true;
-				System.out.println(Math.round(stepCount/count));
 			}
 		}
+
 
 	}
 
