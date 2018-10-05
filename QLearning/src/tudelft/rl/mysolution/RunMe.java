@@ -35,14 +35,14 @@ public class RunMe {
 		int total = 0;
 		int topCount = 0;
 		int botCount = 0;
-		double epsilon = 0.1;
+		double epsilon = 1;
 		while (!stop) {
 			//TODO implement the action selection and learning cycle
 			Action a = selection.getEGreedyAction(robot, maze, learn, epsilon);
 			State s = robot.getState(maze);
 			robot.doAction(a, maze);
 			ArrayList<Action> choices = maze.getValidActions(robot);
-			learn.updateQ(s, a, maze.getR(robot.getState(maze)), robot.getState(maze), choices, 0.7, 0.9);
+			learn.updateQ(s, a, maze.getR(robot.getState(maze)), robot.getState(maze), choices, 0.7, 0.000000000001);
 			stepCount++;
 			// When a goal is found, reset the agent and update epsilon
 			if(robot.x == 9 && (robot.y == 9 || robot.y == 0)) {
@@ -56,20 +56,15 @@ public class RunMe {
 				} else {
 					botCount++;
 				}
-				if (epsilon != 0.7) {
-					if (topCount > 5 && botCount < 5) {
-						epsilon = 0.7;
-					}
-				} else if (topCount > 5 && botCount > 5){
-					epsilon = 0.1;
-				} else {
-					epsilon = 0.5;
-				}
 
+				int learnEnd = 25;
 
 				robot.reset();
 				count++;
 				System.out.println(count);
+				if (count >= learnEnd && epsilon != 0) {
+					epsilon = 0;
+				}
 				total = stepCount;
 			}
 			if(count >= 50) {
