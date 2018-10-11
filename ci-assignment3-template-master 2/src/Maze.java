@@ -1,5 +1,6 @@
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -31,7 +32,8 @@ public class Maze {
     /**
      * Initialize pheromones to a start value.
      */
-    private void initializePheromones() {}
+    private void initializePheromones() {
+    }
 
     /**
      * Reset the maze for a new shortest path problem.
@@ -45,7 +47,18 @@ public class Maze {
      * @param r The route of the ants
      * @param Q Normalization factor for amount of dropped pheromone
      */
-    public void addPheromoneRoute(Route r, double Q) {}
+    public void addPheromoneRoute(Route r, double Q) {
+        Coordinate currentPos = r.getStart();
+        ArrayList<Direction> route = r.getRoute();
+        int distance = route.size();
+        for (int i = 0; i < distance; i++) {
+            currentPos.pheromone = new SurroundingPheromone(currentPos.pheromone.get(Direction.North) + (Q * 100/distance),
+                    currentPos.pheromone.get(Direction.East) + (Q * 100/distance),
+                    currentPos.pheromone.get(Direction.South) + (Q * 100/distance),
+                    currentPos.pheromone.get(Direction.West) + (Q * 100/distance));
+            currentPos = currentPos.add(route.get(i));
+        }
+    }
 
     /**
      * Update pheromones for a list of routes
@@ -80,6 +93,12 @@ public class Maze {
         return length;
     }
 
+    /**
+     * Walls getter.
+     * @return the walls of the maze
+     */
+    public int[][] getWalls() { return walls; }
+
 
     /**
      * Returns a the amount of pheromones on the neighbouring positions (N/S/E/W).
@@ -87,7 +106,7 @@ public class Maze {
      * @return the pheromones of the neighbouring positions.
      */
     public SurroundingPheromone getSurroundingPheromone(Coordinate position) {
-        return null;
+        return position.pheromone;
     }
 
     /**
@@ -96,6 +115,9 @@ public class Maze {
      * @return pheromone at point
      */
     private double getPheromone(Coordinate pos) {
+        if ( inBounds(pos)) {
+            return pos.pheromone.getTotalSurroundingPheromone();
+        }
         return 0;
     }
 

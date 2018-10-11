@@ -32,7 +32,35 @@ public class Ant {
      */
     public Route findRoute() {
         Route route = new Route(start);
+        Direction lastDir = null;
+        while(!currentPosition.equals(end)) {
+            double r = rand.nextDouble();
+            int x = currentPosition.getX();
+            int y = currentPosition.getY();
+            if (r <= 0.25 && lastDir != Direction.West && x < maze.getWidth() - 1) {
+                route.add(Direction.East);
+                currentPosition = currentPosition.add(Direction.East);
+                lastDir = Direction.East;
+            } else if (r <= 0.5 && lastDir != Direction.South && y > 0) {
+                route.add(Direction.North);
+                currentPosition = currentPosition.add(Direction.North);
+                lastDir = Direction.North;
+            } else if (r <= 0.75 && lastDir != Direction.North && y < maze.getLength() - 1) {
+                route.add(Direction.South);
+                currentPosition = currentPosition.add(Direction.South);
+                lastDir = Direction.South;
+            } else if(lastDir != Direction.East && x > 0){
+                route.add(Direction.West);
+                currentPosition = currentPosition.add(Direction.West);
+                lastDir = Direction.West;
+            }
+            System.out.println(currentPosition.toString());
+        }
         return route;
+    }
+
+    public Route findGreedyRoute() {
+        return null;
     }
 }
 

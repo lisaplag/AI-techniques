@@ -6,6 +6,7 @@ import java.io.Serializable;
 public class Coordinate implements Serializable {
 	
     private static final long serialVersionUID = 0L;
+    public SurroundingPheromone pheromone;
     private final int x;
     private final int y;
 
@@ -17,6 +18,7 @@ public class Coordinate implements Serializable {
     public Coordinate(int x, int y) {
         this.x = x;
         this.y = y;
+        pheromone = new SurroundingPheromone(0,0,0,0);
     }
 
     /**
@@ -48,7 +50,7 @@ public class Coordinate implements Serializable {
 
     /**
      * Move in a inverted direction from this coordinate
-     * @param Direction of unit move
+     * @param dir direction of unit move
      * @return result the new coordinate
      */
     public Coordinate subtract(Direction dir) {
