@@ -42,7 +42,7 @@ public class RunMe {
 			State s = robot.getState(maze);
 			robot.doAction(a, maze);
 			ArrayList<Action> choices = maze.getValidActions(robot);
-			learn.updateQ(s, a, maze.getR(robot.getState(maze)), robot.getState(maze), choices, 0.7, 0.000000000001);
+			learn.updateQ(s, a, maze.getR(robot.getState(maze)), robot.getState(maze), choices, 0.7, 0.0000000000000000001);
 			stepCount++;
 			// When a goal is found, reset the agent and update epsilon
 			if(robot.x == 9 && (robot.y == 9 || robot.y == 0)) {
@@ -57,8 +57,7 @@ public class RunMe {
 					botCount++;
 				}
 
-				int learnEnd = 25;
-
+				int learnEnd = 20;
 				robot.reset();
 				count++;
 				System.out.println(count);
