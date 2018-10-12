@@ -1,6 +1,5 @@
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -32,14 +31,7 @@ public class Maze {
     /**
      * Initialize pheromones to a start value.
      */
-    private void initializePheromones() {
-        pheromones = new double[width][length];
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < length; j++) {
-                pheromones[i][j] = 0;
-            }
-        }
-    }
+    private void initializePheromones() {}
 
     /**
      * Reset the maze for a new shortest path problem.
@@ -53,15 +45,7 @@ public class Maze {
      * @param r The route of the ants
      * @param Q Normalization factor for amount of dropped pheromone
      */
-    public void addPheromoneRoute(Route r, double Q) {
-        Coordinate currentPos = r.getStart();
-        ArrayList<Direction> route = r.getRoute();
-        int distance = route.size();
-        for (int i = 0; i < distance; i++) {
-            pheromones[currentPos.getX()][currentPos.getY()] += (Q /distance);
-            currentPos = currentPos.add(route.get(i));
-        }
-    }
+    public void addPheromoneRoute(Route r, double Q) {}
 
     /**
      * Update pheromones for a list of routes
@@ -96,12 +80,6 @@ public class Maze {
         return length;
     }
 
-    /**
-     * Walls getter.
-     * @return the walls of the maze
-     */
-    public int[][] getWalls() { return walls; }
-
 
     /**
      * Returns a the amount of pheromones on the neighbouring positions (N/S/E/W).
@@ -109,7 +87,7 @@ public class Maze {
      * @return the pheromones of the neighbouring positions.
      */
     public SurroundingPheromone getSurroundingPheromone(Coordinate position) {
-        return new SurroundingPheromone(1,1,1,1);
+        return null;
     }
 
     /**
@@ -117,10 +95,7 @@ public class Maze {
      * @param pos Position coordinate
      * @return pheromone at point
      */
-    public double getPheromone(Coordinate pos) {
-        if ( inBounds(pos)) {
-            return pheromones[pos.getX()][pos.getY()];
-        }
+    private double getPheromone(Coordinate pos) {
         return 0;
     }
 

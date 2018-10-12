@@ -48,7 +48,7 @@ public class Coordinate implements Serializable {
 
     /**
      * Move in a inverted direction from this coordinate
-     * @param dir direction of unit move
+     * @param Direction of unit move
      * @return result the new coordinate
      */
     public Coordinate subtract(Direction dir) {
