@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -32,35 +33,81 @@ public class Ant {
      */
     public Route findRoute() {
         Route route = new Route(start);
-        Direction lastDir = null;
+        double r = rand.nextDouble();
         while(!currentPosition.equals(end)) {
-            double r = rand.nextDouble();
             int x = currentPosition.getX();
             int y = currentPosition.getY();
-            if (r <= 0.25 && lastDir != Direction.West && x < maze.getWidth() - 1) {
-                route.add(Direction.East);
-                currentPosition = currentPosition.add(Direction.East);
-                lastDir = Direction.East;
-            } else if (r <= 0.5 && lastDir != Direction.South && y > 0) {
-                route.add(Direction.North);
-                currentPosition = currentPosition.add(Direction.North);
-                lastDir = Direction.North;
-            } else if (r <= 0.75 && lastDir != Direction.North && y < maze.getLength() - 1) {
-                route.add(Direction.South);
-                currentPosition = currentPosition.add(Direction.South);
-                lastDir = Direction.South;
-            } else if(lastDir != Direction.East && x > 0){
-                route.add(Direction.West);
-                currentPosition = currentPosition.add(Direction.West);
-                lastDir = Direction.West;
+            ArrayList<Direction> possibleDirections = new ArrayList<>();
+            if (x < maze.getWidth() - 1 && maze.getWalls()[x + 1][y] == 1)
+                    possibleDirections.add(Direction.East);
+            if (x > 0 && maze.getWalls()[x - 1][y] == 1)
+                    possibleDirections.add(Direction.West);
+            if (y < maze.getLength() - 1 && maze.getWalls()[x][y + 1] == 1)
+                    possibleDirections.add(Direction.South);
+            if (y > 0 && maze.getWalls()[x][y - 1] == 1)
+                    possibleDirections.add(Direction.North);
+            int choice;
+            double total = maze.getSurroundingPheromone(currentPosition).getTotalSurroundingPheromone();
+            double chanceEast = maze.getPheromone(currentPosition.add(Direction.East)) / total;
+            double chanceNorth = maze.getPheromone(currentPosition.add(Direction.North)) / total;
+            double chanceSouth = maze.getPheromone(currentPosition.add(Direction.South)) / total;
+            double chanceWest = maze.getPheromone(currentPosition.add(Direction.West)) / total;
+            if (r <= chanceEast) {
+                choice = 0;
+            } else if (r <= chanceNorth) {
+                choice = 1;
+            } else if (r <= chanceSouth) {
+                choice = 2;
+            } else {
+                choice = 3;
             }
+            Direction chosen = possibleDirections.get(choice);
+//            if ( chanceEast == 0)
+//                    chosen = Direction.East;
+//            if ( chanceNorth == 0)
+//                    chosen = Direction.North;
+//            if ( chanceSouth == 0)
+//                    chosen = Direction.South;
+//            if ( chanceWest == 0)
+//                    chosen = Direction.West;
+            route.add(chosen);
+            currentPosition = currentPosition.add(chosen);
             System.out.println(currentPosition.toString());
         }
         return route;
     }
 
     public Route findGreedyRoute() {
-        return null;
+        Route route = new Route(start);
+        Direction dir = null;
+        Direction lastDir = Direction.North;
+        while(!currentPosition.equals(end)) {
+            double r = -99999999999.9;
+            int x = currentPosition.getX();
+            int y = currentPosition.getY();
+            if (maze.getPheromone(currentPosition.add(Direction.East))> r && x < maze.getWidth() -1 && !lastDir.equals(Direction.West)) {
+                r = maze.getPheromone(currentPosition.add(Direction.East));
+                dir = Direction.East;
+            }
+            if (maze.getPheromone(currentPosition.add(Direction.North))> r && y > 0 && !lastDir.equals(Direction.South)) {
+                r = maze.getPheromone(currentPosition.add(Direction.North));
+                dir = Direction.North;
+            }
+            if (maze.getPheromone(currentPosition.add(Direction.South))> r && y < maze.getLength() -1 && !lastDir.equals(Direction.North)) {
+                r = maze.getPheromone(currentPosition.add(Direction.South));
+                dir = Direction.South;
+            }
+            if(maze.getPheromone(currentPosition.add(Direction.West)) > r && x > 0 && !lastDir.equals(Direction.East)){
+                dir = Direction.West;
+            }
+            route.add(dir);
+            currentPosition = currentPosition.add(dir);
+            lastDir = dir;
+            System.out.println(currentPosition.toString() + "(Greedy)");
+        }
+        return route;
+
+
     }
 }
 

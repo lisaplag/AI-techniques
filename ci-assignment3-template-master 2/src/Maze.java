@@ -33,6 +33,12 @@ public class Maze {
      * Initialize pheromones to a start value.
      */
     private void initializePheromones() {
+        pheromones = new double[width][length];
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < length; j++) {
+                pheromones[i][j] = 0;
+            }
+        }
     }
 
     /**
@@ -52,10 +58,7 @@ public class Maze {
         ArrayList<Direction> route = r.getRoute();
         int distance = route.size();
         for (int i = 0; i < distance; i++) {
-            currentPos.pheromone = new SurroundingPheromone(currentPos.pheromone.get(Direction.North) + (Q * 100/distance),
-                    currentPos.pheromone.get(Direction.East) + (Q * 100/distance),
-                    currentPos.pheromone.get(Direction.South) + (Q * 100/distance),
-                    currentPos.pheromone.get(Direction.West) + (Q * 100/distance));
+            pheromones[currentPos.getX()][currentPos.getY()] += (Q * 100/distance);
             currentPos = currentPos.add(route.get(i));
         }
     }
@@ -106,7 +109,7 @@ public class Maze {
      * @return the pheromones of the neighbouring positions.
      */
     public SurroundingPheromone getSurroundingPheromone(Coordinate position) {
-        return position.pheromone;
+        return null;
     }
 
     /**
@@ -114,9 +117,9 @@ public class Maze {
      * @param pos Position coordinate
      * @return pheromone at point
      */
-    private double getPheromone(Coordinate pos) {
+    public double getPheromone(Coordinate pos) {
         if ( inBounds(pos)) {
-            return pos.pheromone.getTotalSurroundingPheromone();
+            return pheromones[pos.getX()][pos.getY()];
         }
         return 0;
     }

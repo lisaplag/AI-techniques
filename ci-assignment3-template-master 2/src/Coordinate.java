@@ -6,7 +6,6 @@ import java.io.Serializable;
 public class Coordinate implements Serializable {
 	
     private static final long serialVersionUID = 0L;
-    public SurroundingPheromone pheromone;
     private final int x;
     private final int y;
 
@@ -18,7 +17,6 @@ public class Coordinate implements Serializable {
     public Coordinate(int x, int y) {
         this.x = x;
         this.y = y;
-        pheromone = new SurroundingPheromone(0,0,0,0);
     }
 
     /**
