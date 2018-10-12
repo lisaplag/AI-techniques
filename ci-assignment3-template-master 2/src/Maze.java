@@ -58,7 +58,7 @@ public class Maze {
         ArrayList<Direction> route = r.getRoute();
         int distance = route.size();
         for (int i = 0; i < distance; i++) {
-            pheromones[currentPos.getX()][currentPos.getY()] += (Q * 100/distance);
+            pheromones[currentPos.getX()][currentPos.getY()] += (Q /distance);
             currentPos = currentPos.add(route.get(i));
         }
     }
@@ -109,7 +109,7 @@ public class Maze {
      * @return the pheromones of the neighbouring positions.
      */
     public SurroundingPheromone getSurroundingPheromone(Coordinate position) {
-        return null;
+        return new SurroundingPheromone(1,1,1,1);
     }
 
     /**

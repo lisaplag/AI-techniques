@@ -46,30 +46,19 @@ public class Ant {
                     possibleDirections.add(Direction.South);
             if (y > 0 && maze.getWalls()[x][y - 1] == 1)
                     possibleDirections.add(Direction.North);
-            int choice;
+            int randomChoice = (int) Math.floor(rand.nextDouble() * possibleDirections.size());
+            Direction chosen = possibleDirections.get(randomChoice);
             double total = maze.getSurroundingPheromone(currentPosition).getTotalSurroundingPheromone();
-            double chanceEast = maze.getPheromone(currentPosition.add(Direction.East)) / total;
-            double chanceNorth = maze.getPheromone(currentPosition.add(Direction.North)) / total;
-            double chanceSouth = maze.getPheromone(currentPosition.add(Direction.South)) / total;
-            double chanceWest = maze.getPheromone(currentPosition.add(Direction.West)) / total;
-            if (r <= chanceEast) {
-                choice = 0;
-            } else if (r <= chanceNorth) {
-                choice = 1;
-            } else if (r <= chanceSouth) {
-                choice = 2;
-            } else {
-                choice = 3;
+            for (Direction possibleDirection : possibleDirections) {
+                if (r <= maze.getPheromone(currentPosition.add(possibleDirection)) / total
+                        || maze.getPheromone(currentPosition.add(possibleDirection)) / total == 0) {
+                    chosen = possibleDirection;
+                    break;
+                } else {
+                    r -= maze.getPheromone(currentPosition.add(possibleDirection)) / total;
+                }
             }
-            Direction chosen = possibleDirections.get(choice);
-//            if ( chanceEast == 0)
-//                    chosen = Direction.East;
-//            if ( chanceNorth == 0)
-//                    chosen = Direction.North;
-//            if ( chanceSouth == 0)
-//                    chosen = Direction.South;
-//            if ( chanceWest == 0)
-//                    chosen = Direction.West;
+           // chosen = possibleDirections.get(randomChoice);
             route.add(chosen);
             currentPosition = currentPosition.add(chosen);
             System.out.println(currentPosition.toString());

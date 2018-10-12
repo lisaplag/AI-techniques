@@ -52,7 +52,7 @@ public class AntColonyOptimization {
     	//parameters
     	int gen = 1;
         int noGen = 20;
-        double Q = 1600;
+        double Q = 1;//600;
         double evap = 0.1;
         
         //construct the optimization objects
