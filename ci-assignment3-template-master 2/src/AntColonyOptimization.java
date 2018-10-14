@@ -11,6 +11,7 @@ public class AntColonyOptimization {
     private double Q;
     private double evaporation;
     private Maze maze;
+    public static int counter;
 
     /**
      * Constructs a new optimization object using ants.
@@ -36,10 +37,12 @@ public class AntColonyOptimization {
     public Route findShortestRoute(PathSpecification spec) {
         maze.reset();
         Route found = null;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1000; i++) {
             Ant ant = new Ant(maze, spec);
             found = ant.findRoute();
             maze.addPheromoneRoute(found, Q);
+            maze.evaporate(evaporation);
+            System.out.println(counter);
         }
         //Ant greedyAnt = new Ant(maze, spec);
         return found;
@@ -52,7 +55,7 @@ public class AntColonyOptimization {
     	//parameters
     	int gen = 1;
         int noGen = 20;
-        double Q = 1;//600;
+        double Q = 1600;
         double evap = 0.1;
         
         //construct the optimization objects
