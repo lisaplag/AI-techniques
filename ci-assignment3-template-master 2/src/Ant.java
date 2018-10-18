@@ -41,7 +41,7 @@ public class Ant {
         while (!currentPosition.equals(end)) {
             double r = rand.nextDouble();
             ArrayList<Direction> possibleDirections = getValidDirections();
-            if (maze.getSurroundingPheromone(currentPosition).getTotalSurroundingPheromone() == 0 || AntColonyOptimization.counter < 5) {
+            if (maze.getSurroundingPheromone(currentPosition).getTotalSurroundingPheromone() == 0) {
                 int randomChoice = (int) Math.floor(rand.nextDouble() * possibleDirections.size());
                 chosen = possibleDirections.get(randomChoice);
                 lastTaken = chosen;
@@ -112,30 +112,17 @@ public class Ant {
     public Route findGreedyRoute() {
         Route route = new Route(start);
         Direction dir = null;
-        Direction lastDir = Direction.North;
         while (!currentPosition.equals(end)) {
             double r = -99999999999.9;
-            int x = currentPosition.getX();
-            int y = currentPosition.getY();
-            if (maze.getPheromone(currentPosition.add(Direction.East)) > r && x < maze.getWidth() - 1 && !lastDir.equals(Direction.West)) {
-                r = maze.getPheromone(currentPosition.add(Direction.East));
-                dir = Direction.East;
-            }
-            if (maze.getPheromone(currentPosition.add(Direction.North)) > r && y > 0 && !lastDir.equals(Direction.South)) {
-                r = maze.getPheromone(currentPosition.add(Direction.North));
-                dir = Direction.North;
-            }
-            if (maze.getPheromone(currentPosition.add(Direction.South)) > r && y < maze.getLength() - 1 && !lastDir.equals(Direction.North)) {
-                r = maze.getPheromone(currentPosition.add(Direction.South));
-                dir = Direction.South;
-            }
-            if (maze.getPheromone(currentPosition.add(Direction.West)) > r && x > 0 && !lastDir.equals(Direction.East)) {
-                dir = Direction.West;
+            ArrayList<Direction> possibleDirections = getValidDirections();
+            for (Direction d : possibleDirections) {
+                if ( maze.getPheromone(currentPosition.add(d)) > r) {
+                    r = maze.getPheromone(currentPosition.add(d));
+                    dir = d;
+                }
             }
             route.add(dir);
             currentPosition = currentPosition.add(dir);
-            lastDir = dir;
-            System.out.println(currentPosition.toString() + "(Greedy)");
         }
         return route;
 

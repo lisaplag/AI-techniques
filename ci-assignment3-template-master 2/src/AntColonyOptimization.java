@@ -1,4 +1,5 @@
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 /**
  * Class representing the first assignment. Finds shortest path between two points in a maze according to a specific
@@ -38,17 +39,22 @@ public class AntColonyOptimization {
         maze.reset();
         Route found;
         int min = 1999999999;
-        Route result = null;
-        for (int i = 0; i < 2000; i++) {
-            Ant ant = new Ant(maze, spec);
-            found = ant.findRoute();
-            maze.addPheromoneRoute(found, Q);
-            maze.evaporate(evaporation);
-            System.out.println(counter);
-            if(found.size() < min) {
-                min = found.size();
-                result = found;
+       Route result = null;
+        for (int j = 0; j < generations; j++) {
+            counter = 0;
+            ArrayList<Route> genRoutes = new ArrayList<>();
+            for (int i = 0; i < antsPerGen; i++) {
+                Ant ant = new Ant(maze, spec);
+                found = ant.findRoute();
+                genRoutes.add(found);
+                if (found.size() < min) {
+                    min = found.size();
+                    result = found;
+                }
             }
+            maze.addPheromoneRoutes(genRoutes, Q);
+            maze.evaporate(evaporation);
+            System.out.println("Generation " + j + ": " +min);
         }
         //Ant greedyAnt = new Ant(maze, spec);
         return result;
@@ -59,15 +65,15 @@ public class AntColonyOptimization {
      */
     public static void main(String[] args) throws FileNotFoundException {
     	//parameters
-    	int gen = 1;
-        int noGen = 20;
-        double Q = 1600;
+    	int genSize = 20;
+        int noGen = 60;
+        double Q = 50;
         double evap = 0.1;
         
         //construct the optimization objects
-        Maze maze = Maze.createMaze("./data/easy maze.txt");
-        PathSpecification spec = PathSpecification.readCoordinates("./data/easy coordinates.txt");
-        AntColonyOptimization aco = new AntColonyOptimization(maze, gen, noGen, Q, evap);
+        Maze maze = Maze.createMaze("./data/medium maze.txt");
+        PathSpecification spec = PathSpecification.readCoordinates("./data/medium coordinates.txt");
+        AntColonyOptimization aco = new AntColonyOptimization(maze, genSize, noGen, Q, evap);
         
         //save starting time
         long startTime = System.currentTimeMillis();
@@ -79,7 +85,7 @@ public class AntColonyOptimization {
         System.out.println("Time taken: " + ((System.currentTimeMillis() - startTime) / 1000.0));
         
         //save solution
-        shortestRoute.writeToFile("./data/easy_solution.txt");
+        shortestRoute.writeToFile("./data/medium_solution.txt");
         
         //print route size
         System.out.println("Route size: " + shortestRoute.size());
