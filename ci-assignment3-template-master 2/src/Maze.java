@@ -26,13 +26,13 @@ public class Maze {
         this.walls = walls;
         this.length = length;
         this.width = width;
-        initializePheromones();
+        initializePheromones(width, length);
     }
 
     /**
      * Initialize pheromones to a start value.
      */
-    private void initializePheromones() {
+    private void initializePheromones(int width, int length) {
         pheromones = new double[width][length];
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < length; j++) {
@@ -45,7 +45,7 @@ public class Maze {
      * Reset the maze for a new shortest path problem.
      */
     public void reset() {
-        initializePheromones();
+        initializePheromones(width, length);
     }
 
     /**
@@ -58,7 +58,7 @@ public class Maze {
         ArrayList<Direction> route = r.getRoute();
         int distance = route.size();
         for (int i = 0; i < distance; i++) {
-            pheromones[currentPos.getX()][currentPos.getY()] += (Q * 100/distance);
+            pheromones[currentPos.getX()][currentPos.getY()] += (Q /distance);
             currentPos = currentPos.add(route.get(i));
         }
     }
@@ -78,7 +78,13 @@ public class Maze {
      * Evaporate pheromone
      * @param rho evaporation factor
      */
-    public void evaporate(double rho) {}
+    public void evaporate(double rho) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < length; j++) {
+                pheromones[i][j] *=  (1 - rho);
+            }
+        }
+    }
 
     /**
      * Width getter
@@ -109,7 +115,52 @@ public class Maze {
      * @return the pheromones of the neighbouring positions.
      */
     public SurroundingPheromone getSurroundingPheromone(Coordinate position) {
-        return null;
+        if (position.getX() > 0 && position.getY() > 0 && position.getY() < length - 1 && position.getX() < width - 1) {
+            return new SurroundingPheromone(pheromones[position.getX()][position.getY() - 1],
+                    pheromones[position.getX() + 1][position.getY()],
+                    pheromones[position.getX()][position.getY() + 1],
+                    pheromones[position.getX() - 1][position.getY()]);
+        } else if (position.getX() <= 0 && position.getY() <= 0) {
+            return new SurroundingPheromone(0,
+                    pheromones[position.getX() + 1][position.getY()],
+                    pheromones[position.getX()][position.getY() + 1],
+                    0);
+        } else if (position.getX() <= 0 && position.getY() >= length - 1) {
+            return new SurroundingPheromone(pheromones[position.getX()][position.getY() - 1],
+                    pheromones[position.getX() + 1][position.getY()],
+                    0,
+                    0);
+        } else if (position.getX() >= width - 1 && position.getY() <= 0) {
+            return new SurroundingPheromone(0,
+                    0,
+                    pheromones[position.getX()][position.getY() + 1],
+                    pheromones[position.getX() - 1][position.getY()]);
+        } else if (position.getX() >= width - 1 && position.getY() >= length -1){
+            return new SurroundingPheromone(pheromones[position.getX()][position.getY() - 1],
+                    0,
+                    0,
+                    pheromones[position.getX() - 1][position.getY()]);
+        } else if (position.getY() <= 0) {
+            return new SurroundingPheromone(0,
+                    pheromones[position.getX() + 1][position.getY()],
+                    pheromones[position.getX()][position.getY() + 1],
+                    pheromones[position.getX() - 1][position.getY()]);
+        } else if (position.getX() <= 0) {
+            return new SurroundingPheromone(pheromones[position.getX()][position.getY() - 1],
+                    pheromones[position.getX() + 1][position.getY()],
+                    pheromones[position.getX()][position.getY() + 1],
+                    0);
+        } else if (position.getX() >= width - 1) {
+            return new SurroundingPheromone(pheromones[position.getX()][position.getY() - 1],
+                    0,
+                    pheromones[position.getX()][position.getY() + 1],
+                    pheromones[position.getX() - 1][position.getY()]);
+        } else {
+            return new SurroundingPheromone(pheromones[position.getX()][position.getY() - 1],
+                    pheromones[position.getX() + 1][position.getY()],
+                    0,
+                    pheromones[position.getX() - 1][position.getY()]);
+        }
     }
 
     /**
