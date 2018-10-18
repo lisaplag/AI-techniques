@@ -54,7 +54,7 @@ public class AntColonyOptimization {
             }
             maze.addPheromoneRoutes(genRoutes, Q);
             maze.evaporate(evaporation);
-            System.out.println("Generation " + j + ": " +min);
+            System.out.println("Generation " + (j+1) + ": " +min);
         }
         //Ant greedyAnt = new Ant(maze, spec);
         return result;
@@ -65,8 +65,8 @@ public class AntColonyOptimization {
      */
     public static void main(String[] args) throws FileNotFoundException {
     	//parameters
-    	int genSize = 20;
-        int noGen = 60;
+    	int genSize = 100;
+        int noGen = 15;
         double Q = 50;
         double evap = 0.1;
         

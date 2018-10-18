@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -106,6 +107,7 @@ public class Ant {
             if (lastTaken == Direction.North)
                 possibleDirections.add(Direction.South);
         }
+        Collections.shuffle(possibleDirections);
         return possibleDirections;
     }
 
