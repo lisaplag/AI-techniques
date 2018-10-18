@@ -11,6 +11,7 @@ public class Ant {
     private Coordinate end;
     private Coordinate currentPosition;
     private static Random rand;
+    private Direction lastTaken;
 
     /**
      * Constructor for ant taking a Maze and PathSpecification.
@@ -23,6 +24,7 @@ public class Ant {
         this.start = spec.getStart();
         this.end = spec.getEnd();
         this.currentPosition = start;
+        lastTaken = null;
         if (rand == null) {
             rand = new Random();
         }
@@ -35,21 +37,10 @@ public class Ant {
      */
     public Route findRoute() {
         Route route = new Route(start);
-        Direction lastTaken = null;
         Direction chosen = Direction.South;
         while (!currentPosition.equals(end)) {
             double r = rand.nextDouble();
-            int x = currentPosition.getX();
-            int y = currentPosition.getY();
-            ArrayList<Direction> possibleDirections = new ArrayList<>();
-            if (x < maze.getWidth() - 1 && maze.getWalls()[x + 1][y] == 1 && lastTaken != Direction.West)
-                possibleDirections.add(Direction.East);
-            if (x > 0 && maze.getWalls()[x - 1][y] == 1 && lastTaken != Direction.East)
-                possibleDirections.add(Direction.West);
-            if (y < maze.getLength() - 1 && maze.getWalls()[x][y + 1] == 1 && lastTaken != Direction.North)
-                possibleDirections.add(Direction.South);
-            if (y > 0 && maze.getWalls()[x][y - 1] == 1 && lastTaken != Direction.South)
-                possibleDirections.add(Direction.North);
+            ArrayList<Direction> possibleDirections = getValidDirections();
             if (maze.getSurroundingPheromone(currentPosition).getTotalSurroundingPheromone() == 0 || AntColonyOptimization.counter < 5) {
                 int randomChoice = (int) Math.floor(rand.nextDouble() * possibleDirections.size());
                 chosen = possibleDirections.get(randomChoice);
@@ -91,6 +82,31 @@ public class Ant {
         AntColonyOptimization.counter++;
 
         return route;
+    }
+
+    public ArrayList<Direction> getValidDirections() {
+        int x = currentPosition.getX();
+        int y = currentPosition.getY();
+        ArrayList<Direction> possibleDirections = new ArrayList<>();
+        if (x < maze.getWidth() - 1 && maze.getWalls()[x + 1][y] == 1 && lastTaken != Direction.West)
+            possibleDirections.add(Direction.East);
+        if (x > 0 && maze.getWalls()[x - 1][y] == 1 && lastTaken != Direction.East)
+            possibleDirections.add(Direction.West);
+        if (y < maze.getLength() - 1 && maze.getWalls()[x][y + 1] == 1 && lastTaken != Direction.North)
+            possibleDirections.add(Direction.South);
+        if (y > 0 && maze.getWalls()[x][y - 1] == 1 && lastTaken != Direction.South)
+            possibleDirections.add(Direction.North);
+        if (possibleDirections.size() == 0) {
+            if (lastTaken == Direction.South)
+                possibleDirections.add(Direction.North);
+            if (lastTaken == Direction.West)
+                possibleDirections.add(Direction.East);
+            if (lastTaken == Direction.East)
+                possibleDirections.add(Direction.West);
+            if (lastTaken == Direction.North)
+                possibleDirections.add(Direction.South);
+        }
+        return possibleDirections;
     }
 
     public Route findGreedyRoute() {
