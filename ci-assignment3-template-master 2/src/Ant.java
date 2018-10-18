@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -38,10 +39,14 @@ public class Ant {
     public Route findRoute() {
         Route route = new Route(start);
         Direction chosen = Direction.South;
+        //While the and has not reached the end yet
         while (!currentPosition.equals(end)) {
             double r = rand.nextDouble();
             ArrayList<Direction> possibleDirections = getValidDirections();
+            //shuffle the list of possible directions.
+            Collections.shuffle(possibleDirections);
             if (maze.getSurroundingPheromone(currentPosition).getTotalSurroundingPheromone() == 0) {
+                //This block makes the ant take a random route if there is no pheromone at all.
                 int randomChoice = (int) Math.floor(rand.nextDouble() * possibleDirections.size());
                 chosen = possibleDirections.get(randomChoice);
                 lastTaken = chosen;
@@ -66,8 +71,9 @@ public class Ant {
                         break;
                     }
                 }
+                //This block makes the ant go in the direction where no pheromone is.
                 for (Direction possibleDirection : possibleDirections) {
-                    if ( maze.getPheromone(currentPosition.add(possibleDirection)) == 0) {
+                    if (maze.getPheromone(currentPosition.add(possibleDirection)) == 0) {
                         chosen = possibleDirection;
                         lastTaken = chosen;
                     }
@@ -80,7 +86,6 @@ public class Ant {
             //System.out.println("Found the exit and added pheromone " + AntColonyOptimization.counter + " times.");
         }
         AntColonyOptimization.counter++;
-
         return route;
     }
 
