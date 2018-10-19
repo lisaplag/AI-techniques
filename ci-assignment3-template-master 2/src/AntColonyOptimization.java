@@ -37,11 +37,15 @@ public class AntColonyOptimization {
      */
     public Route findShortestRoute(PathSpecification spec) {
         maze.reset();
+        Q = maze.getWidth() + maze.getLength();
         Route found;
-        int min = 1999999999;
+        int min =1999999999;
        Route result = null;
         for (int j = 0; j < generations; j++) {
             counter = 0;
+            if (evaporation < 0.5 && j >= generations/2) {
+                evaporation = 0.75;
+            }
             ArrayList<Route> genRoutes = new ArrayList<>();
             for (int i = 0; i < antsPerGen; i++) {
                 Ant ant = new Ant(maze, spec);
@@ -65,9 +69,9 @@ public class AntColonyOptimization {
      */
     public static void main(String[] args) throws FileNotFoundException {
     	//parameters
-    	int genSize = 100;
-        int noGen = 15;
-        double Q = 50;
+    	int genSize = 10;
+        int noGen = 1000;
+        double Q = 200;
         double evap = 0.1;
         
         //construct the optimization objects
