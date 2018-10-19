@@ -81,6 +81,7 @@ public class Ant {
                     if (maze.getPheromone(currentPosition.add(possibleDirection)) == 0) {
                         chosen = possibleDirection;
                         lastTaken = chosen;
+                        break;
                     }
                 }
             }

@@ -57,9 +57,18 @@ public class Maze {
         Coordinate currentPos = r.getStart();
         ArrayList<Direction> route = r.getRoute();
         int distance = route.size();
-        for (int i = 0; i < distance; i++) {
-            pheromones[currentPos.getX()][currentPos.getY()] += (Q /distance);
-            currentPos = currentPos.add(route.get(i));
+        double[][] added = new double[width][length];
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < length; j++) {
+                added[i][j] = 0;
+            }
+        }
+        for (Direction d : route) {
+            if (added[currentPos.getX()][currentPos.getY()] == 0) {
+                pheromones[currentPos.getX()][currentPos.getY()] += (Q / distance);
+                added[currentPos.getX()][currentPos.getY()] = 1;
+            }
+            currentPos = currentPos.add(d);
         }
     }
 
