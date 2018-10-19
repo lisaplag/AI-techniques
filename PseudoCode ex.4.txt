@@ -1,0 +1,29 @@
+Ant.findRoute() {	
+	while (!currentPosition != endOfMaze) {
+			if (currentPosition.surroundingPheromone == 0) {
+				choice = possibleDirections.get(random);
+				lastChoiceTaken = choice;
+			}
+		} else {
+			for( direction : possibleDirections) {
+				probability = direction.getPheromone() / totalSurroundingPheromone;
+				if (randomDouble[0,1] <= probability) {
+					choice = direction;
+					lastChoiceTaken = choice;
+				}
+			}
+			for( direction : possibleDirections) {
+				if (direction.getPheromone() == 0) {
+					choice = direction;
+					lastTaken = choice;
+					break;
+				}
+			}	
+		}
+
+		route.add(choice);
+		currentPosition += choice;
+	}
+
+return route;
+}
