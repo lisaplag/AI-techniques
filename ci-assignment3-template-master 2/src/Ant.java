@@ -53,7 +53,7 @@ public class Ant {
             } else {
                 double total = maze.getSurroundingPheromone(currentPosition).getTotalSurroundingPheromone();
                 double sum = 0;
-                // If there is only one possible direction, always pick that one
+                // If there is only one possible direction, always pick that one.
                 if ( possibleDirections.size() == 1)
                     sum = 1.0;
                 // This block takes into account that the ant can't go back to where it came from.
@@ -94,6 +94,12 @@ public class Ant {
         return route;
     }
 
+    /**
+     * Method that returns all valid directions the ant can take,
+     * based on its current position.
+     *
+     * @return the valid directions
+     */
     public ArrayList<Direction> getValidDirections() {
         int x = currentPosition.getX();
         int y = currentPosition.getY();
@@ -106,6 +112,10 @@ public class Ant {
             possibleDirections.add(Direction.South);
         if (y > 0 && maze.getWalls()[x][y - 1] == 1 && lastTaken != Direction.South)
             possibleDirections.add(Direction.North);
+
+        // This block handles dead ends.
+        // If there are no possible routes, add the position we came from
+        // as a possible direction.
         if (possibleDirections.size() == 0) {
             if (lastTaken == Direction.South)
                 possibleDirections.add(Direction.North);
@@ -120,6 +130,11 @@ public class Ant {
         return possibleDirections;
     }
 
+    /**
+     * Method that finds directions with the most pheromone
+     *
+     * @return the route with the most pheromone
+     */
     public Route findGreedyRoute() {
         Route route = new Route(start);
         Direction dir = null;
