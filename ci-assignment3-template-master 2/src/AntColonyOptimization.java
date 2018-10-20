@@ -44,7 +44,7 @@ public class AntColonyOptimization {
         for (int j = 0; j < generations; j++) {
             counter = 0;
             if (evaporation < 0.5 && j >= generations/2) {
-                evaporation = 0.75;
+                evaporation = 0.9;
             }
             ArrayList<Route> genRoutes = new ArrayList<>();
             for (int i = 0; i < antsPerGen; i++) {
@@ -69,9 +69,9 @@ public class AntColonyOptimization {
      */
     public static void main(String[] args) throws FileNotFoundException {
     	//parameters
-    	int genSize = 10;
-        int noGen = 1000;
-        double Q = 200;
+    	int genSize = 25;
+        int noGen = 600;
+        double Q = 135;
         double evap = 0.1;
         
         //construct the optimization objects

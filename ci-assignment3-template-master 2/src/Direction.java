@@ -39,6 +39,16 @@ public enum Direction {
         return dirToCoordinateDeltaMap.get(dir);
     }
 
+    public Direction opposite() {
+        if ( this == Direction.East)
+            return Direction.West;
+        if ( this == Direction.North)
+            return Direction.South;
+        if ( this == Direction.West)
+            return Direction.East;
+        return Direction.North;
+    }
+
     /**
      * Direction to an int.
      * @param dir the direction.
