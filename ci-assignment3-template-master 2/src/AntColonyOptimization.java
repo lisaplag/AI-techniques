@@ -51,14 +51,16 @@ public class AntColonyOptimization {
                 Ant ant = new Ant(maze, spec);
                 found = ant.findRoute();
                 genRoutes.add(found);
+                //System.out.println((i+1) + ", gen " + (j+1));
                 if (found.size() < min) {
                     min = found.size();
                     result = found;
+                    System.out.println("Generation " + (j+1) + ": " +min);
                 }
             }
             maze.addPheromoneRoutes(genRoutes, Q);
             maze.evaporate(evaporation);
-            System.out.println("Generation " + (j+1) + ": " +min);
+
         }
         //Ant greedyAnt = new Ant(maze, spec);
         return result;
@@ -69,9 +71,9 @@ public class AntColonyOptimization {
      */
     public static void main(String[] args) throws FileNotFoundException {
     	//parameters
-    	int genSize = 25;
+    	int genSize = 40;
         int noGen = 600;
-        double Q = 135;
+        double Q = 1350;
         double evap = 0.1;
         
         //construct the optimization objects
