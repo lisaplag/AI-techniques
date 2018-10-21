@@ -43,23 +43,24 @@ public class AntColonyOptimization {
        Route result = null;
         for (int j = 0; j < generations; j++) {
             counter = 0;
-            if (evaporation < 0.5 && j >= generations/2) {
-                evaporation = 0.9;
+            if (j >= generations * 0.75) {
+                evaporation = 0.0;
             }
             ArrayList<Route> genRoutes = new ArrayList<>();
             for (int i = 0; i < antsPerGen; i++) {
                 Ant ant = new Ant(maze, spec);
                 found = ant.findRoute();
                 genRoutes.add(found);
-                //System.out.println((i+1) + ", gen " + (j+1));
+               // System.out.println((i+1) + ", gen " + (j+1));
                 if (found.size() < min) {
                     min = found.size();
                     result = found;
-                    System.out.println("Generation " + (j+1) + ": " +min);
+
                 }
             }
             maze.addPheromoneRoutes(genRoutes, Q);
             maze.evaporate(evaporation);
+            System.out.println("Generation " + (j+1) + ": " +min);
 
         }
         //Ant greedyAnt = new Ant(maze, spec);
@@ -71,14 +72,14 @@ public class AntColonyOptimization {
      */
     public static void main(String[] args) throws FileNotFoundException {
     	//parameters
-    	int genSize = 40;
-        int noGen = 600;
+    	int genSize = 15;
+        int noGen = 500;
         double Q = 1350;
         double evap = 0.1;
         
         //construct the optimization objects
-        Maze maze = Maze.createMaze("./data/medium maze.txt");
-        PathSpecification spec = PathSpecification.readCoordinates("./data/medium coordinates.txt");
+        Maze maze = Maze.createMaze("./data/easy maze.txt");
+        PathSpecification spec = PathSpecification.readCoordinates("./data/easy coordinates.txt");
         AntColonyOptimization aco = new AntColonyOptimization(maze, genSize, noGen, Q, evap);
         
         //save starting time
@@ -91,7 +92,7 @@ public class AntColonyOptimization {
         System.out.println("Time taken: " + ((System.currentTimeMillis() - startTime) / 1000.0));
         
         //save solution
-        shortestRoute.writeToFile("./data/medium_solution.txt");
+        shortestRoute.writeToFile("./data/easy_solution.txt");
         
         //print route size
         System.out.println("Route size: " + shortestRoute.size());

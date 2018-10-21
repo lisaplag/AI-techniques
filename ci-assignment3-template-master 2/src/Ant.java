@@ -13,7 +13,7 @@ public class Ant {
     private Coordinate currentPosition;
     private static Random rand;
     private Direction lastTaken;
-
+    public ArrayList<Coordinate> path;
     /**
      * Constructor for ant taking a Maze and PathSpecification.
      *
@@ -29,6 +29,7 @@ public class Ant {
         if (rand == null) {
             rand = new Random();
         }
+        path = new ArrayList<>();
     }
 
     /**
@@ -37,7 +38,7 @@ public class Ant {
      * @return The route the ant found through the maze.
      */
     public Route findRoute() {
-        double straightModifier = 1;
+        double Modifier = 1;
         Route route = new Route(start);
         Direction chosen;
         //While the and has not reached the end yet
@@ -69,18 +70,18 @@ public class Ant {
                 if (possibleDirections.contains(lastTaken) && openArea(possibleDirections)){
                     chosen = lastTaken;
                 }
-                if (chosen == null) {
+                while (chosen == null) {
                     // This block chooses a direction based on their probabilities.
                     for (Direction possibleDirection : possibleDirections) {
                         sum += maze.getPheromone(currentPosition.add(possibleDirection)) / total;
                         // This if statement is redundant for now
-                        if (possibleDirection == lastTaken && openArea(possibleDirections)) {
-                            sum += straightModifier;
+                        if (path.contains(currentPosition.add(possibleDirection)) && possibleDirections.size() > 1) {
+                            sum -= Modifier;
                             if (r <= sum) {
                                 chosen = possibleDirection;
                                 break;
                             }
-                            sum -= straightModifier;
+                            sum += Modifier;
                         } else {
                             if (r <= sum) {
                                 chosen = possibleDirection;
@@ -101,6 +102,7 @@ public class Ant {
             lastTaken = chosen;
             route.add(chosen);
             currentPosition = currentPosition.add(chosen);
+            path.add(currentPosition);
             //System.out.println(maze.getPheromone(currentPosition));
             //System.out.println(currentPosition.toString());
             //System.out.println("Found the exit and added pheromone " + AntColonyOptimization.counter + " times.");
