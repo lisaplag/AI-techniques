@@ -43,8 +43,8 @@ public class AntColonyOptimization {
         Route result = null;
         for (int j = 0; j < generations; j++) {
             counter = 0;
-            if (j >= generations * 0.75) {
-                evaporation = 0.0;
+            if (j >= generations * 0.5) {
+                evaporation = 0.9;
             }
             ArrayList<Route> genRoutes = new ArrayList<>();
             for (int i = 0; i < antsPerGen; i++) {
@@ -74,14 +74,14 @@ public class AntColonyOptimization {
      */
     public static void main(String[] args) throws FileNotFoundException {
     	//parameters
-    	int genSize = 20;
-        int noGen = 10;
+    	int genSize = 25;
+        int noGen = 50;
         double Q = 1350;
-        double evap = 0.01;
-        
+        double evap = 0.1;
+        String difficulty = "hard";
         //construct the optimization objects
-        Maze maze = Maze.createMaze("./data/hard maze.txt");
-        PathSpecification spec = PathSpecification.readCoordinates("./data/hard coordinates.txt");
+        Maze maze = Maze.createMaze("./data/" + difficulty + " maze.txt");
+        PathSpecification spec = PathSpecification.readCoordinates("./data/" + difficulty + " coordinates.txt");
         AntColonyOptimization aco = new AntColonyOptimization(maze, genSize, noGen, Q, evap);
         
         //save starting time
@@ -94,7 +94,7 @@ public class AntColonyOptimization {
         System.out.println("Time taken: " + ((System.currentTimeMillis() - startTime) / 1000.0));
         
         //save solution
-        shortestRoute.writeToFile("./data/hard_solution.txt");
+        shortestRoute.writeToFile("./data/" + difficulty + "_solution.txt");
         
         //print route size
         System.out.println("Route size: " + shortestRoute.size());
