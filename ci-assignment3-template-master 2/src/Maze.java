@@ -56,21 +56,27 @@ public class Maze {
     public void addPheromoneRoute(Route r, double Q) {
         Coordinate currentPos = r.getStart();
         ArrayList<Direction> route = r.getRoute();
+        ArrayList<Coordinate> visitedCoordinates = new ArrayList<>();
+        visitedCoordinates.add(currentPos);
+        
         int distance = route.size();
-        double[][] added = new double[width][length];
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < length; j++) {
-                added[i][j] = 0;
-            }
-        }
-        for (Direction d : route) {
-            if (added[currentPos.getX()][currentPos.getY()] == 0) {
-                pheromones[currentPos.getX()][currentPos.getY()] += (Q / distance);
-                added[currentPos.getX()][currentPos.getY()] = 1;
-            }
+
+        for (Direction d : route) {            
             currentPos = currentPos.add(d);
+            visitedCoordinates.add(currentPos);
+            pheromones[currentPos.getX()][currentPos.getY()] = 0.0000001; 
+            
+            if (visitedCoordinates.contains(currentPos) == true) {
+	           	int previousVisit = visitedCoordinates.indexOf(currentPos) + 1;            	
+	           	visitedCoordinates.subList(previousVisit, visitedCoordinates.size()).clear();
+           }
+        }
+        
+        for (Coordinate c : visitedCoordinates) {
+        	pheromones[c.getX()][c.getY()] += (Q / distance);     	
         }
     }
+    
 
     /**
      * Update pheromones for a list of routes
