@@ -11,6 +11,7 @@ public class Route implements Serializable {
     private static final long serialVersionUID = 0L;
     private ArrayList<Direction> route;
     private Coordinate start;
+    public ArrayList<Coordinate> cPath;
 
     /**
      * Route takes a starting coordinate to initialize
@@ -19,6 +20,7 @@ public class Route implements Serializable {
     public Route(Coordinate start) {
         route = new ArrayList<>();
         this.start = start;
+        cPath = new ArrayList<>();
     }
 
     /**

@@ -60,7 +60,7 @@ public class Maze {
         visitedCoordinates.add(currentPos);
         
         int distance = route.size();
-
+        
         for (Direction d : route) {            
             currentPos = currentPos.add(d);
             visitedCoordinates.add(currentPos);

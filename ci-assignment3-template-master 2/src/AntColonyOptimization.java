@@ -63,6 +63,13 @@ public class AntColonyOptimization {
             }
             maze.addPheromoneRoutes(genRoutes, Q);
             maze.evaporate(evaporation);
+            for (Route p: genRoutes) {
+                if (p.cPath.size() < min) {
+                    min = p.cPath.size();
+                    result = makeRoute(p.getStart(), p.cPath);
+
+                }
+            }
             System.out.println("Generation " + (j+1) + ": " +min);
 
         }
@@ -80,7 +87,7 @@ public class AntColonyOptimization {
         double Q = 1000;
         double evap = 0.1;
         double eps = 0.1;
-        
+
         //construct the optimization objects
         Maze maze = Maze.createMaze("./data/hard maze.txt");
         PathSpecification spec = PathSpecification.readCoordinates("./data/hard coordinates.txt");
@@ -100,5 +107,23 @@ public class AntColonyOptimization {
         
         //print route size
         System.out.println("Route size: " + shortestRoute.size());
+    }
+
+    public Route makeRoute(Coordinate start, ArrayList<Coordinate> path) {
+        Route result = new Route(start);
+        Coordinate currentPos = start;
+        for (int i = 0; i < path.size() - 1; i++) {
+            if (currentPos.add(Direction.North).equals(path.get(i + 1))) {
+                result.add(Direction.North);
+            } else if (currentPos.add(Direction.South).equals(path.get(i + 1))) {
+                result.add(Direction.South);
+            } else if (currentPos.add(Direction.East).equals(path.get(i + 1))) {
+                result.add(Direction.East);
+            } else {
+                result.add(Direction.West);
+            }
+            currentPos = path.get(i + 1);
+        }
+        return result;
     }
 }
