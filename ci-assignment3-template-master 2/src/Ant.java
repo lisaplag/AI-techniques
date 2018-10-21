@@ -40,6 +40,7 @@ public class Ant {
     public Route findRoute() {
         double Modifier = 1;
         Route route = new Route(start);
+        route.cPath.add(currentPosition);
         Direction chosen;
         //While the and has not reached the end yet
         while (!currentPosition.equals(end)) {
@@ -102,6 +103,7 @@ public class Ant {
             lastTaken = chosen;
             route.add(chosen);
             currentPosition = currentPosition.add(chosen);
+            route.cPath.add(currentPosition);
             path.add(currentPosition);
             //System.out.println(maze.getPheromone(currentPosition));
             //System.out.println(currentPosition.toString());
