@@ -52,7 +52,7 @@ public class AntColonyOptimization {
             int localMin = Integer.MAX_VALUE;
             
         	if (j >= generations * 0.7) {
-                evaporation = 0.5;
+                evaporation = 0.8;
             }
             
             // let all ants run through maze
@@ -84,10 +84,10 @@ public class AntColonyOptimization {
      */
     public static void main(String[] args) throws FileNotFoundException {
     	//set parameters
-    	int genSize = 100;
-        int noGen = 100;
+    	int genSize = 10;
+        int noGen = 300;
         double Q = 1000;
-        double evap = 0.1;
+        double evap = 0.01;
         double eps = 0.1;
 
         //construct the optimization objects
@@ -105,7 +105,7 @@ public class AntColonyOptimization {
         System.out.println("Time taken: " + ((System.currentTimeMillis() - startTime) / 1000.0));
         
         //save solution
-        shortestRoute.writeToFile("./data/x_solution.txt");
+        shortestRoute.writeToFile("./data/medium_solution.txt");
         
         //print route size
         System.out.println("Route size: " + shortestRoute.size());
