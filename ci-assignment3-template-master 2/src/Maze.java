@@ -26,13 +26,13 @@ public class Maze {
         this.walls = walls;
         this.length = length;
         this.width = width;
-        initializePheromones(width, length);
+        initializePheromones();
     }
 
     /**
      * Initialize pheromones to a start value.
      */
-    private void initializePheromones(int width, int length) {
+    private void initializePheromones() {
         pheromones = new double[width][length];
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < length; j++) {
@@ -45,7 +45,7 @@ public class Maze {
      * Reset the maze for a new shortest path problem.
      */
     public void reset() {
-        initializePheromones(width, length);
+        initializePheromones();
     }
 
     /**
@@ -64,7 +64,7 @@ public class Maze {
         for (Direction d : route) {            
             currentPos = currentPos.add(d);
             visitedCoordinates.add(currentPos);
-            pheromones[currentPos.getX()][currentPos.getY()] = 1.0 / Math.pow(10, 20); 
+            pheromones[currentPos.getX()][currentPos.getY()] += 1.0 / Math.pow(10, 20); 
             
             if (visitedCoordinates.contains(currentPos) == true) {
 	           	int previousVisit = visitedCoordinates.indexOf(currentPos) + 1;            	
@@ -130,7 +130,7 @@ public class Maze {
      * @return the pheromones of the neighbouring positions.
      */
     public SurroundingPheromone getSurroundingPheromone(Coordinate position) {
-        if (position.getX() > 0 && position.getY() > 0 && position.getY() < length - 1 && position.getX() < width - 1) {
+        if (position.xBetween(1, width-1) && position.yBetween(1, length-1)) {
             return new SurroundingPheromone(pheromones[position.getX()][position.getY() - 1],
                     pheromones[position.getX() + 1][position.getY()],
                     pheromones[position.getX()][position.getY() + 1],
@@ -184,7 +184,7 @@ public class Maze {
      * @return pheromone at point
      */
     public double getPheromone(Coordinate pos) {
-        if ( inBounds(pos)) {
+        if ( inBounds(pos) == true) {
             return pheromones[pos.getX()][pos.getY()];
         }
         return 0;

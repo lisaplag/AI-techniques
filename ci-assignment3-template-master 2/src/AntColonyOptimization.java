@@ -41,7 +41,7 @@ public class AntColonyOptimization {
      */
     public Route findShortestRoute(PathSpecification spec) {
         maze.reset();
-        Q = maze.getWidth() + maze.getLength();
+        //Q = maze.getWidth() + maze.getLength();
         Route globalRoute = null;
         int globalMin = Integer.MAX_VALUE;
         double percentageSameRoute = 0.0;
@@ -84,10 +84,10 @@ public class AntColonyOptimization {
      */
     public static void main(String[] args) throws FileNotFoundException {
     	//set parameters
-    	int genSize = 10;
-        int noGen = 300;
-        double Q = 1000;
-        double evap = 0.01;
+    	int genSize = 20;
+        int noGen = 100;
+        double Q = 500;
+        double evap = 0.2;
         double eps = 0.1;
 
         //construct the optimization objects

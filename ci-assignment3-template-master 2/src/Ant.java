@@ -45,26 +45,29 @@ public class Ant {
             double r = rand.nextDouble();
             ArrayList<Direction> possibleDirections = getValidDirections(currentPosition);
             
-            if (lastTaken != null && maze.getSurroundingPheromone(currentPosition).getTotalSurroundingPheromone()
-                    - maze.getPheromone(currentPosition.add(lastTaken.opposite()))<= 0 ) {
+            // If there is only one possible direction, always pick that one.
+            if ( possibleDirections.size() == 1) {
+                chosen = possibleDirections.get(0);
+            }
+            else if (lastTaken != null && maze.getSurroundingPheromone(currentPosition).getTotalSurroundingPheromone()
+                    - maze.getPheromone(currentPosition.subtract(lastTaken))<= 0 ) {
                 //This block makes the ant take a random route if there is no pheromone at all.
                 int randomChoice = (int) Math.floor(rand.nextDouble() * possibleDirections.size());
                 chosen = possibleDirections.get(randomChoice);
-            } else {
+            } 
+            else {
                 // This total takes into account that the ant can't go back to where it came from.
+            	double sum = 0;
                 double total = maze.getSurroundingPheromone(currentPosition).getTotalSurroundingPheromone();
-                if (lastTaken != null)
-                    total -= maze.getPheromone(currentPosition.add(lastTaken.opposite()));
+                if (lastTaken != null) {
+                	total -= maze.getPheromone(currentPosition.subtract(lastTaken));                	
+                }
+
+//                // Go straight if possible in an open area
+//                if (possibleDirections.contains(lastTaken) && openArea(possibleDirections)){
+//                    chosen = lastTaken;
+//                }
                 
-                // If there is only one possible direction, always pick that one.
-                if ( possibleDirections.size() == 1) {
-                    chosen = possibleDirections.get(0);
-                }
-                // Go straight if possible in an open area
-                if (possibleDirections.contains(lastTaken) && openArea(possibleDirections)){
-                    chosen = lastTaken;
-                }
-                double sum = 0;
                 while (chosen == null) {
                     // This block chooses a direction based on their probabilities.
                     for (Direction possibleDirection : possibleDirections) {
