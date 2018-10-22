@@ -64,7 +64,7 @@ public class Maze {
         for (Direction d : route) {            
             currentPos = currentPos.add(d);
             visitedCoordinates.add(currentPos);
-            pheromones[currentPos.getX()][currentPos.getY()] = 0.0000000001; 
+            pheromones[currentPos.getX()][currentPos.getY()] = 1.0 / Math.pow(10, 20); 
             
             if (visitedCoordinates.contains(currentPos) == true) {
 	           	int previousVisit = visitedCoordinates.indexOf(currentPos) + 1;            	

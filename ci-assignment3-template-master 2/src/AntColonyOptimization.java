@@ -1,5 +1,7 @@
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Class representing the first assignment. Finds shortest path between two points in a maze according to a specific
@@ -40,34 +42,41 @@ public class AntColonyOptimization {
     public Route findShortestRoute(PathSpecification spec) {
         maze.reset();
         Q = maze.getWidth() + maze.getLength();
-        Route found;
-        int min = Integer.MAX_VALUE;
-        Route result = null;
-       
+        Route globalRoute = null;
+        int globalMin = Integer.MAX_VALUE;
+        double percentageSameRoute = 0.0;
+
         for(int j = 0; j < generations; j++) {
-            counter = 0;
-            if (j >= generations * 0.7) {
-                evaporation = 0.7;
+        	ArrayList<Route> genRoutes = new ArrayList<>();
+            Route localRoute = null;
+            int localMin = Integer.MAX_VALUE;
+            
+        	if (j >= generations * 0.7) {
+                evaporation = 0.5;
             }
-            ArrayList<Route> genRoutes = new ArrayList<>();
+            
             // let all ants run through maze
             for (int i = 0; i < antsPerGen; i++) {
                 Ant ant = new Ant(maze, spec);
-                found = ant.findRoute();
+                Route found = ant.findRoute();
                 genRoutes.add(found);
+                if (found.size() < localMin) {
+                    localMin = found.size();
+                    localRoute = found;
+                }
 
-                if (found.size() < min) {
-                    min = found.size();
-                    result = found;
+                if (found.size() < globalMin) {
+                    globalMin = found.size();
+                    globalRoute = found;
                 }
             }
+            percentageSameRoute = 100 * Collections.frequency(genRoutes, localRoute) / (double) antsPerGen;
             maze.addPheromoneRoutes(genRoutes, Q);
             maze.evaporate(evaporation);
-            System.out.println("Generation " + (j+1) + ": " +min);
+            System.out.println("Generation " + (j+1) + ": " + globalMin + ", " + percentageSameRoute + "% converged");
 
         }
-
-        return result;
+        return globalRoute;
     }
 
     /**
@@ -75,15 +84,15 @@ public class AntColonyOptimization {
      */
     public static void main(String[] args) throws FileNotFoundException {
     	//set parameters
-    	int genSize = 20;
+    	int genSize = 100;
         int noGen = 100;
         double Q = 1000;
         double evap = 0.1;
         double eps = 0.1;
 
         //construct the optimization objects
-        Maze maze = Maze.createMaze("./data/hard maze.txt");
-        PathSpecification spec = PathSpecification.readCoordinates("./data/hard coordinates.txt");
+        Maze maze = Maze.createMaze("./data/medium maze.txt");
+        PathSpecification spec = PathSpecification.readCoordinates("./data/medium coordinates.txt");
         AntColonyOptimization aco = new AntColonyOptimization(maze, genSize, noGen, Q, evap, eps);
         
         //save starting time
@@ -96,10 +105,11 @@ public class AntColonyOptimization {
         System.out.println("Time taken: " + ((System.currentTimeMillis() - startTime) / 1000.0));
         
         //save solution
-        shortestRoute.writeToFile("./data/hard_solution.txt");
+        shortestRoute.writeToFile("./data/x_solution.txt");
         
         //print route size
         System.out.println("Route size: " + shortestRoute.size());
+        
     }
 
 }
