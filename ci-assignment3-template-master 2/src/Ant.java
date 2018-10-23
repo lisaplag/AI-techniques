@@ -71,21 +71,7 @@ public class Ant {
                             break;
                         }
                     }
-                    
-                    // choose one of the least frequently visited paths with some probability (NOT USED)
-                    if (rand.nextDouble() <= 0.0) {
-                    	int leastFreq = Integer.MAX_VALUE;
-                    	Direction leastDir = null;
-                    	for (Direction possibleDirection : possibleDirections) {
-                    		int freq = maze.getFrequency(currentPosition.add(possibleDirection));
-                    		if (freq < leastFreq) {
-                    			leastFreq = freq;
-                    			leastDir = possibleDirection;
-                    		}
-                    	}
-                    	chosen = leastDir;
-                    }
-                    
+                                       
                     //This block makes the ant choose a random direction without any pheromone with a certain probability.
                     //The direction is random because the list of possible directions was shuffled.
                     if (rand.nextDouble() <= 0.7) {
@@ -154,6 +140,7 @@ public class Ant {
 
 
     /**
+     * THIS IS NOT USED
      * Method that finds directions with the most pheromone
      *
      * @return the route with the most pheromone

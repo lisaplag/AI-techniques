@@ -13,7 +13,6 @@ public class Maze {
     private int length;
     private int[][] walls;
     private double[][] pheromones;
-    private int[][] frequency;
     private Coordinate start;
     private Coordinate end;
 
@@ -35,11 +34,9 @@ public class Maze {
      */
     private void initializePheromones() {
         pheromones = new double[width][length];
-        frequency = new int[width][length];
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < length; j++) {
                 pheromones[i][j] = 0;
-                frequency[i][j] = 0;
             }
         }
     }
@@ -193,19 +190,6 @@ public class Maze {
         return 0;
     }
     
-    /**
-     * Frequency getter for a specific position. If the position is not in bounds returns 0
-     * @param pos Position coordinate
-     * @return frequency at point
-     */
-    public int getFrequency(Coordinate pos) {
-        if ( inBounds(pos) == true) {
-            return frequency[pos.getX()][pos.getY()];
-        }
-        return 0;
-    }
-
-
     /**
      * Check whether a coordinate lies in the current maze.
      * @param position The position to be checked
