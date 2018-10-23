@@ -14,8 +14,6 @@ public class AntColonyOptimization {
     private double Q;
     private double evaporation;
     private Maze maze;
-    private double epsilon;
-    public static int counter;
 
     /**
      * Constructs a new optimization object using ants.
@@ -25,13 +23,12 @@ public class AntColonyOptimization {
      * @param Q normalization factor for the amount of dropped pheromone
      * @param evaporation the evaporation factor.
      */
-    public AntColonyOptimization(Maze maze, int antsPerGen, int generations, double Q, double evaporation, double epsilon) {
+    public AntColonyOptimization(Maze maze, int antsPerGen, int generations, double Q, double evaporation) {
         this.maze = maze;
         this.antsPerGen = antsPerGen;
         this.generations = generations;
         this.Q = Q;
         this.evaporation = evaporation;
-        this.epsilon = epsilon;
     }
 
     /**
@@ -41,18 +38,21 @@ public class AntColonyOptimization {
      */
     public Route findShortestRoute(PathSpecification spec) {
         maze.reset();
-        //Q = maze.getWidth() + maze.getLength();
+        Q = maze.getWidth() + maze.getLength();
         Route globalRoute = null;
+        Route localRoute = null;
         int globalMin = Integer.MAX_VALUE;
         double percentageSameRoute = 0.0;
+        int gen = 0;
 
-        for(int j = 0; j < generations; j++) {
+        while (percentageSameRoute < 1.0) {
         	ArrayList<Route> genRoutes = new ArrayList<>();
-            Route localRoute = null;
+            localRoute = null;
             int localMin = Integer.MAX_VALUE;
+            gen++;
             
-        	if (j >= generations * 0.7) {
-                evaporation = 0.8;
+        	if (gen >= generations * 0.7) {
+                evaporation = 0.5;
             }
             
             // let all ants run through maze
@@ -60,23 +60,25 @@ public class AntColonyOptimization {
                 Ant ant = new Ant(maze, spec);
                 Route found = ant.findRoute();
                 genRoutes.add(found);
+                // check if route is shortest of this generation
                 if (found.size() < localMin) {
                     localMin = found.size();
                     localRoute = found;
                 }
-
+                // check if route is shortest of all generations
                 if (found.size() < globalMin) {
                     globalMin = found.size();
                     globalRoute = found;
                 }
             }
-            percentageSameRoute = 100 * Collections.frequency(genRoutes, localRoute) / (double) antsPerGen;
+            // update convergence criterion
+            percentageSameRoute = Collections.frequency(genRoutes, localRoute) / (double) antsPerGen;
             maze.addPheromoneRoutes(genRoutes, Q);
             maze.evaporate(evaporation);
-            System.out.println("Generation " + (j+1) + ": " + globalMin + ", " + percentageSameRoute + "% converged");
+            System.out.println("Generation " + (gen) + ": " + localMin + ", " + 100*percentageSameRoute + "% converged");
 
         }
-        return globalRoute;
+        return localRoute;
     }
 
     /**
@@ -87,13 +89,12 @@ public class AntColonyOptimization {
     	int genSize = 20;
         int noGen = 100;
         double Q = 500;
-        double evap = 0.2;
-        double eps = 0.1;
+        double evap = 0.1;
 
         //construct the optimization objects
-        Maze maze = Maze.createMaze("./data/medium maze.txt");
-        PathSpecification spec = PathSpecification.readCoordinates("./data/medium coordinates.txt");
-        AntColonyOptimization aco = new AntColonyOptimization(maze, genSize, noGen, Q, evap, eps);
+        Maze maze = Maze.createMaze("./data/hard maze.txt");
+        PathSpecification spec = PathSpecification.readCoordinates("./data/hard coordinates.txt");
+        AntColonyOptimization aco = new AntColonyOptimization(maze, genSize, noGen, Q, evap);
         
         //save starting time
         long startTime = System.currentTimeMillis();
@@ -105,7 +106,7 @@ public class AntColonyOptimization {
         System.out.println("Time taken: " + ((System.currentTimeMillis() - startTime) / 1000.0));
         
         //save solution
-        shortestRoute.writeToFile("./data/medium_solution.txt");
+        shortestRoute.writeToFile("./data/hard_solution.txt");
         
         //print route size
         System.out.println("Route size: " + shortestRoute.size());

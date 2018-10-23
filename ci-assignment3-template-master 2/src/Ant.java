@@ -39,10 +39,9 @@ public class Ant {
         Route route = new Route(start);
         Direction chosen;
         
-        //While the and has not reached the end yet
+        //While the ant has not reached the end yet
         while (!currentPosition.equals(end)) {
             chosen = null;
-            double r = rand.nextDouble();
             ArrayList<Direction> possibleDirections = getValidDirections(currentPosition);
             
             // If there is only one possible direction, always pick that one.
@@ -51,25 +50,20 @@ public class Ant {
             }
             else if (lastTaken != null && maze.getSurroundingPheromone(currentPosition).getTotalSurroundingPheromone()
                     - maze.getPheromone(currentPosition.subtract(lastTaken))<= 0 ) {
-                //This block makes the ant take a random route if there is no pheromone at all.
+                //This block makes the ant take a random choice if there is no pheromone at all.
                 int randomChoice = (int) Math.floor(rand.nextDouble() * possibleDirections.size());
                 chosen = possibleDirections.get(randomChoice);
             } 
             else {
-                // This total takes into account that the ant can't go back to where it came from.
-            	double sum = 0;
+            	// This block chooses a direction based on their probabilities.
+                // The total takes into account that the ant can't go back to where it came from.
                 double total = maze.getSurroundingPheromone(currentPosition).getTotalSurroundingPheromone();
                 if (lastTaken != null) {
                 	total -= maze.getPheromone(currentPosition.subtract(lastTaken));                	
                 }
-
-//                // Go straight if possible in an open area
-//                if (possibleDirections.contains(lastTaken) && openArea(possibleDirections)){
-//                    chosen = lastTaken;
-//                }
-                
+            	double sum = 0;
+            	double r = rand.nextDouble();
                 while (chosen == null) {
-                    // This block chooses a direction based on their probabilities.
                     for (Direction possibleDirection : possibleDirections) {
                         sum += maze.getPheromone(currentPosition.add(possibleDirection)) / total;
                         if (r <= sum) {
@@ -77,24 +71,38 @@ public class Ant {
                             break;
                         }
                     }
-
-                    //This block makes the ant prefer to go in a random direction iff there is no pheromone in that direction.
-                    for (Direction possibleDirection : possibleDirections) {
-                        if (maze.getPheromone(currentPosition.add(possibleDirection)) == 0) {
-                            chosen = possibleDirection;
-                            break;
-                        }
+                    
+                    // choose one of the least frequently visited paths with some probability (NOT USED)
+                    if (rand.nextDouble() <= 0.0) {
+                    	int leastFreq = Integer.MAX_VALUE;
+                    	Direction leastDir = null;
+                    	for (Direction possibleDirection : possibleDirections) {
+                    		int freq = maze.getFrequency(currentPosition.add(possibleDirection));
+                    		if (freq < leastFreq) {
+                    			leastFreq = freq;
+                    			leastDir = possibleDirection;
+                    		}
+                    	}
+                    	chosen = leastDir;
                     }
+                    
+                    //This block makes the ant choose a random direction without any pheromone with a certain probability.
+                    //The direction is random because the list of possible directions was shuffled.
+                    if (rand.nextDouble() <= 0.7) {
+	                    for (Direction possibleDirection : possibleDirections) {
+	                        if (maze.getPheromone(currentPosition.add(possibleDirection)) == 0) {
+	                            chosen = possibleDirection;
+	                            break;
+	                        }
+	                    }
+                    }
+                    
                 }
             }
             lastTaken = chosen;
             route.add(chosen);
             currentPosition = currentPosition.add(chosen);
-            //System.out.println(maze.getPheromone(currentPosition));
-            //System.out.println(currentPosition.toString());
-            //System.out.println("Found the exit and added pheromone " + AntColonyOptimization.counter + " times.");
         }
-        AntColonyOptimization.counter++;
         return route;
     }
 
@@ -108,19 +116,24 @@ public class Ant {
         int x = position.getX();
         int y = position.getY();
         ArrayList<Direction> possibleDirections = new ArrayList<>();
-        if (x < maze.getWidth() - 1 && maze.getWalls()[x + 1][y] == 1 && lastTaken != Direction.West)
-               // && !deadEnd(currentPosition.add(Direction.East)))
-            possibleDirections.add(Direction.East);
-        if (x > 0 && maze.getWalls()[x - 1][y] == 1 && lastTaken != Direction.East)
-               // && !deadEnd(currentPosition.add(Direction.West)))
-            possibleDirections.add(Direction.West);
-        if (y < maze.getLength() - 1 && maze.getWalls()[x][y + 1] == 1 && lastTaken != Direction.North)
-               // && !deadEnd(currentPosition.add(Direction.South)))
-            possibleDirections.add(Direction.South);
-        if (y > 0 && maze.getWalls()[x][y - 1] == 1 && lastTaken != Direction.South)
-               // && !deadEnd(currentPosition.add(Direction.North)))
-            possibleDirections.add(Direction.North);
+        // check for possible directions and add them
+        // by default it is not possible to go back to exactly where the ant came from
+        if (x < maze.getWidth() - 1 && maze.getWalls()[x + 1][y] == 1 && lastTaken != Direction.West) {
+        	possibleDirections.add(Direction.East);        	
+        }
 
+        if (x > 0 && maze.getWalls()[x - 1][y] == 1 && lastTaken != Direction.East) {
+        	possibleDirections.add(Direction.West);        	
+        }
+
+        if (y < maze.getLength() - 1 && maze.getWalls()[x][y + 1] == 1 && lastTaken != Direction.North) {
+        	possibleDirections.add(Direction.South);        	
+        }
+
+        if (y > 0 && maze.getWalls()[x][y - 1] == 1 && lastTaken != Direction.South) {
+        	 possibleDirections.add(Direction.North);        	
+        }
+          
         // This block handles dead ends.
         // If there are no possible routes, add the position we came from
         // as a possible direction.
@@ -139,16 +152,6 @@ public class Ant {
         return possibleDirections;
     }
 
-    public boolean openArea(ArrayList<Direction> dirs) {
-        Coordinate test = currentPosition;
-        for (Direction d: dirs) {
-            test = test.add(d);
-            if (maze.getWalls()[test.getX()][test.getY()] == 0){
-                return false;
-            }
-        }
-        return true;
-    }
 
     /**
      * Method that finds directions with the most pheromone
@@ -171,8 +174,7 @@ public class Ant {
             currentPosition = currentPosition.add(dir);
         }
         return route;
-
-
     }
+    
 }
 

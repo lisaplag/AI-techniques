@@ -247,7 +247,7 @@ public class TSPData implements Serializable {
         //construct optimization
         Maze maze = Maze.createMaze("./data/hard maze.txt");
         TSPData pd = TSPData.readSpecification(coordinates, TSPpath);
-        AntColonyOptimization aco = new AntColonyOptimization(maze, gen, noGen, Q, evap, eps);
+        AntColonyOptimization aco = new AntColonyOptimization(maze, gen, noGen, Q, evap);
         
         //run optimization and write to file
         pd.calculateRoutes(aco);

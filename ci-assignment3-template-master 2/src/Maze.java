@@ -13,6 +13,7 @@ public class Maze {
     private int length;
     private int[][] walls;
     private double[][] pheromones;
+    private int[][] frequency;
     private Coordinate start;
     private Coordinate end;
 
@@ -34,9 +35,11 @@ public class Maze {
      */
     private void initializePheromones() {
         pheromones = new double[width][length];
+        frequency = new int[width][length];
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < length; j++) {
                 pheromones[i][j] = 0;
+                frequency[i][j] = 0;
             }
         }
     }
@@ -64,14 +67,14 @@ public class Maze {
         for (Direction d : route) {            
             currentPos = currentPos.add(d);
             visitedCoordinates.add(currentPos);
-            pheromones[currentPos.getX()][currentPos.getY()] += 1.0 / Math.pow(10, 20); 
-            
+            pheromones[currentPos.getX()][currentPos.getY()] += 1.0 / Math.pow(10, 30); 
+            // eliminate loops from the route
             if (visitedCoordinates.contains(currentPos) == true) {
 	           	int previousVisit = visitedCoordinates.indexOf(currentPos) + 1;            	
 	           	visitedCoordinates.subList(previousVisit, visitedCoordinates.size()).clear();
            }
         }
-        
+        // only add pheromones to the route without loops
         for (Coordinate c : visitedCoordinates) {
         	pheromones[c.getX()][c.getY()] += (Q / distance);     	
         }
@@ -186,6 +189,18 @@ public class Maze {
     public double getPheromone(Coordinate pos) {
         if ( inBounds(pos) == true) {
             return pheromones[pos.getX()][pos.getY()];
+        }
+        return 0;
+    }
+    
+    /**
+     * Frequency getter for a specific position. If the position is not in bounds returns 0
+     * @param pos Position coordinate
+     * @return frequency at point
+     */
+    public int getFrequency(Coordinate pos) {
+        if ( inBounds(pos) == true) {
+            return frequency[pos.getX()][pos.getY()];
         }
         return 0;
     }
