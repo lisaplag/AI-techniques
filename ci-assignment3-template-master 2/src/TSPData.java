@@ -34,7 +34,8 @@ public class TSPData implements Serializable {
     /**
      * Calculate the routes from the product locations to each other, the start, and the end.
      * Additionally generate arrays that contain the length of all the routes.
-     * @param maze
+     * @param aco
+     *
      */
     public void calculateRoutes(AntColonyOptimization aco) {
         productToProduct = buildDistanceMatrix(aco);
