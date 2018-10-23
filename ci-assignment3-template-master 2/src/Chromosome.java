@@ -18,4 +18,14 @@ public class Chromosome {
         //TODO set very low fitness if same product occurs twice.
         return fitness;
     }
+
+    public Chromosome crossOver(Chromosome partner){
+        //TODO implement cross-over function
+        return this;
+    }
+
+    public Chromosome mutate() {
+        //TODO implement mutation function
+        return this;
+    }
 }

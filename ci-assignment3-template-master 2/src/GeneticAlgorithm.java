@@ -43,12 +43,21 @@ public class GeneticAlgorithm {
     public int[] solveTSP(TSPData pd) {
         //Step 1) Randomly select starting population.
         List<Chromosome> population = generateStartPop(pd);
+
         //Perform evolution cycle
         for(int i = 0; i < generations; i++){
-            evolution(population);
+            population = evolution(population);
         }
 
-        return new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17};
+        //select the chromosome with highest fitness.
+        double bestFitness = 0;
+        Chromosome bestChromosome = null;
+        for (Chromosome chromosome : population) {
+            if (chromosome.getFitness() > bestFitness) {
+                bestChromosome = chromosome;
+            }
+        }
+        return bestChromosome.getData();
     }
 
     /**
@@ -57,6 +66,7 @@ public class GeneticAlgorithm {
      * @return the new population.
      */
     public List<Chromosome> evolution(List<Chromosome> population){
+        List<Chromosome> newPopulation = new ArrayList<>();
         //Step 2) Compute the fitness-(ratio) of all chromosomes.
         double totalFitness = 0;
         for(Chromosome chromosome : population) {
@@ -66,18 +76,20 @@ public class GeneticAlgorithm {
         //Step 3) Selection.
         //repeat until population is full again
         for (int i = 0; i < popSize; i++) {
-            //Select 2 parents.
             Chromosome parentOne = rouletteWheelSelection(population, totalFitness);
             Chromosome parentTwo = rouletteWheelSelection(population, totalFitness);
 
             //Step 4) Cross over
-            //TODO implement cross-over
+            Chromosome child = parentOne.crossOver(parentTwo);
+
+            //Step 5) Mutation
+            Chromosome mutatedChild = child.mutate();
+
+            //Step 6) Add new chromosome to the new population
+            newPopulation.add(mutatedChild);
         }
 
-        //Step 5) Mutation
-        //TODO implement mutation
-
-        return population;
+        return newPopulation;
     }
 
     /**
