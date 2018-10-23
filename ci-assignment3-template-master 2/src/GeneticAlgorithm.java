@@ -57,6 +57,7 @@ public class GeneticAlgorithm {
                 bestChromosome = chromosome;
             }
         }
+
         return bestChromosome.getData();
     }
 
@@ -67,28 +68,25 @@ public class GeneticAlgorithm {
      */
     public List<Chromosome> evolution(List<Chromosome> population){
         List<Chromosome> newPopulation = new ArrayList<>();
+
         //Step 2) Compute the fitness-(ratio) of all chromosomes.
         double totalFitness = 0;
         for(Chromosome chromosome : population) {
             totalFitness += chromosome.getFitness();
         }
 
-        //Step 3) Selection.
         //repeat until population is full again
         for (int i = 0; i < popSize; i++) {
+            //Step 3) Selection.
             Chromosome parentOne = rouletteWheelSelection(population, totalFitness);
             Chromosome parentTwo = rouletteWheelSelection(population, totalFitness);
 
-            //Step 4) Cross over
+            //Step 4) Cross-over
             Chromosome child = parentOne.crossOver(parentTwo);
 
-            //Step 5) Mutation
-            Chromosome mutatedChild = child.mutate();
-
-            //Step 6) Add new chromosome to the new population
-            newPopulation.add(mutatedChild);
+            //Step 5) Add mutated child to the population
+            newPopulation.add(child.mutate());
         }
-
         return newPopulation;
     }
 
@@ -131,7 +129,6 @@ public class GeneticAlgorithm {
             this.shuffle(chromosomeData);
             population.add(new Chromosome(chromosomeData));
         }
-
         return population;
     }
 

@@ -1,8 +1,12 @@
 public class Chromosome {
     private int[] data;
+    private double chanceCrossOver;
+    private double chanceMutation;
 
     public Chromosome(int[] data){
         this.data = data;
+        this.chanceCrossOver = 0.7;
+        this.chanceMutation = 0.01;
     }
     public int[] getData() {
         return data;
