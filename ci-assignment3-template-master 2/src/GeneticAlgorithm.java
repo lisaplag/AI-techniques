@@ -139,7 +139,7 @@ public class GeneticAlgorithm {
     	//parameters
     	int populationSize = 20;
         int generations = 20;
-        String persistFile = "./tmp/productMatrixDist";
+        String persistFile = "./data/productMatrixDist";
         
         //setup optimization
         TSPData tspData = TSPData.readFromFile(persistFile);

@@ -38,7 +38,7 @@ public class AntColonyOptimization {
      */
     public Route findShortestRoute(PathSpecification spec) {
         maze.reset();
-        Q = maze.getWidth() + maze.getLength();
+        //Q = maze.getWidth() + maze.getLength();
         Route globalRoute = null;
         Route localRoute = null;
         int globalMin = Integer.MAX_VALUE;
@@ -50,9 +50,9 @@ public class AntColonyOptimization {
             localRoute = null;
             int localMin = Integer.MAX_VALUE;
             gen++;
-            
-        	if (gen >= generations * 0.7) {
-                evaporation = 0.5;
+            evaporation += 0.03;
+        	if (evaporation >= 0.9) {
+                evaporation = 0.9;
             }
             
             // let all ants run through maze
@@ -87,13 +87,13 @@ public class AntColonyOptimization {
     public static void main(String[] args) throws FileNotFoundException {
     	//set parameters
     	int genSize = 20;
-        int noGen = 100;
-        double Q = 500;
+        int noGen = 50;
+        double Q = 1000;
         double evap = 0.1;
 
         //construct the optimization objects
-        Maze maze = Maze.createMaze("./data/insane maze.txt");
-        PathSpecification spec = PathSpecification.readCoordinates("./data/insane coordinates.txt");
+        Maze maze = Maze.createMaze("./data/hard maze.txt");
+        PathSpecification spec = PathSpecification.readCoordinates("./data/hard coordinates.txt");
         AntColonyOptimization aco = new AntColonyOptimization(maze, genSize, noGen, Q, evap);
         
         //save starting time
@@ -106,7 +106,7 @@ public class AntColonyOptimization {
         System.out.println("Time taken: " + ((System.currentTimeMillis() - startTime) / 1000.0));
         
         //save solution
-        shortestRoute.writeToFile("./data/insane_solution.txt");
+        shortestRoute.writeToFile("./data/x_solution.txt");
         
         //print route size
         System.out.println("Route size: " + shortestRoute.size());

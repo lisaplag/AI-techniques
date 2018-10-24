@@ -35,7 +35,6 @@ public class TSPData implements Serializable {
      * Calculate the routes from the product locations to each other, the start, and the end.
      * Additionally generate arrays that contain the length of all the routes.
      * @param aco
-     *
      */
     public void calculateRoutes(AntColonyOptimization aco) {
         productToProduct = buildDistanceMatrix(aco);
@@ -235,12 +234,11 @@ public class TSPData implements Serializable {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         
     	//parameters
-    	int gen = 1;
-        int noGen = 1;
+    	int gen = 20;
+        int noGen = 70;
         double Q = 1000;
         double evap = 0.1;
-        double eps = 0.1;
-        String persistFile = "./tmp/productMatrixDist";
+        String persistFile = "./data/productMatrixDist.txt";
         String TSPpath = "./data/tsp products.txt";
         String coordinates = "./data/hard coordinates.txt";
         
