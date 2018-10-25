@@ -23,11 +23,7 @@ public class GeneticAlgorithm {
         this.generations = generations;
         this.popSize = popSize;
         this.chanceCrossOver = 0.7;
-<<<<<<< HEAD
         this.chanceMutation = 0.05;
-=======
-        this.chanceMutation = 0.1;
->>>>>>> 864963d8e6e8cb0ae82d5ee4f6987a77c0bcf64b
     }
     
  
@@ -152,7 +148,6 @@ public class GeneticAlgorithm {
     public int[] mutate(int[] chromosome) {
         //TODO implement mutation function
     	// randomly swap two genes of the chromosome
-    	//System.out.println("Initial: " + Arrays.toString(chromosome));
     	for (int i = 0; i < chromosome.length; i++) {
     		if (Math.random() < chanceMutation) {
     	        int index = (int) (Math.random() * chromosome.length);
@@ -161,11 +156,7 @@ public class GeneticAlgorithm {
     	        chromosome[i] = swap;    			
     		}
     	}
-<<<<<<< HEAD
-    	//System.out.println(Arrays.toString(chromosome));
-        
-=======
->>>>>>> 864963d8e6e8cb0ae82d5ee4f6987a77c0bcf64b
+
         return chromosome;
     }
     
