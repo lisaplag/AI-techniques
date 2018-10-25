@@ -23,7 +23,7 @@ public class GeneticAlgorithm {
         this.generations = generations;
         this.popSize = popSize;
         this.chanceCrossOver = 0.7;
-        this.chanceMutation = 0.01;
+        this.chanceMutation = 0.05;
     }
     
  
@@ -82,7 +82,7 @@ public class GeneticAlgorithm {
         int length = startDistances[firstProduct];
         // add the lengths of all paths between products to the total length
         for (int i = 0; i < chromosome.length - 1; i++) {
-        	length += distances[i][i+1];
+        	length += distances[chromosome[i]][chromosome[i+1]];
         }
         // finally, add the length of the route between the last product and the end
         int lastProduct = chromosome[chromosome.length-1];
@@ -103,7 +103,7 @@ public class GeneticAlgorithm {
     	// get random int between 0 and length (exclusive)
     	int start = (int) (Math.random() * chromosomeA.length);
     	// get random int between start+1 and length (exclusive)
-    	int end = (start + 1) + (int) (Math.random() * (chromosomeA.length - start - 1));
+    	//int end = (start + 1) + (int) (Math.random() * (chromosomeA.length - start - 1));
     	// initialize new chromosome
     	int[] newChromosome = new int[chromosomeA.length];
     	// create list to keep track of products already in chromosome
@@ -111,7 +111,7 @@ public class GeneticAlgorithm {
     	
     	// putting genes of chromosomeA in new chromosome
     	for (int i = 0; i < newChromosome.length; i++) {
-    		if (start + i < end) {
+    		if (start + i < newChromosome.length) {
     			newChromosome[i] = chromosomeA[start + i];
     			products.add(chromosomeA[start + i]);
     		}
@@ -123,7 +123,7 @@ public class GeneticAlgorithm {
     	int n = 0;
     	for (int j = 0; j < chromosomeB.length; j++) {
     		if ( !products.contains(chromosomeB[j]) ) {
-    			newChromosome[end - start + n] = chromosomeB[j];
+    			newChromosome[newChromosome.length - start + n] = chromosomeB[j];
     			products.add(chromosomeB[j]);  
     			n++;
     		}
@@ -148,6 +148,7 @@ public class GeneticAlgorithm {
     public int[] mutate(int[] chromosome) {
         //TODO implement mutation function
     	// randomly swap two genes of the chromosome
+    	//System.out.println("Initial: " + Arrays.toString(chromosome));
     	for (int i = 0; i < chromosome.length; i++) {
     		if (Math.random() < chanceMutation) {
     	        int index = (int) (Math.random() * chromosome.length);
@@ -156,6 +157,7 @@ public class GeneticAlgorithm {
     	        chromosome[i] = swap;    			
     		}
     	}
+    	//System.out.println(Arrays.toString(chromosome));
         
         return chromosome;
     }
@@ -182,19 +184,20 @@ public class GeneticAlgorithm {
         	if (bestChromosome != null) {
         		newPopulation.add(bestChromosome);
         		bestChromosome = null;
-        	}
-            //Step 3) Selection.
-            int[] parentOne = rouletteWheelSelection(population, totalFitness, pd);
-            int[] parentTwo = rouletteWheelSelection(population, totalFitness, pd);
+        	} else {
+                //Step 3) Selection.
+                int[] parentOne = rouletteWheelSelection(population, totalFitness, pd);
+                int[] parentTwo = rouletteWheelSelection(population, totalFitness, pd);
 
-            //Step 4) Cross-over
-            if (Math.random() < chanceCrossOver) {
-            	int[] child = crossOver(parentOne, parentTwo);       
-                //Step 5) Add mutated child to the population
-                newPopulation.add(mutate(child));
-            } else {
-            	newPopulation.add(parentOne);
-            }
+                //Step 4) Cross-over
+                if (Math.random() < chanceCrossOver) {
+                	int[] child = crossOver(parentOne, parentTwo);       
+                    //Step 5) Add mutated child to the population
+                    newPopulation.add(mutate(child));
+                } else {
+                	newPopulation.add(parentOne);
+                }        		
+        	}
             
         }
         
@@ -266,7 +269,7 @@ public class GeneticAlgorithm {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
     	//parameters
     	int populationSize = 1000;
-        int generations = 100;
+        int generations = 500;
         String persistFile = "./data/productMatrixDist";
         
         //setup optimization

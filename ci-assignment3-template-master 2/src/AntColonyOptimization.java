@@ -76,9 +76,8 @@ public class AntColonyOptimization {
             maze.addPheromoneRoutes(genRoutes, Q);
             maze.evaporate(evaporation);
             System.out.println("Generation " + (gen) + ": " + localMin + ", " + 100*percentageSameRoute + "% converged, " + globalMin);
-
         }
-        return localRoute;
+        return globalRoute;
     }
 
     /**
@@ -89,7 +88,7 @@ public class AntColonyOptimization {
     	int genSize = 20;
         int noGen = 50;
         double Q = 1000;
-        double evap = 0.1;
+        double evap = 0.3;
         
 //    	//good parameters medium maze
 //    	int genSize = 20;
