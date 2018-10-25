@@ -132,6 +132,10 @@ public class GeneticAlgorithm {
     		}
     	}
     	
+//    	System.out.println("A: " + Arrays.toString(chromosomeA) + " Start: " + start + " End: " + end);
+//    	System.out.println("B: " + Arrays.toString(chromosomeB));
+//    	System.out.println(Arrays.toString(newChromosome));
+    	
         return newChromosome;
     }
 
@@ -144,11 +148,14 @@ public class GeneticAlgorithm {
     public int[] mutate(int[] chromosome) {
         //TODO implement mutation function
     	// randomly swap two genes of the chromosome
-        int index1 = (int) (Math.random() * chromosome.length);
-        int index2 = (int) (Math.random() * chromosome.length);
-        int swap = chromosome[index1];
-        chromosome[index1] = chromosome[index2];
-        chromosome[index2] = swap;
+    	for (int i = 0; i < chromosome.length; i++) {
+    		if (Math.random() < chanceMutation) {
+    	        int index = (int) (Math.random() * chromosome.length);
+    	        int swap = chromosome[index];
+    	        chromosome[index] = chromosome[i];
+    	        chromosome[i] = swap;    			
+    		}
+    	}
         
         return chromosome;
     }
@@ -185,6 +192,8 @@ public class GeneticAlgorithm {
             	int[] child = crossOver(parentOne, parentTwo);       
                 //Step 5) Add mutated child to the population
                 newPopulation.add(mutate(child));
+            } else {
+            	newPopulation.add(parentOne);
             }
             
         }
