@@ -23,7 +23,11 @@ public class GeneticAlgorithm {
         this.generations = generations;
         this.popSize = popSize;
         this.chanceCrossOver = 0.7;
+<<<<<<< HEAD
         this.chanceMutation = 0.05;
+=======
+        this.chanceMutation = 0.1;
+>>>>>>> 864963d8e6e8cb0ae82d5ee4f6987a77c0bcf64b
     }
     
  
@@ -88,7 +92,7 @@ public class GeneticAlgorithm {
         int lastProduct = chromosome[chromosome.length-1];
         length += endDistances[lastProduct];
         
-        //TODO calculate the actual fitness: 1/length of route
+        //Calculate the actual fitness: 1/length of route
         return 1.0 / length;
     }
     
@@ -157,8 +161,11 @@ public class GeneticAlgorithm {
     	        chromosome[i] = swap;    			
     		}
     	}
+<<<<<<< HEAD
     	//System.out.println(Arrays.toString(chromosome));
         
+=======
+>>>>>>> 864963d8e6e8cb0ae82d5ee4f6987a77c0bcf64b
         return chromosome;
     }
     
@@ -181,7 +188,7 @@ public class GeneticAlgorithm {
         //repeat selection until population is full again
         for (int i = 0; i < popSize; i++) {
         	//keep best chromosome if there already is one (elitism)
-        	if (bestChromosome != null) {
+            if (bestChromosome != null) {
         		newPopulation.add(bestChromosome);
         		bestChromosome = null;
         	} else {
@@ -198,7 +205,7 @@ public class GeneticAlgorithm {
                 	newPopulation.add(parentOne);
                 }        		
         	}
-            
+           
         }
         
         return newPopulation;
@@ -246,17 +253,20 @@ public class GeneticAlgorithm {
         //Perform evolution cycle
         for(int i = 0; i < generations; i++){
             population = evolution(population, bestChromosome, pd);
-            
+
             //select the chromosome with highest fitness.
             for (int[] chromosome : population) {
             	double fitness = getFitness(chromosome, pd);
+
             	//update best chromosome if necessary
                 if (fitness > bestFitness) {
                     bestChromosome = chromosome;
                     bestFitness = fitness;
                 }
+
+
             }
-            System.out.println("Length: " + (int) (1/bestFitness) + ", " + Arrays.toString(bestChromosome));
+            System.out.println("Cycle: " + i + " | Length: " + (int) (1/bestFitness) + " | " + Arrays.toString(bestChromosome));
         }
 
         return bestChromosome;
