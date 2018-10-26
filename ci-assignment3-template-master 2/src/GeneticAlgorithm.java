@@ -43,7 +43,7 @@ public class GeneticAlgorithm {
         //Create as many random mutations of the base chromosome to fill the population
         List<int[]> population = new ArrayList<>();
         for (int i = 0; i < popSize; i++){
-            shuffle(chromosomeData);
+            chromosomeData = shuffle(chromosomeData);
             population.add(chromosomeData);
         }
         return population;
@@ -54,14 +54,17 @@ public class GeneticAlgorithm {
      * Knuth-Yates shuffle, reordering a array randomly
      * @param chromosome array to shuffle.
      */
-    private void shuffle(int[] chromosome) {
+    private int[] shuffle(int[] chromosome) {
         int n = chromosome.length;
+        int[] shuffledChromosome = Arrays.copyOf(chromosome, n);
         for (int i = 0; i < n; i++) {
             int r = i + (int) (Math.random() * (n - i));
-            int swap = chromosome[r];
-            chromosome[r] = chromosome[i];
-            chromosome[i] = swap;
+            int swap = shuffledChromosome[r];
+            shuffledChromosome[r] = shuffledChromosome[i];
+            shuffledChromosome[i] = swap;
         }
+        
+        return shuffledChromosome;
     }
     
     
@@ -98,36 +101,49 @@ public class GeneticAlgorithm {
      * @param chromosomeB array to cross-over.
      * @return The crossed-over chromosome array.
      */
-    public int[] crossOver(int[] chromosomeA, int[] chromosomeB){
+    public int[][] crossOver(int[] chromosomeA, int[] chromosomeB){
         //TODO implement cross-over function
     	// get random int between 0 and length (exclusive)
     	int start = (int) (Math.random() * chromosomeA.length);
 
-    	// initialize new chromosome
+    	// initialize new chromosomes
     	int[] newChromosomeA = new int[chromosomeA.length];
-
-    	// create list to keep track of products already in chromosome
-    	ArrayList<Integer> products = new ArrayList<Integer>();
+    	int[] newChromosomeB = new int[chromosomeA.length];
+    	// create list to keep track of products already in new chromosomes
+    	ArrayList<Integer> productsA = new ArrayList<Integer>();
+    	ArrayList<Integer> productsB = new ArrayList<Integer>();
     	
-    	// putting genes of chromosomeA in new chromosome
-    	for (int i = start; i < newChromosomeA.length; i++) {
-			newChromosomeA[i] = chromosomeA[i];
-			products.add(chromosomeA[i]);	
+    	// putting genes of chromosome A and B in new chromosomes
+    	for (int i = 0; i < newChromosomeA.length; i++) {
+    		if (i < start) {
+    			newChromosomeB[i] = chromosomeB[i];
+    			productsB.add(chromosomeB[i]);
+    		}
+    		else {
+    			newChromosomeA[i] = chromosomeA[i];
+    			productsA.add(chromosomeA[i]);    			
+    		}	
     	}
-    	// fill remaining genes with sequence from chromosomeB
-    	int n = 0;
+    	
+    	// fill remaining genes with sequence from other chromosome
+    	int a = 0;
+    	int b = 0;
     	for (int j = 0; j < chromosomeB.length; j++) {
-    		if ( !products.contains(chromosomeB[j]) ) {
-    			newChromosomeA[n] = chromosomeB[j];
-    			products.add(chromosomeB[j]);  
-    			n++;
-    		}
-    		if (products.size() == chromosomeA.length) {
-    			break;
+    		if ( !productsA.contains(chromosomeB[j]) ) {
+    			newChromosomeA[a] = chromosomeB[j];
+    			productsA.add(chromosomeB[j]);  
+    			a++;
+    		}    		
+    		if ( !productsB.contains(chromosomeA[j]) ) {
+    			newChromosomeB[start + b] = chromosomeA[j];
+    			productsB.add(chromosomeA[j]);  
+    			b++;
     		}
     	}
-
-        return newChromosomeA;
+    	int[][] crossOvers = new int[2][newChromosomeA.length];
+    	crossOvers[0] = newChromosomeA;
+    	crossOvers[1] = newChromosomeB;
+        return crossOvers;
     }
 
     
@@ -178,19 +194,27 @@ public class GeneticAlgorithm {
                 //Step 3) Selection.
                 int[] parentOne = rouletteWheelSelection(population, totalFitness, pd);
                 int[] parentTwo = rouletteWheelSelection(population, totalFitness, pd);
-
                 //Step 4) Cross-over
                 if (Math.random() < chanceCrossOver) {
-                	int[] child = crossOver(parentOne, parentTwo);       
+                	int[][] children = crossOver(parentOne, parentTwo); 
+                	int[] childOne = mutate(children[0]);
+                	int[] childTwo = mutate(children[1]);
                     //Step 5) Add mutated child to the population
-                    newPopulation.add(mutate(child));
+                    newPopulation.add(childOne);
+                    newPopulation.add(childTwo);
+                    //System.out.println(Arrays.toString(childOne));
+                    //System.out.println(Arrays.toString(childTwo));
                 } else {
-                	newPopulation.add(mutate(parentOne));                	
+                	int[] one = mutate(parentOne);
+                	int[] two = mutate(parentTwo);
+                    //System.out.println(Arrays.toString(one));
+                    //System.out.println(Arrays.toString(two));
+                	newPopulation.add(one);
+                	newPopulation.add(two); 
                 }        		
         	}
            
         }
-        
         return newPopulation;
     }
 
