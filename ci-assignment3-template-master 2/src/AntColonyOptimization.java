@@ -84,17 +84,17 @@ public class AntColonyOptimization {
      * Driver function for Assignment 1
      */
     public static void main(String[] args) throws FileNotFoundException {
-    	//set parameters hard maze
-    	int genSize = 20;
-        int noGen = 50;
-        double Q = 1000;
-        double evap = 0.3;
-        
-//    	//good parameters medium maze
+//    	//set parameters hard maze
 //    	int genSize = 20;
 //        int noGen = 50;
-//        double Q = 200;
+//        double Q = 1000;
 //        double evap = 0.3;
+        
+    	//good parameters medium maze
+    	int genSize = 20;
+        int noGen = 50;
+        double Q = 200;
+        double evap = 0.3;
         
 //    	//good parameters easy maze
 //    	int genSize = 20;
@@ -103,8 +103,8 @@ public class AntColonyOptimization {
 //        double evap = 0.3;
 
         //construct the optimization objects
-        Maze maze = Maze.createMaze("./data/hard maze.txt");
-        PathSpecification spec = PathSpecification.readCoordinates("./data/hard coordinates.txt");
+        Maze maze = Maze.createMaze("./data/medium maze.txt");
+        PathSpecification spec = PathSpecification.readCoordinates("./data/medium coordinates.txt");
         AntColonyOptimization aco = new AntColonyOptimization(maze, genSize, noGen, Q, evap);
         
         //save starting time
@@ -117,7 +117,7 @@ public class AntColonyOptimization {
         System.out.println("Time taken: " + ((System.currentTimeMillis() - startTime) / 1000.0));
         
         //save solution
-        shortestRoute.writeToFile("./data/hard_solution.txt");
+        shortestRoute.writeToFile("./data/medium_solution.txt");
         
         //print route size
         System.out.println("Route size: " + shortestRoute.size());

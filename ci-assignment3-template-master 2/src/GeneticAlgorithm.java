@@ -102,8 +102,8 @@ public class GeneticAlgorithm {
      * @return The crossed-over chromosome array.
      */
     public int[][] crossOver(int[] chromosomeA, int[] chromosomeB){
-    	// get random int between 1 and length - 1 (exclusive)
-    	int start = 1 + (int) (Math.random() * (chromosomeA.length - 2));
+    	// get random int between 1 and length (exclusive)
+    	int start = 1 + (int) (Math.random() * (chromosomeA.length - 1));
 
     	// initialize new chromosomes
     	int[] newChromosomeA = new int[chromosomeA.length];
