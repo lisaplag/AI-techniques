@@ -102,7 +102,6 @@ public class GeneticAlgorithm {
      * @return The crossed-over chromosome array.
      */
     public int[][] crossOver(int[] chromosomeA, int[] chromosomeB){
-        //TODO implement cross-over function
     	// get random int between 0 and length (exclusive)
     	int start = (int) (Math.random() * chromosomeA.length);
 
@@ -115,11 +114,10 @@ public class GeneticAlgorithm {
     	
     	// putting genes of chromosome A and B in new chromosomes
     	for (int i = 0; i < newChromosomeA.length; i++) {
-    		if (i < start) {
+    		if (i >= start) {
     			newChromosomeB[i] = chromosomeB[i];
     			productsB.add(chromosomeB[i]);
-    		}
-    		else {
+    			
     			newChromosomeA[i] = chromosomeA[i];
     			productsA.add(chromosomeA[i]);    			
     		}	
@@ -135,7 +133,7 @@ public class GeneticAlgorithm {
     			a++;
     		}    		
     		if ( !productsB.contains(chromosomeA[j]) ) {
-    			newChromosomeB[start + b] = chromosomeA[j];
+    			newChromosomeB[b] = chromosomeA[j];
     			productsB.add(chromosomeA[j]);  
     			b++;
     		}
@@ -153,7 +151,7 @@ public class GeneticAlgorithm {
      * @return The mutated chromosome array.
      */
     public int[] mutate(int[] chromosome) {
-        //TODO implement mutation function
+    	// initialize mutation to copy of chromosome
     	int[] mutation = Arrays.copyOf(chromosome, chromosome.length);
     	// randomly swap two genes of the chromosome
     	for (int i = 0; i < mutation.length; i++) {
@@ -164,7 +162,6 @@ public class GeneticAlgorithm {
     	        mutation[i] = swap;    			
     		}
     	}
-
         return mutation;
     }
     
@@ -185,7 +182,7 @@ public class GeneticAlgorithm {
         }
 
         //repeat selection until population is full again
-        for (int i = 0; i < popSize; i++) {
+        while(newPopulation.size() < popSize) {
         	//keep best chromosome if there already is one (elitism)
             if (bestChromosome != null) {
         		newPopulation.add(bestChromosome);
@@ -196,24 +193,23 @@ public class GeneticAlgorithm {
                 int[] parentTwo = rouletteWheelSelection(population, totalFitness, pd);
                 //Step 4) Cross-over
                 if (Math.random() < chanceCrossOver) {
-                	int[][] children = crossOver(parentOne, parentTwo); 
+                	//create children by cross-over
+                	int[][] children = crossOver(parentOne, parentTwo);
+                	//mutate the children
                 	int[] childOne = mutate(children[0]);
                 	int[] childTwo = mutate(children[1]);
                     //Step 5) Add mutated child to the population
                     newPopulation.add(childOne);
                     newPopulation.add(childTwo);
-                    //System.out.println(Arrays.toString(childOne));
-                    //System.out.println(Arrays.toString(childTwo));
                 } else {
-                	int[] one = mutate(parentOne);
-                	int[] two = mutate(parentTwo);
-                    //System.out.println(Arrays.toString(one));
-                    //System.out.println(Arrays.toString(two));
-                	newPopulation.add(one);
-                	newPopulation.add(two); 
+                	newPopulation.add(mutate(parentOne));
+                	newPopulation.add(mutate(parentTwo)); 
                 }        		
-        	}
-           
+        	}           
+        }
+        // Due to elitism there will be one chromosome too much, so remove last one added
+        if (newPopulation.size() > popSize) {
+        	newPopulation.remove(newPopulation.size()-1);
         }
         return newPopulation;
     }
@@ -284,7 +280,7 @@ public class GeneticAlgorithm {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
     	//parameters
     	int populationSize = 1000;
-        int generations = 200;
+        int generations = 100;
         String persistFile = "./data/productMatrixDist";
         
         //setup optimization
