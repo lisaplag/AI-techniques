@@ -74,7 +74,7 @@ public class Ant {
                                        
                     //This block makes the ant choose a random direction without any pheromone with a certain probability.
                     //The direction is random because the list of possible directions was shuffled.
-                    if (rand.nextDouble() <= 0.9) {
+                    if (rand.nextDouble() <= 0.7) {
 	                    for (Direction possibleDirection : possibleDirections) {
 	                        if (maze.getPheromone(currentPosition.add(possibleDirection)) == 0) {
 	                            chosen = possibleDirection;

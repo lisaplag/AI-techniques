@@ -236,8 +236,8 @@ public class TSPData implements Serializable {
     	//parameters
     	int gen = 20;
         int noGen = 50;
-        double Q = 300;
-        double evap = 0.4;
+        double Q = 400;
+        double evap = 0.3;
         String persistFile = "./data/productMatrixDist.txt";
         String TSPpath = "./data/tsp products.txt";
         String coordinates = "./data/hard coordinates.txt";

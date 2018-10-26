@@ -89,7 +89,7 @@ public class GeneticAlgorithm {
         }
         // finally, add the length of the route between the last product and the end
         int lastProduct = chromosome[chromosome.length-1];
-        length += endDistances[lastProduct] + chromosome.length;
+        length += endDistances[lastProduct] + chromosome.length; // add product steps
         
         //Calculate the actual fitness: 1/length of route
         return (1.0 / length);
@@ -102,8 +102,8 @@ public class GeneticAlgorithm {
      * @return The crossed-over chromosome array.
      */
     public int[][] crossOver(int[] chromosomeA, int[] chromosomeB){
-    	// get random int between 0 and length (exclusive)
-    	int start = (int) (Math.random() * chromosomeA.length);
+    	// get random int between 1 and length - 1 (exclusive)
+    	int start = 1 + (int) (Math.random() * (chromosomeA.length - 2));
 
     	// initialize new chromosomes
     	int[] newChromosomeA = new int[chromosomeA.length];
@@ -114,26 +114,28 @@ public class GeneticAlgorithm {
     	
     	// putting genes of chromosome A and B in new chromosomes
     	for (int i = 0; i < newChromosomeA.length; i++) {
-    		if (i >= start) {
+    		if (i < start) {
     			newChromosomeB[i] = chromosomeB[i];
     			productsB.add(chromosomeB[i]);
-    			
+    		}
+    		else {
     			newChromosomeA[i] = chromosomeA[i];
     			productsA.add(chromosomeA[i]);    			
     		}	
-    	}
-    	
+    	}    	
     	// fill remaining genes with sequence from other chromosome
     	int a = 0;
     	int b = 0;
     	for (int j = 0; j < chromosomeB.length; j++) {
+    		// check if gene of B is not already present in newChromosomeA
     		if ( !productsA.contains(chromosomeB[j]) ) {
     			newChromosomeA[a] = chromosomeB[j];
     			productsA.add(chromosomeB[j]);  
     			a++;
-    		}    		
+    		}
+    		// check if gene of A is not already present in newChromosomeB
     		if ( !productsB.contains(chromosomeA[j]) ) {
-    			newChromosomeB[b] = chromosomeA[j];
+    			newChromosomeB[start + b] = chromosomeA[j];
     			productsB.add(chromosomeA[j]);  
     			b++;
     		}
@@ -191,23 +193,24 @@ public class GeneticAlgorithm {
                 //Step 3) Selection.
                 int[] parentOne = rouletteWheelSelection(population, totalFitness, pd);
                 int[] parentTwo = rouletteWheelSelection(population, totalFitness, pd);
-                //Step 4) Cross-over
+                //Step 4) Cross-over with certain chance
                 if (Math.random() < chanceCrossOver) {
                 	//create children by cross-over
                 	int[][] children = crossOver(parentOne, parentTwo);
                 	//mutate the children
                 	int[] childOne = mutate(children[0]);
                 	int[] childTwo = mutate(children[1]);
-                    //Step 5) Add mutated child to the population
+                    //Step 5) Add mutated child to the new population
                     newPopulation.add(childOne);
                     newPopulation.add(childTwo);
                 } else {
+                	// add potentially mutated parents to new population
                 	newPopulation.add(mutate(parentOne));
                 	newPopulation.add(mutate(parentTwo)); 
                 }        		
         	}           
         }
-        // Due to elitism there will be one chromosome too much, so remove last one added
+        // Due to elitism there will be one chromosome too much, so just remove last one added
         if (newPopulation.size() > popSize) {
         	newPopulation.remove(newPopulation.size()-1);
         }
