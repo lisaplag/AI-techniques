@@ -105,25 +105,21 @@ public class GeneticAlgorithm {
     	// get random int between start+1 and length (exclusive)
     	//int end = (start + 1) + (int) (Math.random() * (chromosomeA.length - start - 1));
     	// initialize new chromosome
-    	int[] newChromosome = new int[chromosomeA.length];
+    	int[] newChromosomeA = new int[chromosomeA.length];
+    	int[] newChromosomeB = new int[chromosomeA.length];
     	// create list to keep track of products already in chromosome
     	ArrayList<Integer> products = new ArrayList<Integer>();
     	
     	// putting genes of chromosomeA in new chromosome
-    	for (int i = 0; i < newChromosome.length; i++) {
-    		if (start + i < newChromosome.length) {
-    			newChromosome[i] = chromosomeA[start + i];
-    			products.add(chromosomeA[start + i]);
-    		}
-    		else {
-    			break;
-    		}
+    	for (int i = start; i < newChromosomeA.length; i++) {
+			newChromosomeA[i] = chromosomeA[i];
+			products.add(chromosomeA[i]);	
     	}
     	// fill remaining genes with sequence from chromosomeB
     	int n = 0;
     	for (int j = 0; j < chromosomeB.length; j++) {
     		if ( !products.contains(chromosomeB[j]) ) {
-    			newChromosome[newChromosome.length - start + n] = chromosomeB[j];
+    			newChromosomeA[n] = chromosomeB[j];
     			products.add(chromosomeB[j]);  
     			n++;
     		}
@@ -136,7 +132,7 @@ public class GeneticAlgorithm {
 //    	System.out.println("B: " + Arrays.toString(chromosomeB));
 //    	System.out.println(Arrays.toString(newChromosome));
     	
-        return newChromosome;
+        return newChromosomeA;
     }
 
     
@@ -193,7 +189,7 @@ public class GeneticAlgorithm {
                     //Step 5) Add mutated child to the population
                     newPopulation.add(mutate(child));
                 } else {
-                	newPopulation.add(parentOne);
+                	newPopulation.add(parentOne);                	
                 }        		
         	}
            
@@ -248,15 +244,13 @@ public class GeneticAlgorithm {
             //select the chromosome with highest fitness.
             for (int[] chromosome : population) {
             	double fitness = getFitness(chromosome, pd);
-
             	//update best chromosome if necessary
                 if (fitness > bestFitness) {
                     bestChromosome = chromosome;
                     bestFitness = fitness;
                 }
-
-
             }
+            
             System.out.println("Cycle: " + i + " | Length: " + (int) (1/bestFitness) + " | " + Arrays.toString(bestChromosome));
         }
 
