@@ -176,6 +176,7 @@ public class GeneticAlgorithm {
     public List<int[]> evolution(List<int[]> population, int[] bestChromosome, TSPData pd){
     	//initialize new population list
         List<int[]> newPopulation = new ArrayList<>();
+        newPopulation.add(bestChromosome); // applying elitism
 
         //Step 2) Compute the fitness-(ratio) of all chromosomes.
         double totalFitness = 0;
@@ -185,35 +186,30 @@ public class GeneticAlgorithm {
 
         //repeat selection until population is full again
         while(newPopulation.size() < popSize) {
-        	//keep best chromosome if there already is one (elitism)
-            if (bestChromosome != null) {
-        		newPopulation.add(bestChromosome);
-        		bestChromosome = null;
-        	} else {
-                //Step 3) Selection.
-                int[] parentOne = rouletteWheelSelection(population, totalFitness, pd);
-                int[] parentTwo = rouletteWheelSelection(population, totalFitness, pd);
-                //Step 4) Cross-over with certain chance
-                if (Math.random() < chanceCrossOver) {
-                	//create children by cross-over
-                	int[][] children = crossOver(parentOne, parentTwo);
-                	//mutate the children
-                	int[] childOne = mutate(children[0]);
-                	int[] childTwo = mutate(children[1]);
-                    //Step 5) Add mutated child to the new population
-                    newPopulation.add(childOne);
-                    newPopulation.add(childTwo);
-                } else {
-                	// add potentially mutated parents to new population
-                	newPopulation.add(mutate(parentOne));
-                	newPopulation.add(mutate(parentTwo)); 
-                }        		
-        	}           
+            //Step 3) Selection.
+            int[] parentOne = rouletteWheelSelection(population, totalFitness, pd);
+            int[] parentTwo = rouletteWheelSelection(population, totalFitness, pd);
+            //Step 4) Cross-over with certain chance
+            if (Math.random() < chanceCrossOver) {
+            	//create children by cross-over
+            	int[][] children = crossOver(parentOne, parentTwo);
+            	//mutate the children
+            	int[] childOne = mutate(children[0]);
+            	int[] childTwo = mutate(children[1]);
+                //Step 5) Add mutated child to the new population
+                newPopulation.add(childOne);
+                newPopulation.add(childTwo);
+            } else {
+            	// if no cross-over, add potentially mutated parents to new population
+            	newPopulation.add(mutate(parentOne));
+            	newPopulation.add(mutate(parentTwo)); 
+            }      		 	           
         }
-        // Due to elitism there will be one chromosome too much, so just remove last one added
-        if (newPopulation.size() > popSize) {
-        	newPopulation.remove(newPopulation.size()-1);
+        // due to elitism there will be 1 chromosome too much
+        if(newPopulation.size() > popSize) {
+        	newPopulation.remove(newPopulation.size() - 1);
         }
+
         return newPopulation;
     }
 
@@ -256,11 +252,9 @@ public class GeneticAlgorithm {
         double bestFitness = Double.MIN_VALUE;
         int[] bestChromosome = null;
 
-        //Perform evolution cycle
+        //Perform evaluation and evolution cycle
         for(int i = 0; i < generations; i++){
-            population = evolution(population, bestChromosome, pd);
-
-            //select the chromosome with highest fitness.
+            //find the chromosome with highest fitness.
             for (int[] chromosome : population) {
             	double fitness = getFitness(chromosome, pd);
             	//update best chromosome if necessary
@@ -268,9 +262,9 @@ public class GeneticAlgorithm {
                     bestChromosome = chromosome;
                     bestFitness = fitness;
                 }
-            }
-            
+            }            
             System.out.println("Cycle: " + i + " | Length: " + (int) (1/bestFitness) + " | " + Arrays.toString(bestChromosome));
+            population = evolution(population, bestChromosome, pd);
         }
 
         return bestChromosome;
