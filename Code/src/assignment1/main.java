@@ -2,6 +2,8 @@ package assignment1;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class main {
 
@@ -54,8 +56,32 @@ public class main {
             System.out.println("\n");
         }
         //Final prediction (for the unknown file)
-        int[] results = network.predict(ReadData.readUnknown());
-        ReadData.writeResults(results);
+        int class1 = 1;
+        int class2 = 2;
+        int class3 = 3;
+        int[] predictions = network.predict(ReadData.readUnknown());
+        intArrayToString(predictions);
+        ArrayList<Integer> resultset1 = network.productsOfClass( class1, class2, class3, predictions);
+        System.out.println(resultset1.toString());
+        int[] results = alToArray(resultset1);
+        ReadData.writeResults(results, predictions);
+      //  ReadData.writeResults(results);
+    }
+
+    public static int[] alToArray(ArrayList<Integer> list) {
+        int[] result = new int[list.size()];
+        for (int i = 0; i < result.length ; i++) {
+            result[i] = list.get(i);
+        }
+        return result;
+    }
+
+    public static void intArrayToString(int[] list) {
+        System.out.print("[");
+        for (int i = 0; i < list.length - 1; i++) {
+            System.out.print(list[i] + ", ");
+        }
+        System.out.println(list[list.length - 1] + "]");
     }
 
 }

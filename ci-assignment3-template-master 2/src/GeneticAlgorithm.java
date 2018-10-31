@@ -1,4 +1,7 @@
-import java.io.IOException;
+import assignment1.MultilayerNetwork;
+import assignment1.ReadData;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -275,17 +278,104 @@ public class GeneticAlgorithm {
      * Assignment 2.b
      */
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-    	//parameters
+        long startTime = System.currentTimeMillis();
+        //Configure the network
+        double alpha = 0.02;
+        double epsilon = 0.017;
+        int hiddenLayerSize = 11;
+
+        double[][] input = ReadData.readInput();
+        double[][] outputDesired = ReadData.readTargets();
+
+        MultilayerNetwork network = new MultilayerNetwork(hiddenLayerSize, alpha, input, outputDesired);
+
+        //Repeat this process until the sumSquaredErrors is smaller or equal than epsilon.
+        //printing results
+        int epochs = 0;
+        double validateError = Double.MAX_VALUE;
+
+        while ((validateError > epsilon) && (epochs < 1000)) {
+            //Train the network
+            double trainError = network.train();
+
+            //Validate the network
+            validateError = network.validate();
+            epochs++;
+        }
+
+        //Final prediction (for the unknown file)
+        int class1 = 1;
+        int class2 = 2;
+        int class3 = 3;
+        int[] predictions = network.predict(ReadData.readUnknown());
+        ArrayList<Integer> resultset1 = network.productsOfClass( class1, class2, class3, predictions);
+        int[] results = alToArray(resultset1);
+        ReadData.writeResults(results, predictions);
+        //parameters
     	int populationSize = 1000;
         int generations = 100;
-        String persistFile = "./data/productMatrixDist";
-        
+        String persistFile = "./ci-assignment3-template-master 2/data/productMatrixDist";
+
+        File inputFile = new File("./ci-assignment3-template-master 2/data/tsp products.txt");
+        // Use GC_ProductCoordinates.txt for grand challenge ^^
+
+        File productsFile = new File("./GC_Products.txt"); // Temp file, that will get overwritten every time the "Grand challenge" runs.
+
+        // Make a reader and a writer
+        BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(productsFile));
+
+        int p = 0;
+        String outputString = ""; // Initialize the output string empty
+        String tempString;
+        reader.readLine(); // skip the first line
+
+        // Keep updating the output string with only the correct products
+        while ((tempString = reader.readLine()) != null) {
+            if (tempString.startsWith(Integer.toString(results[p] + 1))) {
+                outputString +=  "\n" + tempString;
+                p++;
+            }
+
+        }
+        // Add the amount of products at the first line
+        tempString = Integer.toString(p) + ";" + outputString;
+
+        writer.write(tempString);
+        writer.close();
+        reader.close();
+
         //setup optimization
-        TSPData tspData = TSPData.readFromFile(persistFile);
+        //parameters
+        int gen = 20;
+        int noGen = 50;
+        double Q = 400;
+        double evap = 0.1;
+
+        String TSPpath = "./GC_Products.txt";
+        String coordinates = "./ci-assignment3-template-master 2/data/hard coordinates.txt"; // Use the GC maze here for grand challenge!
+
+        //construct optimization
+        Maze maze = Maze.createMaze("./ci-assignment3-template-master 2/data/hard maze.txt");// Use the GC maze here for grand challenge!
+        TSPData pd = TSPData.readSpecification(coordinates, TSPpath);
+        AntColonyOptimization aco = new AntColonyOptimization(maze, gen, noGen, Q, evap);
+
+        //run optimization
+        pd.calculateRoutes(aco);
         GeneticAlgorithm ga = new GeneticAlgorithm(generations, populationSize);
         
         //run optimzation and write to file
-        int[] solution = ga.solveTSP(tspData);
-        tspData.writeActionFile(solution, "./data/TSP solution.txt");
+        int[] solution = ga.solveTSP(pd);
+        pd.writeActionFile(solution, "./Action.txt");
+        System.out.println(tempString);
+        System.out.println("Time taken: " + ((System.currentTimeMillis() - startTime) / 1000.0));
+    }
+
+    public static int[] alToArray(ArrayList<Integer> list) {
+        int[] result = new int[list.size()];
+        for (int i = 0; i < result.length ; i++) {
+            result[i] = list.get(i);
+        }
+        return result;
     }
 }

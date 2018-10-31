@@ -1,3 +1,4 @@
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -151,7 +152,7 @@ public class TSPData implements Serializable {
 
     /**
      * Calculate the optimal routes between all the individual routes
-     * @param maze Maze to calculate optimal routes in
+     * @param aco Maze to calculate optimal routes in
      * @return Optimal routes between all products in 2d array
      */
     private Route[][] buildDistanceMatrix(AntColonyOptimization aco) {
@@ -169,7 +170,7 @@ public class TSPData implements Serializable {
 
     /**
      * Calculate optimal route between the start and all the products
-     * @param maze Maze to calculate optimal routes in
+     * @param aco Maze to calculate optimal routes in
      * @return Optimal route from start to products
      */
     private Route[] buildStartToProducts(AntColonyOptimization aco) {
@@ -183,7 +184,7 @@ public class TSPData implements Serializable {
 
     /**
      * Calculate optimal routes between the products and the end point
-     * @param maze Maze to calculate optimal routes in
+     * @param aco Maze to calculate optimal routes in
      * @return Optimal route from products to end
      */
     private Route[] buildProductsToEnd(AntColonyOptimization aco) {
@@ -232,18 +233,19 @@ public class TSPData implements Serializable {
      * Assignment 2.a
      */
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        
+
+
     	//parameters
     	int gen = 20;
         int noGen = 50;
         double Q = 400;
         double evap = 0.3;
-        String persistFile = "./data/productMatrixDist.txt";
-        String TSPpath = "./data/tsp products.txt";
-        String coordinates = "./data/hard coordinates.txt";
+        String persistFile = "./ci-assignment3-template-master 2/data/productMatrixDist.txt";
+        String TSPpath = "./ci-assignment3-template-master 2/data/tsp products.txt";
+        String coordinates = "./ci-assignment3-template-master 2/data/hard coordinates.txt";
         
         //construct optimization
-        Maze maze = Maze.createMaze("./data/hard maze.txt");
+        Maze maze = Maze.createMaze("./ci-assignment3-template-master 2/data/hard maze.txt");
         TSPData pd = TSPData.readSpecification(coordinates, TSPpath);
         AntColonyOptimization aco = new AntColonyOptimization(maze, gen, noGen, Q, evap);
         

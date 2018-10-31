@@ -75,7 +75,7 @@ public class AntColonyOptimization {
             percentageSameRoute = Collections.frequency(genRoutes, localRoute) / (double) antsPerGen;
             maze.addPheromoneRoutes(genRoutes, Q);
             maze.evaporate(evaporation);
-            System.out.println("Generation " + (gen) + ": " + localMin + ", " + 100*percentageSameRoute + "% converged, " + globalMin);
+  //          System.out.println("Generation " + (gen) + ": " + localMin + ", " + 100*percentageSameRoute + "% converged, " + globalMin);
         }
         return globalRoute;
     }
@@ -94,7 +94,7 @@ public class AntColonyOptimization {
     	int genSize = 20;
         int noGen = 50;
         double Q = 200;
-        double evap = 0.3;
+        double evap = 0.2;
         
 //    	//good parameters easy maze
 //    	int genSize = 20;
@@ -108,19 +108,19 @@ public class AntColonyOptimization {
         AntColonyOptimization aco = new AntColonyOptimization(maze, genSize, noGen, Q, evap);
         
         //save starting time
-        long startTime = System.currentTimeMillis();
+        //long startTime = System.currentTimeMillis();
         
         //run optimization
         Route shortestRoute = aco.findShortestRoute(spec);
         
         //print time taken
-        System.out.println("Time taken: " + ((System.currentTimeMillis() - startTime) / 1000.0));
+//        System.out.println("Time taken: " + ((System.currentTimeMillis() - startTime) / 1000.0));
         
         //save solution
         shortestRoute.writeToFile("./data/medium_solution.txt");
         
         //print route size
-        System.out.println("Route size: " + shortestRoute.size());
+//        System.out.println("Route size: " + shortestRoute.size());
         
     }
 
