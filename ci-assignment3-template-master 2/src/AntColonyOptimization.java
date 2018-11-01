@@ -118,19 +118,19 @@ public class AntColonyOptimization {
         AntColonyOptimization aco = new AntColonyOptimization(maze, genSize, noGen, Q, evap);
         
         //save starting time
-        long startTime = System.currentTimeMillis();
+        //long startTime = System.currentTimeMillis();
         
         //run optimization
         Route shortestRoute = aco.findShortestRoute(spec);
         
         //print time taken
-        System.out.println("Time taken: " + ((System.currentTimeMillis() - startTime) / 1000.0));
+//        System.out.println("Time taken: " + ((System.currentTimeMillis() - startTime) / 1000.0));
         
         //save solution
         shortestRoute.writeToFile("./data/hard_solution.txt");
         
         //print route size
-        System.out.println("Route size: " + shortestRoute.size());
+//        System.out.println("Route size: " + shortestRoute.size());
         
     }
 
