@@ -263,7 +263,7 @@ public class GeneticAlgorithm {
                     bestFitness = fitness;
                 }
             }            
-            System.out.println("Cycle: " + i + " | Length: " + (int) (1/bestFitness) + " | " + Arrays.toString(bestChromosome));
+            System.out.println("Generation: " + (i+1) + " | Length: " + (int) (1/bestFitness) + " | " + Arrays.toString(bestChromosome));
             population = evolution(population, bestChromosome, pd);
         }
 

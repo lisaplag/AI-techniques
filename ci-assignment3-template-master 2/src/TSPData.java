@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+
 /**
  * Class containing the product distances. Can be either build from a maze, a product
  * location list and a PathSpecification or be reloaded from a file.
@@ -234,11 +235,11 @@ public class TSPData implements Serializable {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         
     	//parameters
-    	int gen = 20;
+    	int gen = 25;
         int noGen = 50;
-        double Q = 400;
-        double evap = 0.3;
-        String persistFile = "./data/productMatrixDist.txt";
+        double Q = 1;
+        double evap = 0.1;
+        String persistFile = "./data/productMatrixDist";
         String TSPpath = "./data/tsp products.txt";
         String coordinates = "./data/hard coordinates.txt";
         

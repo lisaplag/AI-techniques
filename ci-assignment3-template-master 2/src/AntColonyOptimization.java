@@ -37,74 +37,84 @@ public class AntColonyOptimization {
      * @return ACO optimized route
      */
     public Route findShortestRoute(PathSpecification spec) {
-        maze.reset();
-        //Q = maze.getWidth() + maze.getLength();
-        Route globalRoute = null;
-        Route localRoute = null;
-        int globalMin = Integer.MAX_VALUE;
-        double percentageSameRoute = 0.0;
-        int gen = 0;
-
-        while (percentageSameRoute < 1.0) {
-        	ArrayList<Route> genRoutes = new ArrayList<>();
-            localRoute = null;
+    	int min = Integer.MAX_VALUE;
+    	Route result = null;
+    	// run ACO 3 times to obtain best possible results
+    	for (int n = 0; n < 3; n++) {
+            maze.reset();
+            Route globalRoute = null;
+            Route localRoute = null;
+            int globalMin = Integer.MAX_VALUE;
             int localMin = Integer.MAX_VALUE;
-            gen++;
-            evaporation += 0.03;
-        	if (evaporation >= 0.9) {
-                evaporation = 0.9;
-            }
-            
-            // let all ants run through maze
-            for (int i = 0; i < antsPerGen; i++) {
-                Ant ant = new Ant(maze, spec);
-                Route found = ant.findRoute();
-                genRoutes.add(found);
-                // check if route is shortest of this generation
-                if (found.size() < localMin) {
-                    localMin = found.size();
-                    localRoute = found;
+            double percentageSameRoute = 0.0;
+            int gen = 0;
+            // let another generation run through the maze if not converged yet
+            while (percentageSameRoute < 1.0) {
+            	ArrayList<Route> genRoutes = new ArrayList<>();
+                localRoute = null;
+                localMin = Integer.MAX_VALUE;
+                gen++;
+                // dynamically increase evaporation rate
+                evaporation += 0.01;
+            	if (evaporation > 0.9) {
+                    evaporation = 0.9;
+                }                
+                // let all ants run through maze
+                for (int i = 0; i < antsPerGen; i++) {
+                    Ant ant = new Ant(maze, spec);
+                    Route found = ant.findRoute();
+                    genRoutes.add(found);
+                    // check if route is shortest of this generation
+                    if (found.size() < localMin) {
+                        localMin = found.size();
+                        localRoute = found;
+                    }
+                    // check if route is shortest of all generations
+                    if (found.size() < globalMin) {
+                        globalMin = found.size();
+                        globalRoute = found;
+                    }
                 }
-                // check if route is shortest of all generations
-                if (found.size() < globalMin) {
-                    globalMin = found.size();
-                    globalRoute = found;
-                }
+                // update convergence criterion
+                percentageSameRoute = Collections.frequency(genRoutes, localRoute) / (double) antsPerGen;
+                maze.addPheromoneRoutes(genRoutes, Q);
+                maze.evaporate(evaporation);
             }
-            // update convergence criterion
-            percentageSameRoute = Collections.frequency(genRoutes, localRoute) / (double) antsPerGen;
-            maze.addPheromoneRoutes(genRoutes, Q);
-            maze.evaporate(evaporation);
-            System.out.println("Generation " + (gen) + ": " + localMin + ", " + 100*percentageSameRoute + "% converged, " + globalMin);
-        }
-        return globalRoute;
+            // update best route of all runs of ACO if a shorter one was found in this run
+            if (globalMin < min) {
+            	min = globalMin;
+            	result = globalRoute;
+            }
+            System.out.println("Run: " + (n+1) + ", Number of generations: " + (gen) + ", Local min: " + localMin + ", Global min: " + globalMin);
+    	}
+        return result;
     }
 
     /**
      * Driver function for Assignment 1
      */
     public static void main(String[] args) throws FileNotFoundException {
-//    	//set parameters hard maze
-//    	int genSize = 20;
-//        int noGen = 50;
-//        double Q = 1000;
-//        double evap = 0.3;
-        
-    	//good parameters medium maze
-    	int genSize = 20;
+    	// good parameters hard maze
+    	int genSize = 35;
         int noGen = 50;
-        double Q = 200;
+        double Q = 800;
         double evap = 0.3;
+    	
+//    	//good parameters medium maze
+//    	int genSize = 35;
+//        int noGen = 50;
+//        double Q = 200;
+//        double evap = 0.5;
         
 //    	//good parameters easy maze
-//    	int genSize = 20;
+//    	int genSize = 25;
 //        int noGen = 50;
 //        double Q = 50;
-//        double evap = 0.3;
+//        double evap = 0.8;
 
         //construct the optimization objects
-        Maze maze = Maze.createMaze("./data/medium maze.txt");
-        PathSpecification spec = PathSpecification.readCoordinates("./data/medium coordinates.txt");
+        Maze maze = Maze.createMaze("./data/hard maze.txt");
+        PathSpecification spec = PathSpecification.readCoordinates("./data/hard coordinates.txt");
         AntColonyOptimization aco = new AntColonyOptimization(maze, genSize, noGen, Q, evap);
         
         //save starting time
@@ -117,7 +127,7 @@ public class AntColonyOptimization {
         System.out.println("Time taken: " + ((System.currentTimeMillis() - startTime) / 1000.0));
         
         //save solution
-        shortestRoute.writeToFile("./data/medium_solution.txt");
+        shortestRoute.writeToFile("./data/hard_solution.txt");
         
         //print route size
         System.out.println("Route size: " + shortestRoute.size());

@@ -140,7 +140,7 @@ public class Ant {
 
 
     /**
-     * THIS IS NOT USED
+     * THIS IS NOT USED!!!!
      * Method that finds directions with the most pheromone
      *
      * @return the route with the most pheromone
