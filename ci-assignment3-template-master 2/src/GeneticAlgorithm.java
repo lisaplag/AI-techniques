@@ -354,15 +354,7 @@ public class GeneticAlgorithm {
         Maze maze = Maze.createMaze("./ci-assignment3-template-master 2/data/hard maze.txt");// Use the GC maze here for grand challenge!
         TSPData pd = TSPData.readSpecification(coordinates, TSPpath);
         AntColonyOptimization aco = new AntColonyOptimization(maze, gen, noGen, Q, evap);
-        
-        //run optimization and write to file
-        pd.calculateRoutes(aco);
-        pd.writeToFile(persistFile);
-        
-        //read from file and print
-        TSPData pd2 = TSPData.readFromFile(persistFile);
-        System.out.println(pd.equals(pd2));
-        
+                
         // GA parameters
     	int populationSize = 1000;
         int generations = 100;
@@ -373,7 +365,7 @@ public class GeneticAlgorithm {
         
         //run optimzation and write to file
         int[] solution = ga.solveTSP(pd);
-        pd.writeActionFile(solution, "./Action.txt");
+        pd.writeActionFile(solution, "./data/Action.txt");
         System.out.println(tempString);
         System.out.println("Time taken: " + ((System.currentTimeMillis() - startTime) / 1000.0));
     }
