@@ -308,10 +308,7 @@ public class GeneticAlgorithm {
         ArrayList<Integer> resultset1 = network.productsOfClass( class1, class2, class3, predictions);
         int[] results = alToArray(resultset1);
         ReadData.writeResults(results, predictions);
-        //parameters
-    	int populationSize = 1000;
-        int generations = 100;
-        String persistFile = "./ci-assignment3-template-master 2/data/productMatrixDist";
+        
 
         File inputFile = new File("./ci-assignment3-template-master 2/data/tsp products.txt");
         // Use GC_ProductCoordinates.txt for grand challenge ^^
@@ -343,12 +340,13 @@ public class GeneticAlgorithm {
         reader.close();
 
         //setup optimization
-        //parameters
-        int gen = 20;
+        //parameters       
+    	int gen = 25;
         int noGen = 50;
-        double Q = 400;
+        double Q = 1;
         double evap = 0.1;
-
+        
+        String persistFile = "./ci-assignment3-template-master 2/data/productMatrixDist";
         String TSPpath = "./GC_Products.txt";
         String coordinates = "./ci-assignment3-template-master 2/data/hard coordinates.txt"; // Use the GC maze here for grand challenge!
 
@@ -356,6 +354,18 @@ public class GeneticAlgorithm {
         Maze maze = Maze.createMaze("./ci-assignment3-template-master 2/data/hard maze.txt");// Use the GC maze here for grand challenge!
         TSPData pd = TSPData.readSpecification(coordinates, TSPpath);
         AntColonyOptimization aco = new AntColonyOptimization(maze, gen, noGen, Q, evap);
+        
+        //run optimization and write to file
+        pd.calculateRoutes(aco);
+        pd.writeToFile(persistFile);
+        
+        //read from file and print
+        TSPData pd2 = TSPData.readFromFile(persistFile);
+        System.out.println(pd.equals(pd2));
+        
+        // GA parameters
+    	int populationSize = 1000;
+        int generations = 100;
 
         //run optimization
         pd.calculateRoutes(aco);
