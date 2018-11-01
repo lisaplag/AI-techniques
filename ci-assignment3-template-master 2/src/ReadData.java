@@ -13,7 +13,7 @@ public class ReadData {
     public static ArrayList<String> unknown = new ArrayList<>();
 
     public static double[][] readInput() {
-        File features = new File(System.getProperty("user.dir")+"/Code/src/assignment1/features.txt");
+        File features = new File("./data/features.txt");
         read(features, feat);
         int size = feat.size();
         double[][] input = new double[size][10];
@@ -27,7 +27,7 @@ public class ReadData {
     }
 
     public static double[][] readTargets() {
-        File targetFile = new File(System.getProperty("user.dir")+"/Code/src/assignment1/targets.txt");
+        File targetFile = new File("./data/targets.txt");
         read(targetFile, targets);
         int size = targets.size();
         double category;
@@ -42,7 +42,7 @@ public class ReadData {
     }
 
     public static double[][] readUnknown() {
-        File features = new File(System.getProperty("user.dir")+"/GC_FeatureData.txt");
+        File features = new File("./data/GC_FeatureData.txt");
         read(features, unknown);
         int size = unknown.size();
         double[][] input = new double[size][10];
@@ -118,7 +118,7 @@ public class ReadData {
     // writes the predictions made by the network to a text file, separated by commas
     public static void writeResults(int[] results1, int[] results2) {
         try {
-            PrintWriter pw = new PrintWriter(System.getProperty("user.dir")+"/GC_productNumbers.txt");
+            PrintWriter pw = new PrintWriter("./data/GC_productNumbers.txt");
             for (int i = 0; i < results1.length; i++) {
                 pw.write((results1[i] + 1) + "");
                 if (i != results1.length - 1) {
@@ -130,7 +130,7 @@ public class ReadData {
             e.printStackTrace();
         }
         try {
-            PrintWriter pw = new PrintWriter(System.getProperty("user.dir")+"/testOutput.txt");
+            PrintWriter pw = new PrintWriter("./data/testOutput.txt");
             for (int i = 0; i < results2.length; i++) {
                 pw.write((results2[i] + 1) + "");
                 if (i != results2.length - 1) {
