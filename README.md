@@ -1,8 +1,3 @@
-# CI Group 24
-Members:
-- Tim Polderdijk - 4689313 
-- Lisa Plag - 4969669
-- Daan Hofman - 4688988
-- Nadine Berenst - 4438965
+# Computational Intelligence
 
-Link to reports: https://v2.overleaf.com/8692963899byhqjtwrqcsj 
+Group work for the Computational Intelligence course of TU Delft.
